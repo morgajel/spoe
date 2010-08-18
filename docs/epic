@@ -1,0 +1,55 @@
+The purpose of this project is to create a site where Authors can go to have their content beta-read. Site is meant as an author-to-author tool for critiqing snippets.
+
+User Stories
+
+Users should be able to log into to see an interface where they can submit a snippet or critique a snippet
+
+There should be two classes of users; Authors and Reviewers. All users start out as Reviewers and see a Reviewer interface, but can be upgraded to author status by submitting a snippet.
+
+Authors
+- Authors should be able to upload a doc file or paste plain text.
+  - Authors should have a simple interface for pasting plain text to submit a snippet.
+  - There should be a separate field for the Authors to explain their content.
+  - Authors should be able to tag the snippet similar to del.ic.io.us
+  - Authors can use a "word replacer" to replace characters names if they wish to keep things secret.
+     - must be capitalization agnostic
+  - Must rate content: mature audiences(default), young adult, everyone
+
+- Authors should see a list of their uploaded snippets as well as critiques for each one
+  - Authors can mark snippets as public or private
+  - Authors see new critiques along with the user
+  - 
+
+- Authors can request reviews via the buddy system- They post their snippet and are presented with a group of snippets of a similar size and can buddy with another author
+
+- Each uploaded snippet can have multiple critiques
+
+- After a critique is submitted, you can read
+
+Reviewers
+- users set their default review preferences- i.e. "what they're willing to review"
+- users interested in short stories can select a posted snippet via a set of filters, which default to their preferences
+  - Snippets appear anonymous to the reviewer.
+- Reviewers can select a story based on a one-sentence substring example
+
+- Reviewer reputation based on author feedback of critique
+
+- Reviewers can become authors when they wish to post their own snippet
+
+Snippets
+- Multiple length categories: 
+  - Paragraph
+  - Scene
+  - Chapter
+  - Short Story
+  - Novella
+
+Reviewer Tool
+  - Reviewer should be able to insert comments inline, highlight text, or cross off words
+
+
+
+Tech
+- should authenticate with OpenID credentials
+
+
