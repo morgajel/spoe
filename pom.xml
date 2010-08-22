@@ -7,7 +7,35 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>spoe Maven Webapp</name>
   <url>http://maven.apache.org</url>
+
   <dependencies>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-full</artifactId>
+      <version>1.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.2</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.2</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging-api</artifactId>
+      <version>1.0.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-core</artifactId>
+      <version>2.0.2</version>
+    </dependency>
+        
+        
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -17,5 +45,32 @@
   </dependencies>
   <build>
     <finalName>spoe</finalName>
+    <plugins>
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>jboss-maven-plugin</artifactId>
+            <version>1.4.1</version>
+            <configuration>
+                <jbossHome>${spoe.jboss.home}</jbossHome>
+                <serverName>${spoe.jboss.serverName}</serverName>
+                <deploySubDir>${spoe.jboss.deployDir}</deploySubDir>
+                <fileName>target/spoe.war</fileName>
+<!--
+    These are set in my my settings.xml
+    <profile>
+      <id>spoe</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+        <properties>
+            <spoe.jboss.home>/common/app/jboss/4.2.3.GA/</spoe.jboss.home>
+            <spoe.jboss.serverName>spoe</spoe.jboss.serverName>
+            <spoe.jboss.deployDir>../deploy.local</spoe.jboss.deployDir>
+        </properties>
+    </profile>
+-->
+            </configuration>
+        </plugin>
+    </plugins>
   </build>
 </project>
