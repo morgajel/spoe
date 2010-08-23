@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 import org.springframework.web.servlet.ModelAndView;
 import com.morgajel.spoe.HelloController;
 
-public class HelloControllerTests extends TestCase {
+public class HelloControllerTest extends TestCase {
 
     public void testHandleRequestView() throws Exception{		
         HelloController controller = new HelloController();
