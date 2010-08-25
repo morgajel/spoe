@@ -39,13 +39,13 @@ public class SimpleSnippetManagerTest extends TestCase {
         
     }
 
-    public void testGetProductsWithNoProducts() {
+    public void testGetSnippetsWithNoSnippets() {
         snippetManager = new SimpleSnippetManager();
         assertNull(snippetManager.getSnippets());
     }
 
     
-    public void testGetProducts() {
+    public void testGetSnippets() {
         List<Snippet> snippets = snippetManager.getSnippets();
         assertNotNull(snippets);        
         assertEquals(SNIPPET_COUNT, snippetManager.getSnippets().size());
