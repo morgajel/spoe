@@ -21,6 +21,12 @@
     </dependency>
 
     <dependency>
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>emma-maven-plugin</artifactId>
+      <version>1.0-alpha-2</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
       <version>3.0.3.RELEASE</version>
@@ -54,55 +60,54 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-<!-- ==================== -->
+
+  <reporting>    
+    <plugins>  
+      <plugin>      
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>emma-maven-plugin</artifactId>
+        <version>1.0-alpha-2</version>
+        <inherited>true</inherited>          
+      </plugin>
+    </plugins>      
+  </reporting>  
+
   <build>
     <finalName>spoe</finalName>
     <plugins>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
+          <source>1.6</source>
+          <target>1.6</target>
         </configuration>
       </plugin>
 
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.6</version>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jboss-maven-plugin</artifactId>
+        <version>1.4.1</version>
         <configuration>
-          <parallel>methods</parallel>
-          <threadCount>10</threadCount>
-        </configuration>
+          <jbossHome>${spoe.jboss.home}</jbossHome>
+          <serverName>${spoe.jboss.serverName}</serverName>
+          <deploySubDir>${spoe.jboss.deployDir}</deploySubDir>
+          <fileName>target/spoe.war</fileName>
+          <!-- These are set in my my settings.xml
+            <profile>
+              <id>spoe</id>
+              <activation>
+                <activeByDefault>true</activeByDefault>
+              </activation>
+                <properties>
+                  <spoe.jboss.home>/common/app/jboss/4.2.3.GA/</spoe.jboss.home>
+                  <spoe.jboss.serverName>spoe</spoe.jboss.serverName>
+                  <spoe.jboss.deployDir>../deploy.local</spoe.jboss.deployDir>
+                </properties>
+            </profile>
+          -->
+          </configuration>
       </plugin>
-
-        <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>jboss-maven-plugin</artifactId>
-            <version>1.4.1</version>
-            <configuration>
-                <jbossHome>${spoe.jboss.home}</jbossHome>
-                <serverName>${spoe.jboss.serverName}</serverName>
-                <deploySubDir>${spoe.jboss.deployDir}</deploySubDir>
-                <fileName>target/spoe.war</fileName>
-<!--
-    These are set in my my settings.xml
-    <profile>
-      <id>spoe</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-        <properties>
-            <spoe.jboss.home>/common/app/jboss/4.2.3.GA/</spoe.jboss.home>
-            <spoe.jboss.serverName>spoe</spoe.jboss.serverName>
-            <spoe.jboss.deployDir>../deploy.local</spoe.jboss.deployDir>
-        </properties>
-    </profile>
--->
-            </configuration>
-        </plugin>
     </plugins>
   </build>
 </project>

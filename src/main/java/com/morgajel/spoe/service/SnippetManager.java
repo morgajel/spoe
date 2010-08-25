@@ -13,7 +13,4 @@ import com.morgajel.spoe.domain.Snippet;
 	    
 	    public List<Snippet> getSnippets();
 
-	
-	
-
 }
