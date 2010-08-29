@@ -1,4 +1,4 @@
-package com.morgajel.spoe.domain;
+package com.morgajel.spoe.model;
 
 
 public class Author extends Reviewer {

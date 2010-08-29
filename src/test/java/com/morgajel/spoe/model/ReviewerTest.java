@@ -1,6 +1,6 @@
-package com.morgajel.spoe.domain;
+package com.morgajel.spoe.model;
 
-import com.morgajel.spoe.domain.Reviewer;
+import com.morgajel.spoe.model.Reviewer;
 
 import junit.framework.TestCase;
 

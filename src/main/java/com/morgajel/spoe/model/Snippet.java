@@ -1,4 +1,4 @@
-package com.morgajel.spoe.domain;
+package com.morgajel.spoe.model;
 
 import java.io.Serializable;
 

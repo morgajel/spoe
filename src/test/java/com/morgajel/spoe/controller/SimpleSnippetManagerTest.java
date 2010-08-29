@@ -1,10 +1,11 @@
-package com.morgajel.spoe.service;
+package com.morgajel.spoe.controller;
 
 import junit.framework.TestCase;
 import java.util.ArrayList;
 import java.util.List;
 
-import  com.morgajel.spoe.domain.Snippet;
+import com.morgajel.spoe.controller.SimpleSnippetManager;
+import com.morgajel.spoe.model.Snippet;
 
 public class SimpleSnippetManagerTest extends TestCase {
 
