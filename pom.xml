@@ -8,6 +8,25 @@
   <name>Second Pair of Eyes</name>
   <dependencies>
     <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>findbugs</artifactId>
+      <version>1.3.9</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>emma-maven-plugin</artifactId>
+      <version>1.0-alpha-2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jvnet.hudson.plugins</groupId>
+      <artifactId>doxygen</artifactId>
+      <version>0.6</version>
+      <type>hpi</type>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
       <groupId>javax.persistence</groupId>
       <artifactId>persistence-api</artifactId>
       <version>1.0</version>
@@ -248,19 +267,6 @@
       <groupId>org.devlib.schmidt</groupId>
       <artifactId>imageinfo</artifactId>
       <version>1.7</version>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.mojo</groupId>
-      <artifactId>emma-maven-plugin</artifactId>
-      <version>1.0-alpha-2</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jvnet.hudson.plugins</groupId>
-      <artifactId>doxygen</artifactId>
-      <version>0.6</version>
-      <type>hpi</type>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
