@@ -1,8 +1,8 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<sec:authorize access='! isAuthenticated()'>
-<div id='loginbox'>
 
+<div id='loginbox' style="float:right;position:absolute;right:5px;top:5px;">
+	<sec:authorize access='! isAuthenticated()'>
         <form name='f' action='/tutorial/j_spring_security_check' method='POST'>
         <table style='border:1px solid black;'>
             <tr><th colspan='2'>Login with Username and Password</th></tr>
@@ -12,9 +12,10 @@
         	<tr><td><input name="submit" type="submit"value='Log In'/></td><td></td></tr>
         </table>
         </form>
-</div>
-</sec:authorize>
+	</sec:authorize>
+	
+	<sec:authorize access='isAuthenticated()'>
+		<p><a href="/profile">profile</a> | <a href="/j_spring_security_logout">Logout</a>
+	</sec:authorize>
 
-<sec:authorize access='isAuthenticated()'>
-<p><a href="j_spring_security_logout">Logout</a>
-</sec:authorize>
+</div>
