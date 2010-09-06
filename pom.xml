@@ -396,9 +396,10 @@
           <archive>
             <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
           </archive>
-          <webXml>${pom.basedir}/target/jspweb.xml</webXml>
+<!--          <webXml>${pom.basedir}/target/jspweb.xml</webXml>-->
         </configuration>
       </plugin>
+<!--
       <plugin>
         <groupId>org.codehaus.mojo.jspc</groupId>
         <artifactId>jspc-maven-plugin</artifactId>
@@ -409,7 +410,6 @@
             </goals>
           </execution>
         </executions>
-        <!-- Use the Tomcat 6 JSP compiler -->
         <dependencies>
           <dependency>
             <groupId>org.codehaus.mojo.jspc</groupId>
@@ -418,6 +418,7 @@
           </dependency>
         </dependencies>
       </plugin>
+-->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>findbugs-maven-plugin</artifactId>

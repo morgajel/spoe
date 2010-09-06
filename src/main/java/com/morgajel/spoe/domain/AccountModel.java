@@ -61,17 +61,23 @@ public class AccountModel implements Serializable{
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
-	public Date getLastAccessDate() {
-		return lastAccessDate;
-	}
-	public void setLastAccessDate(Date lastAccessDate) {
-		this.lastAccessDate = lastAccessDate;
-	}
 	public Date getCreationDate() {
-		return creationDate;
+		if (creationDate == null ){
+			return null;
+		}
+		return (Date) creationDate.clone();
 	}
 	public void setCreationDate(Date creationDate) {
-		this.creationDate = creationDate;
+		this.creationDate=(Date) creationDate.clone();
+	}	
+	public Date getLastAccessDate() {
+		if (lastAccessDate == null ){
+			return null;
+		}
+		return (Date) lastAccessDate.clone();
+	}
+	public void setLastAccessDate(Date lastAccessDate) {
+		this.lastAccessDate= (Date) lastAccessDate.clone();
 	}
 	
 	@Override
