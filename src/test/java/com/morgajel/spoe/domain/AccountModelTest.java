@@ -44,7 +44,6 @@ public class AccountModelTest {
         assertEquals(testUsername,model.getUsername());
 	}
 
-
 	@Test
 	public void testGetAndSetPassword() {
         String testPassword="12345MatchedLuggage";
@@ -94,4 +93,33 @@ public class AccountModelTest {
         assertEquals(testDate,model.getCreationDate());
 	}
 
+	@Test
+	public void testToString() {
+		int accountId=123123123;
+		model.setAccountId(accountId);
+		Date creationDate=new Date();
+		model.setCreationDate(creationDate);
+		Date lastAccessDate=new Date();
+		model.setLastAccessDate(lastAccessDate);
+		String email="bob@example.com";
+		model.setEmail(email);
+		boolean enabled=true;
+		model.setEnabled(enabled);
+		String firstname="Bob";
+		model.setFirstname(firstname);
+		String lastname="Dole";
+		model.setLastname(lastname);
+		String password=("password1");
+		model.setPassword(password);
+		String username="bobdole";
+		model.setUsername(username);
+		
+		String toString="AccountModel [accountId=" + accountId + ", creationDate="
+		+ creationDate + ", email=" + email + ", enabled=" + enabled
+		+ ", firstname=" + firstname + ", lastAccessDate="
+		+ lastAccessDate + ", lastname=" + lastname + ", password="
+		+ password + ", username=" + username + "]";
+	
+		assertEquals(toString, model.toString());
+	}
 }
