@@ -25,7 +25,6 @@
       <type>hpi</type>
       <scope>compile</scope>
     </dependency>
-
     <dependency>
       <groupId>javax.persistence</groupId>
       <artifactId>persistence-api</artifactId>
@@ -35,7 +34,26 @@
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
       <version>1.1.1</version>
+      <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.6.0</version>
+    </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>1.6.0</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.6.0</version>
+            <scope>runtime</scope>
+        </dependency>
+
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-annotations</artifactId>
@@ -45,6 +63,53 @@
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-validator</artifactId>
       <version>4.0.2.GA</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-validator-parent</artifactId>
+      <version>4.0.2.GA</version>
+      <type>pom</type>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate</artifactId>
+      <version>3.2.4.sp1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-hibernate</artifactId>
+      <version>1.2.9</version>
+    </dependency>
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-beans</artifactId>
+    <version>3.0.3.RELEASE</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-expression</artifactId>
+    <version>3.0.3.RELEASE</version>
+</dependency>
+
+    <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+      <version>1.0.0.GA</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>3.0.3.RELEASE</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+      <version>3.0.3.RELEASE</version>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.16</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -99,7 +164,6 @@
       <artifactId>standard</artifactId>
       <version>1.1.2</version>
     </dependency>
-<!--
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
@@ -112,6 +176,7 @@
       <version>2.1</version>
       <scope>provided</scope>
     </dependency>
+<!--
     <dependency>
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>
@@ -172,20 +237,10 @@
       <version>3.0.3.RELEASE</version>
     </dependency>
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-core</artifactId>
-      <version>3.0.3.RELEASE</version>
-    </dependency>
-    <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-parent</artifactId>
       <version>3.0.3.RELEASE</version>
       <type>pom</type>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-core</artifactId>
-      <version>3.3.2.GA</version>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
@@ -201,6 +256,12 @@
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-ehcache</artifactId>
       <version>3.3.2.GA</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-validator-parent</artifactId>
+      <version>4.0.2.GA</version>
+      <type>pom</type>
     </dependency>
     <dependency>
       <groupId>commons-dbcp</groupId>
@@ -277,12 +338,6 @@
       <groupId>org.slf4j</groupId>
       <artifactId>jcl-over-slf4j</artifactId>
       <version>1.6.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-validator-parent</artifactId>
-      <version>4.0.2.GA</version>
-      <type>pom</type>
     </dependency>
     <dependency>
       <groupId>javax.annotation</groupId>
