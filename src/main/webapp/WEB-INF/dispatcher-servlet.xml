@@ -1,18 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" 
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
         http://www.springframework.org/schema/beans 
         http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
         http://www.springframework.org/schema/context 
         http://www.springframework.org/schema/context/spring-context.xsd">
 
 
-   	<context:component-scan base-package="com.morgajel.spoe"/>
+	<context:component-scan base-package="com.morgajel.spoe" />
 
 
-    <import resource="spring/mvc-config.xml" />
+	<import resource="spring/mvc-config.xml" />
 
+    <tx:annotation-driven  transaction-manager="hibernateTransactionManager"/>
+    <bean id="mySessionFactory"
+    		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="annotatedClasses">
+            <list>
+                <value>com.morgajel.spoe.model.Account</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+
+            </props>
+        </property>
+    </bean>
+    
+    <bean id="hibernateTransactionManager" 
+    		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="mySessionFactory" />
+	</bean>
+
+
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="localhost"/>
+    </bean>
+    
+    <!-- this is a template message that we can pre-load with default state -->
+    <bean id="templateRegistrationMessage" class="org.springframework.mail.SimpleMailMessage" >
+    	<property name="from" value="registration@morgajel.com"/>
+        <property name="subject" value="Activate your account"/>
+    </bean>
+    
+    <bean id="accountController" class="com.morgajel.spoe.controller.AccountController">
+        <property name="mailSender" ref="mailSender"/>
+        <property name="templateMessage" ref="templateRegistrationMessage"/>
+    </bean>
 
 </beans>

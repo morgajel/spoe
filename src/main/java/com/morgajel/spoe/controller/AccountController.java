@@ -1,72 +1,124 @@
 package com.morgajel.spoe.controller;
 
+import com.morgajel.spoe.model.Account;
+import com.morgajel.spoe.service.AccountService;
 
-import com.morgajel.spoe.domain.Account;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.apache.log4j.Logger;
-import javax.validation.Valid;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 
+import org.apache.log4j.Logger;
+
+import org.springframework.web.bind.annotation.PathVariable;
+
+
+
+//TODO add headers
+//TODO get deoxy working
+//TODO add more logging
+//TODO add more tests
 @Controller
 public class AccountController {
-    private Logger  logger = Logger.getLogger("com.morgajel.spoe.controller.AccountController");
+	
+	@Autowired
+    private AccountService accountService;
+	
+	private transient static Logger logger = Logger.getLogger("com.morgajel.spoe.controller.AccountController");
 
-    
-    private Map<Long, Account> accounts = new ConcurrentHashMap<Long, Account>();
-    // TODO does this need to be an instance variable?
-    private ModelAndView mav=new ModelAndView();
-    
-    @RequestMapping("/register")
-    public ModelAndView getRegistrationForm(Account account) {
-        this.mav = new ModelAndView("account/registrationForm");
-        this.mav.addObject("account", account);
-        logger.error(" getregistrationForm loaded");
-        return this.mav;
-
-    }
-    @RequestMapping(value="/register.submit",method=RequestMethod.POST)
-    public String create(@Valid Account account, BindingResult result) {
-//        if (result.hasErrors()) {
-            return "account/registrationSuccess";
-//        }
-//        this.accounts.put(account.assignId(), account);
-//        return "redirect:/account/" + account.getAccountId();
-    }
-//
-//    @RequestMapping(value="{id}", method=RequestMethod.GET)
-//    public String getView(@PathVariable Long id, Model model) {
-//        Account account = this.accounts.get(id);
-//        if (account == null) {
-//            throw new ResourceNotFoundException(id);
-//        }
-//        model.addAttribute(account);
-//        return "account/view";
-//    }
-
-	public Map<Long, Account> getAccounts() {
-		return accounts;
-	}
-
-	public void setAccounts(Map<Long, Account> accounts) {
-		this.accounts = accounts;
-	}
-
-	public ModelAndView getMav() {
+    @RequestMapping(value = "/register.submit", method = RequestMethod.POST)
+	public ModelAndView addAccount(@ModelAttribute("account") Account account, BindingResult result) {
+    	ModelAndView mav= new ModelAndView();
+    	try{
+    		//Generate a password, then hash it so it's nice and long
+    		String passphrase=Account.hashText(Account.generatePassword(10));
+    		logger.trace("generated a nice passphrase to send the user:"+passphrase);
+    		//Set the password to a combo of username+passphrase
+        	account.setPassword(Account.hashText(passphrase+account.getUsername()));
+        	logger.trace("set the password field to "+account.getPassword());
+        	//send them a url that contains the username and passphrase
+    		sendRegEmail(account,passphrase);
+    		accountService.addAccount(account);
+    		logger.info("created account "+ account.getUsername());
+    		mav.setViewName("account/registrationSuccess");
+    		
+    	} catch(Exception ex) {
+    		// TODO: catch actual errors and handle them
+    		// TODO: tell the user wtf happened
+    		logger.error("Message failed to send:");
+    		logger.error(ex);
+    		mav.setViewName("account/registrationForm");
+    		mav.addObject("message", "There was an issue creating your account."
+    				+ "Please contact the administrator for assistance."
+    				+ "<!--" + ex.toString() + "-->");
+    	}
 		return mav;
 	}
+	
+	@RequestMapping("/register")
+	//TODO why does this need a parameter?
+	public ModelAndView getRegistrationForm(Account account) {
+		logger.info("getregistrationForm loaded");
+		return new ModelAndView("account/registrationForm");
+	}
 
-	public void setMav(ModelAndView mav) {
-		this.mav = mav;
+//--------------------------------
+    private MailSender mailSender;
+    private SimpleMailMessage templateMessage;
+
+    public void setMailSender(MailSender mailSender) {
+        this.mailSender = mailSender;
+    }
+
+    public void setTemplateMessage(SimpleMailMessage templateMessage) {
+        this.templateMessage = templateMessage;
+    }
+
+	private void sendRegEmail(Account account, String passphrase) throws Exception {
+		logger.info("trying to send email...");
+
+        SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
+        msg.setTo(account.getEmail());
+        msg.setText("Dear " + account.getFirstname()
+                + ", Your account is almost ready to use! Please activate your"
+                + " account within the next 7 days by following this link: "
+                + "http://spoe.morgajel.com/account/activate"
+                + "/" + account.getUsername()
+                + "/" + passphrase
+                );
+        this.mailSender.send(msg);
+		logger.info("message sent to "+account.getEmail());
+		logger.info(msg.getText());
+	}
+    @RequestMapping(value = "/activate/{username}/{passphrase}", method = RequestMethod.GET)
+    public ModelAndView activateAccount(@PathVariable String username,@PathVariable String passphrase){
+    	logger.trace("trying to activate "+username+" with hash "+passphrase );
+    	ModelAndView mav= new ModelAndView();
+    	try{
+    		Account account = accountService.findAccountByUsername(username);
+    		logger.trace("compare"+Account.hashText(passphrase+username) +" with password field "+account.getPassword() );	
+    		if (Account.hashText(passphrase+username).equals(account.getPassword())){//XXX
+    			logger.info("Holy shit it worked:");	
+    			account.setEnabled(true);
+    			accountService.addAccount(account);
+    			mav.setViewName("account/activationSuccess");
+    		}else{
+    			logger.info("aw, fail");	
+    			mav.setViewName("account/activationFailure");
+    		}
+    	} catch(Exception ex) {
+    		// TODO: catch actual errors and handle them
+    		// TODO: tell the user wtf happened
+    		logger.error("damnit, something failed.");
+			mav.setViewName("account/activationFailure");
+    	}
+		return mav;
 	}
     
 }

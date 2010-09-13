@@ -56,4 +56,5 @@ select account.username, role.name
             inner join account_role on account.account_id=account_role.account_id 
             inner join role on account_role.role_id=role.role_id order by username,name;
 
+select sha(concat(password,username)) ,username,password from account;
 
