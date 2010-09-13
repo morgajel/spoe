@@ -3,22 +3,26 @@ package com.morgajel.spoe.controller;
 import com.morgajel.spoe.model.Account;
 import com.morgajel.spoe.service.AccountService;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.velocity.VelocityEngineUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-
 import org.apache.log4j.Logger;
+import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.exception.VelocityException;
 
 import org.springframework.web.bind.annotation.PathVariable;
-
-
+import org.apache.commons.lang.StringUtils;
 
 //TODO add headers
 //TODO get deoxy working
@@ -26,7 +30,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 //TODO add more tests
 @Controller
 public class AccountController {
-	
+
+    private VelocityEngine velocityEngine;
+
+    public void setVelocityEngine(VelocityEngine velocityEngine) {
+        this.velocityEngine = velocityEngine;
+    }
+
 	@Autowired
     private AccountService accountService;
 	
@@ -82,16 +92,23 @@ public class AccountController {
 
 	private void sendRegEmail(Account account, String passphrase) throws Exception {
 		logger.info("trying to send email...");
-
-        SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
+		String url="http://spoe.morgajel.com/account/activate/" + account.getUsername() + "/" + passphrase;
+		SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
         msg.setTo(account.getEmail());
-        msg.setText("Dear " + account.getFirstname()
-                + ", Your account is almost ready to use! Please activate your"
-                + " account within the next 7 days by following this link: "
-                + "http://spoe.morgajel.com/account/activate"
-                + "/" + account.getUsername()
-                + "/" + passphrase
-                );
+        
+	    Map model = new HashMap();
+	    model.put("firstname", account.getFirstname());
+	    model.put("url", url);
+	    String result = null;
+	    try {
+	        // notificationTemplate.vm must be in your classpath
+	        result = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine,
+	                        "/WEB-INF/templates/registrationEmail.vm", model);
+	    } catch (VelocityException e) {
+	        e.printStackTrace();
+	    }
+	    msg.setText(result);
+    
         this.mailSender.send(msg);
 		logger.info("message sent to "+account.getEmail());
 		logger.info(msg.getText());

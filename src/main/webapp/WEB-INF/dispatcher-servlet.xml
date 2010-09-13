@@ -39,20 +39,4 @@
 		<property name="sessionFactory" ref="mySessionFactory" />
 	</bean>
 
-
-    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="host" value="localhost"/>
-    </bean>
-    
-    <!-- this is a template message that we can pre-load with default state -->
-    <bean id="templateRegistrationMessage" class="org.springframework.mail.SimpleMailMessage" >
-    	<property name="from" value="registration@morgajel.com"/>
-        <property name="subject" value="Activate your account"/>
-    </bean>
-    
-    <bean id="accountController" class="com.morgajel.spoe.controller.AccountController">
-        <property name="mailSender" ref="mailSender"/>
-        <property name="templateMessage" ref="templateRegistrationMessage"/>
-    </bean>
-
 </beans>

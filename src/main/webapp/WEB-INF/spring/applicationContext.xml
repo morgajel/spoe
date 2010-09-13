@@ -11,5 +11,21 @@
 
 	<jee:jndi-lookup id="dataSource" jndi-name="java:DefaultDS" />
 
-
+	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+	    <property name="velocityProperties">
+	        <props>
+	            <prop key="resource.loader">class</prop>
+	            <prop key="class.resource.loader.class">org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader</prop>
+	        </props>
+	    </property>
+	</bean>
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="localhost"/>
+    </bean>
+    
+    <!-- this is a template message that we can pre-load with default state -->
+    <bean id="templateRegistrationMessage" class="org.springframework.mail.SimpleMailMessage" >
+    	<property name="from" value="SPoE Registration &lt;registration@morgajel.com&gt;"/>
+        <property name="subject" value="Activate your account"/>
+    </bean>
 </beans>

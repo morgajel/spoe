@@ -26,7 +26,7 @@
 		</tr>
 		<tr>
 			<td><input name="submit" type="submit" value='Log In' /></td>
-			<td></td>
+			<td>or <a href="/account/register">Register</a></td>
 		</tr>
 	</table>
 	</form>

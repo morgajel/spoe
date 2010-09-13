@@ -19,5 +19,10 @@
 	</bean>
 
 
+    <bean id="accountController" class="com.morgajel.spoe.controller.AccountController">
+        <property name="mailSender" ref="mailSender"/>
+        <property name="templateMessage" ref="templateRegistrationMessage"/>
+        <property name="velocityEngine"><ref bean="velocityEngine"/></property>
+    </bean>
 </beans>
 
