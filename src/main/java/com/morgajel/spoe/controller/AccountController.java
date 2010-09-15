@@ -32,16 +32,28 @@ import org.apache.commons.lang.StringUtils;
 public class AccountController {
 
     private VelocityEngine velocityEngine;
-
+    private MailSender mailSender;
+    private SimpleMailMessage templateMessage;
+    @Autowired
+    private AccountService accountService;
+	private transient static Logger logger = Logger.getLogger("com.morgajel.spoe.controller.AccountController");
+	    
     public void setVelocityEngine(VelocityEngine velocityEngine) {
         this.velocityEngine = velocityEngine;
     }
+    public VelocityEngine getVelocityEngine() {
+        return this.velocityEngine;
+    }
 
-	@Autowired
-    private AccountService accountService;
-	
-	private transient static Logger logger = Logger.getLogger("com.morgajel.spoe.controller.AccountController");
+	//TODO why does this need a parameter?
+	@RequestMapping("/register")
+	public ModelAndView getRegistrationForm(Account account) {
+		logger.info("getregistrationForm loaded");
+		return new ModelAndView("account/registrationForm");
+	}
 
+    
+// TODO unit test
     @RequestMapping(value = "/register.submit", method = RequestMethod.POST)
 	public ModelAndView addAccount(@ModelAttribute("account") Account account, BindingResult result) {
     	ModelAndView mav= new ModelAndView();
@@ -70,26 +82,22 @@ public class AccountController {
     	}
 		return mav;
 	}
-	
-	@RequestMapping("/register")
-	//TODO why does this need a parameter?
-	public ModelAndView getRegistrationForm(Account account) {
-		logger.info("getregistrationForm loaded");
-		return new ModelAndView("account/registrationForm");
-	}
-
-//--------------------------------
-    private MailSender mailSender;
-    private SimpleMailMessage templateMessage;
 
     public void setMailSender(MailSender mailSender) {
         this.mailSender = mailSender;
     }
-
+    public MailSender getMailSender() {
+        return this.mailSender;
+    }
+    
     public void setTemplateMessage(SimpleMailMessage templateMessage) {
         this.templateMessage = templateMessage;
     }
-
+    public SimpleMailMessage getTemplateMessage() {
+    	return this.templateMessage;
+    }    
+    
+	// TODO unit test
 	private void sendRegEmail(Account account, String passphrase) throws Exception {
 		logger.info("trying to send email...");
 		String url="http://spoe.morgajel.com/account/activate/" + account.getUsername() + "/" + passphrase;
@@ -113,12 +121,13 @@ public class AccountController {
 		logger.info("message sent to "+account.getEmail());
 		logger.info(msg.getText());
 	}
-    @RequestMapping(value = "/activate/{username}/{passphrase}", method = RequestMethod.GET)
+	// TODO unit test
+	@RequestMapping(value = "/activate/{username}/{passphrase}", method = RequestMethod.GET)
     public ModelAndView activateAccount(@PathVariable String username,@PathVariable String passphrase){
     	logger.trace("trying to activate "+username+" with hash "+passphrase );
     	ModelAndView mav= new ModelAndView();
     	try{
-    		Account account = accountService.findAccountByUsername(username);
+    		Account account = accountService.loadByUsername(username);
     		logger.trace("compare"+Account.hashText(passphrase+username) +" with password field "+account.getPassword() );	
     		if (Account.hashText(passphrase+username).equals(account.getPassword())){//XXX
     			logger.info("Holy shit it worked:");	
@@ -137,5 +146,4 @@ public class AccountController {
     	}
 		return mav;
 	}
-    
 }

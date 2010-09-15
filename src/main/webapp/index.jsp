@@ -7,8 +7,8 @@
 
 <%@ include file="/WEB-INF/jsp/loginbox.jsp"%>
 
-<p>Anyone can view this page.</p>
-
+<p>Welcome to SPoE!</p>
+1
 
 
 </body>

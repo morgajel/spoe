@@ -35,6 +35,10 @@ import javax.validation.Valid;
 	@NamedQuery(
 		name = "findAccountByEmail",
 		query = "from Account acc where acc.email = :email"
+	),
+	@NamedQuery(
+		name = "findAccountByUsernameAndPassword",
+		query = "from Account acc where acc.username = :username and acc.password = sha1(:password)"
 	)
 })
 
@@ -45,6 +49,7 @@ public class Account implements Serializable {
 	public static final String ALGORITHM = "SHA1";
 	public static final String PASSWDCHARSET = "!0123456789abcdefghijklmnopqrstuvwxyz";
 	public static String hashText(String text) {
+		//TODO factor this out into a utility class
 		StringBuilder hexStr= new StringBuilder();
 		logger.info("generating a checksum");
 		try {
