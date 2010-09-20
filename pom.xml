@@ -30,13 +30,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.jvnet.hudson.plugins</groupId>
-      <artifactId>doxygen</artifactId>
-      <version>0.6</version>
-      <type>hpi</type>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
       <groupId>javax.persistence</groupId>
       <artifactId>persistence-api</artifactId>
       <version>1.0</version>
@@ -365,6 +358,14 @@
     <finalName>spoe</finalName>
     <plugins>
       <plugin>
+        <groupId>com.soebes.maven.plugins.dmg</groupId>
+        <artifactId>doxygen-maven-plugin</artifactId>
+        <version>1.0.1</version>
+        <configuration>
+          <configurationFile> Doxyfile </configurationFile>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
         <version>1.4</version>
@@ -582,6 +583,11 @@
           <findbugsXmlOutput>true</findbugsXmlOutput>
           <xmlOutput>true</xmlOutput>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.soebes.maven.plugins.dmg</groupId>
+        <artifactId>doxygen-maven-plugin</artifactId>
+        <version>1.0.1</version>
       </plugin>
     </plugins>
   </reporting>
