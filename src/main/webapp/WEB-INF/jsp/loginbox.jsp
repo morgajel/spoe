@@ -5,7 +5,7 @@
 <div id='loginbox'
 	style="float: right; position: absolute; right: 5px; top: 5px;">
 <sec:authorize access='! isAuthenticated()'>
-	<form name='f' action='/tutorial/j_spring_security_check' method='POST'>
+	<form name='f' action='/j_spring_security_check' method='POST'>
 	<table style='border: 1px solid black;'>
 		<tr>
 			<th colspan='2'>Login with Username and Password</th>

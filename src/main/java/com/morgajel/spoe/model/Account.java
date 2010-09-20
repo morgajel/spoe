@@ -1,6 +1,10 @@
 package com.morgajel.spoe.model;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -11,6 +15,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.MapKey;
 import javax.persistence.Table;
 
 import org.apache.log4j.Logger;
@@ -39,19 +48,46 @@ import javax.validation.Valid;
 	@NamedQuery(
 		name = "findAccountByUsernameAndPassword",
 		query = "from Account acc where acc.username = :username and acc.password = sha1(:password)"
+	),
+	@NamedQuery(
+			name = "findAccountByUsernameAndChecksum",
+			query = "from Account acc where acc.username = :username and sha1(concat(acc.username,acc.password,acc.enabled)) = :checksum" 
 	)
 })
+
 
 @Entity
 @Table(name="account")
 public class Account implements Serializable {
-
+    @ManyToMany
+    @JoinTable(name="account_role",
+            joinColumns=
+                @JoinColumn(name="account_id", referencedColumnName="account_id"),
+            inverseJoinColumns=
+                @JoinColumn(name="role_id", referencedColumnName="role_id")
+)
+    public Set<Role> getRoles() { return roles; }
+	public void setRoles( Set<Role> roles) {
+		this.roles=roles;
+	}
+	public void addRole(Role role) {
+		
+		logger.info("trying to add "+role+"to roles "+roles);
+		if (this.roles==null){
+			this.roles=new HashSet<Role>();
+		}
+		this.roles.add(role);
+		logger.info("added roll to "+username+", check it out:"+roles);
+	}
+	public Set<Role> roles;
 	public static final String ALGORITHM = "SHA1";
 	public static final String PASSWDCHARSET = "!0123456789abcdefghijklmnopqrstuvwxyz";
+	private static final long serialVersionUID = -6987219647522500285L;
+	private transient static Logger logger = Logger.getLogger("com.morgajel.spoe.model.Account");
+    
 	public static String hashText(String text) {
 		//TODO factor this out into a utility class
 		StringBuilder hexStr= new StringBuilder();
-		logger.info("generating a checksum");
 		try {
 			MessageDigest md = MessageDigest.getInstance(ALGORITHM);
 			md.reset();
@@ -66,7 +102,7 @@ public class Account implements Serializable {
 			ex.printStackTrace();
 			//Not really sure what to return here.
 		}
-		logger.info("Created hash "+hexStr.toString());
+		logger.trace("Created hash "+hexStr.toString()+" from "+text);
 		return hexStr.toString();
 	}
 	public boolean verifyPassword(String password){
@@ -76,9 +112,6 @@ public class Account implements Serializable {
 		return false;
 	}
 
-	private static final long serialVersionUID = -6987219647522500285L;
-	private transient static Logger logger = Logger.getLogger("com.morgajel.spoe.model.Account");
-	
 	@NotNull
 	private Long accountId;
 
@@ -110,6 +143,8 @@ public class Account implements Serializable {
 
     public Account() {
     	this.enabled=false;
+	    this.setLastAccessDate(new Date());
+	    this.setCreationDate(new Date());
     }
     
     @Id
@@ -144,11 +179,19 @@ public class Account implements Serializable {
     @Column(name="password")
 	public String getPassword() {
     	//FIXME: should I ever be able to "get" the password?
-		return password;
+    	logger.debug("getting password:"+this.password);
+		return this.password;
 	}
 
-	public void setPassword(String password) {
-		this.password = Account.hashText(password);
+	private void setPassword(String password) {
+		logger.debug("setting password: "+password);
+		this.password = password;
+		logger.debug("password field is now: "+this.password);
+	}
+	public void setHashedPassword(String password) {
+		logger.debug("H setting password: "+password);
+		setPassword(Account.hashText(password));
+		logger.debug("H password field is now: "+this.password);
 	}
 
     @Column(name="enabled", nullable=false )

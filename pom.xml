@@ -320,11 +320,25 @@
     	<type>jar</type>
     	<scope>test</scope>
     </dependency>
+    <dependency>
+    	<groupId>org.hibernate</groupId>
+    	<artifactId>hibernate-tools</artifactId>
+    	<version>3.2.3.GA</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>com.soebes.maven.plugins.dmg</groupId>
+    	<artifactId>doxygen-maven-plugin</artifactId>
+    	<version>1.0.1</version>
+    	<type>maven-plugin</type>
+    	<scope>compile</scope>
+    </dependency>
   </dependencies>
   <pluginRepositories>
     <pluginRepository>
       <id>Codehaus Snapshots</id>
-      <url>http://repository.codehaus.org</url>
+      <url>https://nexus.codehaus.org/content/repositories/releases</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>

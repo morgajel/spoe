@@ -13,8 +13,7 @@
 <body>
 ${message}
 
-<form:form modelAttribute="account" action="/account/register.submit"
-	method="post">
+<form:form modelAttribute="account" action="/account/register.submit" method="post">
 
 	<table>
 

@@ -25,18 +25,18 @@ create table account(
         firstname           varchar(255) not null,
         lastname            varchar(255) not null, 
         enabled             boolean      not null default false,
-        creation_date       TIMESTAMP    not null default CURRENT_TIMESTAMP,
-        last_access_date    datetime
+        creation_date       datetime,
+        last_access_date    datetime     
 );
 
 insert  into role(name) values('ROLE_REVIEWER');
 insert  into role(name) values('ROLE_AUTHOR');
 insert  into role(name) values('ROLE_MODERATOR');
 insert  into role(name) values('ROLE_ADMINISTRATOR');
-insert  into account(username,password,firstname,lastname,enabled,email) values('morgajel',sha('hello'),'Jesse','Morgan',true,'myjaxon@example.com');
-insert  into account(username,password,firstname,lastname,enabled,email) values('zswift',  sha('hello'),'Ziggy','Swift',true,'ziggy@example.com');
-insert  into account(username,password,firstname,lastname,enabled,email) values('myjaxon', sha('hello'),'Jackie','Morgan',true,'myjax@example.com');
-insert  into account(username,password,firstname,lastname,enabled,email) values('grunn',   sha('hello'),'Grunn','yager',true,'grunn@example.com');
+insert  into account(username,password,firstname,lastname,enabled,email,creation_date,last_access_date) values('jmorgan', sha('hello'),'Jesse', 'Morgan',true,'jmorgan@example.com',now(),now());
+insert  into account(username,password,firstname,lastname,enabled,email,creation_date,last_access_date) values('zswift',  sha('hello'),'Ziggy', 'Swift', true,  'ziggy@example.com',now(),now());
+insert  into account(username,password,firstname,lastname,enabled,email,creation_date,last_access_date) values('myjaxon', sha('hello'),'Jackie','Morgan',true,  'myjax@example.com',now(),now());
+insert  into account(username,password,firstname,lastname,enabled,email,creation_date,last_access_date) values('grunn',   sha('hello'),'Grunn', 'yager', true,  'grunn@example.com',now(),now());
 -- morgajel the administrator --
 insert  into account_role(account_id,role_id) values('1','1'); 
 insert  into account_role(account_id,role_id) values('1','2'); 

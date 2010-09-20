@@ -26,7 +26,7 @@ public class AccountTest {
 	@Test
 	public void testVerifyPassword() {
 		String password="123123";
-		account.setPassword(password);
+		account.setHashedPassword(password);
 		assertTrue(account.verifyPassword(password));
 		assertFalse(account.verifyPassword("not it"));
 	}
@@ -72,7 +72,7 @@ public class AccountTest {
 	public void testGetAndSetPassword() {
 		String testPassword = "12345MatchedLuggage";
 		assertNull(account.getPassword());
-		account.setPassword(testPassword);
+		account.setHashedPassword(testPassword);
 		assertEquals(Account.hashText(testPassword), account.getPassword());
 	}
 //	getEnabled()
@@ -108,7 +108,7 @@ public class AccountTest {
 	@Test
 	public void testGetAndSetLastAccessDate() {
 		Date testDate = new Date();
-		assertNull(account.getLastAccessDate());
+		assertNotNull(account.getLastAccessDate());
 		account.setLastAccessDate(testDate);
 		assertEquals(testDate, account.getLastAccessDate());
 	}
@@ -118,7 +118,7 @@ public class AccountTest {
 	public void testGetAndSetCreationDate() {
 		Date testDate = new Date();
 		//TODO should this really be null?
-		assertNull(account.getCreationDate());
+		assertNotNull(account.getCreationDate());
 		//TODO should this really be settable?
 		account.setCreationDate(testDate);
 		assertEquals(testDate, account.getCreationDate());
@@ -141,7 +141,7 @@ public class AccountTest {
 		String lastname = "Dole";
 		account.setLastname(lastname);
 		String password = ("password1");
-		account.setPassword(password);
+		account.setHashedPassword(password);
 		String username = "bobdole";
 		account.setUsername(username);
 		String toString = "Account "

@@ -23,6 +23,7 @@
         <property name="annotatedClasses">
             <list>
                 <value>com.morgajel.spoe.model.Account</value>
+                <value>com.morgajel.spoe.model.Role</value>
             </list>
         </property>
         <property name="hibernateProperties">

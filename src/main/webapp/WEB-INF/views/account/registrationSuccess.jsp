@@ -9,5 +9,7 @@
 <body>
 Registration is now complete. Please check your email to activate your
 account.
+
+<a href="${url}">TODO remove me later</a>
 </body>
 </html>
