@@ -28,20 +28,27 @@ import com.morgajel.spoe.web.SetPasswordForm;
 //TODO get deoxy working
 //TODO add more logging
 //TODO add more tests
+//TODO privatize methods that should be private, figure out how to test inspect them.
+/** 
+ * controls all account interactions from changing passwords, registering and activating accounts, etc.
+ */
 @Controller
 public class AccountController {
 
 	private VelocityEngine velocityEngine;
 	private MailSender mailSender;
 	private SimpleMailMessage templateMessage;
-	private String registrationTemplate;
+	private String registrationTemplate ="/WEB-INF/templates/registrationEmail.vm";
 	@Autowired
 	private AccountService accountService;
 	@Autowired
 	private RoleService roleService;
 	private transient static Logger logger = Logger.getLogger("com.morgajel.spoe.controller.AccountController");
 
-	//=============================Activate account==================================
+	/** 
+	 * Activate account by comparing a given username and checksum against a given account. 
+	 * Account must be disabled for this to work. Maps /activate/{username}/{checksum}
+	 */
 	@RequestMapping(value = "/activate/{username}/{checksum}", method = RequestMethod.GET)
 	public ModelAndView activateAccount(@PathVariable String username,@PathVariable String checksum,SetPasswordForm passform){
 		logger.trace("trying to activate "+username+" with checksum "+checksum );
@@ -52,7 +59,7 @@ public class AccountController {
 			Account account = accountService.loadByUsernameAndChecksum(username,checksum);
 			logger.info(account);
 			if (account != null){
-				String calculatedChecksum=createActivationChecksum(account);
+				String calculatedChecksum=account.activationChecksum();
 				logger.trace("compare given checksum "+checksum +" with calculated checksum "+calculatedChecksum);
 				if (! account.getEnabled()){//XXX
 					logger.info("Holy shit it worked:");	
@@ -82,28 +89,32 @@ public class AccountController {
 		}
 		return mav;
 	}
-	// TODO unit test
+	/** 
+	 * Create an account with the given information, then send the user an activation email.
+	 */
 	@RequestMapping(value = "/register.submit", method = RequestMethod.POST)
-	public ModelAndView addAccount(@ModelAttribute("account") Account account, BindingResult result) {
+	public ModelAndView createAccount(@ModelAttribute("account") Account account, BindingResult result) {
+		// TODO unit test
 		ModelAndView mav= new ModelAndView();
 		try{
-			//Generate a password, then hash it so it's nice and long
-			String tempHash=Account.hashText(Account.generatePassword(10));
-			logger.trace("password set to '" +tempHash+"'");
-			account.setHashedPassword(tempHash);
-			logger.trace("password field set to '" + account.getPassword()+"'");
+			String tempPass=Account.generatePassword(10);
+			logger.trace("password set to '" +tempPass+"'");
+			account.setHashedPassword(tempPass);
+			logger.trace("password field set to '" + account.getPassword()+"', sending email...");
 
-			sendRegEmail(account);
-			logger.info("Email sent, adding account");
+			String url="http://127.0.0.62:8080/account/activate/" + account.getUsername() + "/" + account.activationChecksum();//XXX
+			sendRegEmail(account,url);
+			logger.info("Email sent, adding account "+account.getUsername());
 			accountService.addAccount(account);
-
+			
+			//FIXME this role addition should be done in the account service I think.
 			Role reviewerRole=roleService.loadByName("ROLE_REVIEWER");
 			logger.info("ready to add "+reviewerRole.getName()+" to account "+account);
 			account.addRole(reviewerRole);
+			
 			logger.info("created account "+ account.getUsername());
-			logger.info("account has roles: "+ account.getRoles());
 			accountService.saveAccount(account);
-			String url="http://127.0.0.62:8080/account/activate/" + account.getUsername() + "/" + createActivationChecksum(account);//XXX
+			
 			mav.setViewName("account/registrationSuccess");
 			mav.addObject("url",url); 		
 
@@ -118,15 +129,11 @@ public class AccountController {
 		}
 		return mav;
 	}
-
-	private String createActivationChecksum(Account account){
-		String username=account.getUsername();
-		String passfield=account.getPassword();
-		//converting enabled to int rather than string representation so NamedQuery using mysql int works.
-		Integer enabled= account.getEnabled()?1:0;
-		logger.info("create checksum: "+username+" + "+passfield+" + "+enabled+" = "+Account.hashText(username+passfield+enabled));
-		return  Account.hashText(username+passfield+enabled);
-	}
+	
+	/** 
+	 * This is the default view for account, a catch-all for most any one-offs. 
+	 * Will show user's account information in the future.
+	 */
 	@RequestMapping("*")
 	public ModelAndView defaultView() {
 		logger.info("showing the default view");
@@ -140,52 +147,76 @@ public class AccountController {
 		mav.addObject("account",account);			
 		return mav;
 	}
-
+	/** 
+	 * Returns the mailSender. Currently only used by Unit Tests, and might be 
+	 * replaced by reflection if I can. 
+	 */
 	public MailSender getMailSender() {
+		//TODO is this needed?
 		return this.mailSender;
 	}
-	//TODO why does this need a parameter?
+	/** 
+	 * Displays the registration form for users to log in. 
+	 */
 	@RequestMapping("/register")
 	public ModelAndView getRegistrationForm(Account account) {
 		logger.info("getregistrationForm loaded");
 		return new ModelAndView("account/registrationForm");
-	}    
+	}
+	/** 
+	 * returns templateMessage, may only be used by Unit testing. 
+	 */
 	public SimpleMailMessage getTemplateMessage() {
+		//TODO might be able to remove it and replace with reflection.
 		return this.templateMessage;
 	}
+	/** 
+	 * returns velocityEngine, may only be for unit testing. 
+	 */
 	public VelocityEngine getVelocityEngine() {
+		//TODO might be able to remove it and replace with reflection.
 		return this.velocityEngine;
 	}
-	// TODO unit test
-	public void sendRegEmail(Account account){
+	/** 
+	 * Sends Registration email to user which includes an activation link. 
+	 */
+	public void sendRegEmail(Account account,String url){
 		logger.info("trying to send email...");
-		String checksum= createActivationChecksum(account);
-		String url="http://127.0.0.62:8080/account/activate/" + account.getUsername() + "/" + checksum;
-		SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
-		registrationTemplate="/WEB-INF/templates/registrationEmail.vm";
-		msg.setTo(account.getEmail());
 
 		Map<String, String> model = new HashMap<String,String>();
 		model.put("firstname", account.getFirstname());
 		model.put("url", url);
-		String result = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine,registrationTemplate, model);
-		msg.setText(result);
+		
+		SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);		
+
+		msg.setTo(account.getEmail());
 		logger.info("sending message to "+account.getEmail());
+
+		msg.setText(VelocityEngineUtils.mergeTemplateIntoString(velocityEngine,registrationTemplate, model));
 		logger.info(msg.getText());
+		
 		this.mailSender.send(msg);
 	}
-
+	/** 
+	 * Sets the Account Service which is autowired. 
+	 */
 	public void setAccountService(AccountService accountService) {
 		this.accountService=accountService;
 	}
-
+	/** 
+	 * Sets the mailSender to send registration emails 
+	 */
 	public void setMailSender(MailSender mailSender) {
 		this.mailSender = mailSender;
 	}
+	/** 
+	 * Takes the checksum and username and sets it to the password that the user provides.
+	 * Account is enabled if passwords match and username/checksum is found.
+	 * Will bounce you back to activationSuccess if you give it mismatched passwords. 
+	 */
 	@RequestMapping(value="/activation.setpassword", method = RequestMethod.POST)
 	public ModelAndView setPassword(SetPasswordForm passform) {
 		ModelAndView  mav=new ModelAndView();
-
 		if (passform.password.equals(passform.confirmPassword)){
 			Account account = accountService.loadByUsernameAndChecksum(passform.getUsername(),passform.getChecksum());
 			account.setEnabled(true);
@@ -198,18 +229,27 @@ public class AccountController {
 			passform.setPassword("");
 			passform.setConfirmPassword("");
 			mav.setViewName("account/activationSuccess");
-			mav.addObject("message","a simple message");
+			//FIXME this should be an error
+			mav.addObject("message","Your passwords did not match, try again.");
 			mav.addObject("passform",passform);			
 		}
 		return mav;
 	}
-
+	/** 
+	 * Sets the Role Service which is autowired. 
+	 */
 	public void setRoleService(RoleService roleService) {
 		this.roleService=roleService;
 	}
+	/** 
+	 * Sets the Role Service which is autowired. 
+	 */
 	public void setTemplateMessage(SimpleMailMessage templateMessage) {
 		this.templateMessage = templateMessage;
 	}
+	/** 
+	 * Sets the Velocity Engine for sending templated emails. 
+	 */
 	public void setVelocityEngine(VelocityEngine velocityEngine) {
 		this.velocityEngine = velocityEngine;
 	}

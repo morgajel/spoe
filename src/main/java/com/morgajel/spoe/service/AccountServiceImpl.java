@@ -31,6 +31,7 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void addAccount(Account account) {
+		//TODO move role addition to here.
 		logger.debug("adding account "+account.getUsername());
 		accountDao.saveAccount(account);
 		logger.debug("added account "+account.getUsername());

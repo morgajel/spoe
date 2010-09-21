@@ -128,6 +128,17 @@ public class Account implements Serializable {
 		logger.trace("Created hash "+hexStr.toString()+" from "+text);
 		return hexStr.toString();
 	}
+	/**
+     * create a checksum that can be used for activation purposes. 
+     **/
+	public String activationChecksum(){
+		//TODO can this be refactored with the namedQuery findAccountByUsernameAndChecksum?
+		//converting enabled to int rather than string representation so NamedQuery using mysql int works.
+		Integer enabled= this.enabled?1:0;
+		String checksum=hashText(username+password+enabled);
+		logger.info("create checksum: "+username+" + "+password+" + "+enabled+" = "+checksum);
+		return  checksum;
+	}
 	
 	/**
      * Takes a given string, hashes it, and compares it to the password; returns true if equal 
@@ -353,5 +364,4 @@ public class Account implements Serializable {
         }
         return sb.toString();
 	}
-
 }

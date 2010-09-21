@@ -121,7 +121,7 @@ public class AccountControllerTest {
 		when(mockAccount.getUsername()).thenReturn(username);
 		when(mockAccount.getEnabled()).thenReturn(false);
 		
-		accountController.sendRegEmail(mockAccount);
+		accountController.sendRegEmail(mockAccount,"http://example.com/sometesturl");
 		verify(mockMailSender).send((SimpleMailMessage) anyObject());
 
 	}
