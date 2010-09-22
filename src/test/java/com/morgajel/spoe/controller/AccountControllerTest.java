@@ -2,20 +2,14 @@ package com.morgajel.spoe.controller;
 
 import static org.junit.Assert.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.exception.VelocityException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.ui.velocity.VelocityEngineUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.ModelAndView;
 import com.morgajel.spoe.model.Account;
 import com.morgajel.spoe.model.Role;
@@ -29,10 +23,12 @@ import static org.mockito.Mockito.*;
 public class AccountControllerTest {
 	private AccountController accountController;
 	private Account mockAccount;
+	private SecurityContext mockContext;
 	private Role mockRole;
 	private AccountService mockAccountService;
 	private RoleService mockRoleService;
 	private MailSender mockMailSender;
+	private SetPasswordForm mockPassForm;
     private SimpleMailMessage mockTemplateMessage;
     private VelocityEngine mockVelocityEngine;
 	private final String username="morgo2";
@@ -43,9 +39,12 @@ public class AccountControllerTest {
 	@Before
 	public void setUp() throws Exception {
 		mockAccountService = mock(AccountService.class);
+		mockRoleService = mock(RoleService.class);
 		mockAccount = mock(Account.class);
+		mockContext = mock(SecurityContext.class,RETURNS_DEEP_STUBS);
 		mockRole = mock(Role.class);
 		mockMailSender = mock(MailSender.class);
+		mockPassForm=mock(SetPasswordForm.class);
 		mockTemplateMessage=mock(SimpleMailMessage.class);
 		mockVelocityEngine=mock(VelocityEngine.class);
 		accountController = new AccountController();
@@ -61,8 +60,10 @@ public class AccountControllerTest {
 		mockAccount = null;
 		mockRole = null;
 		mockMailSender = null;
+		mockPassForm=null;
 		mockTemplateMessage=null;
 		mockVelocityEngine=null;
+		mockContext=null;
 		accountController = null;
 	}
 	
@@ -100,8 +101,7 @@ public class AccountControllerTest {
 	@Test
 	public void testActivateAccountAlreadyEnabled(){
 		//Test already enabled failure
-		when(mockAccountService.loadByUsername(username)).thenReturn(mockAccount);
-		when(mockAccount.getPassword()).thenReturn("some wrong passphrase");
+		when(mockAccountService.loadByUsernameAndChecksum(username,checksum)).thenReturn(mockAccount);
 		when(mockAccount.getEnabled()).thenReturn(true);
 		ModelAndView results=accountController.activateAccount(username, checksum,new SetPasswordForm());
 		assertEquals("account/activationFailure",results.getViewName());
@@ -110,9 +110,10 @@ public class AccountControllerTest {
 	@Test
 	public void testActivateAccountThrowException(){
 		//Test throw exception caught
-		stub(mockAccountService.loadByUsername(username)).toThrow(new RuntimeException());
+		stub(mockAccountService.loadByUsernameAndChecksum(username,checksum)).toThrow(new RuntimeException());
 		ModelAndView results=accountController.activateAccount(username, checksum,new SetPasswordForm());
 		assertEquals("account/activationFailure",results.getViewName());
+		assertEquals("<!--java.lang.RuntimeException-->",results.getModel().get("message"));
 	}
 	
 	@Test
@@ -148,11 +149,69 @@ public class AccountControllerTest {
 		accountController.setVelocityEngine(velocityEngine);
 		//using deep stubs, boooo
 		assertEquals(accountController.getVelocityEngine(),velocityEngine);
+	}
+	@Test
+	public void testDefaultView(){
+		SecurityContextHolder.setContext(mockContext);
+		when(mockContext.getAuthentication().getName()).thenReturn(username);
+		when(mockAccountService.loadByUsername(username)).thenReturn(mockAccount);
+		ModelAndView mav=accountController.defaultView();
+		assertEquals("account/view",mav.getViewName());
+		assertEquals("show the default view for "+username,mav.getModel().get("message"));
 	}	
 	@Test
 	public void testGetRegistrationForm(){
 		ModelAndView mav= accountController.getRegistrationForm(mockAccount);
 		assertEquals(mav.getViewName(),"account/registrationForm");
+	}
+	@Test
+	public void testCreateAccountSuccess(){
+
+		when(mockAccount.getUsername()).thenReturn(username);
+		when(mockAccount.activationChecksum()).thenReturn(checksum);
+		when(mockRoleService.loadByName("ROLE_REVIEWER")).thenReturn(mockRole);
+
+		ModelAndView result= accountController.createAccount(mockAccount, null);
 		
+		verify(mockAccount).activationChecksum();
+		verify(mockAccountService).addAccount(mockAccount);
+		verify(mockRoleService).loadByName("ROLE_REVIEWER");
+		verify(mockAccount).addRole((Role) anyObject());
+		verify(mockAccountService).saveAccount(mockAccount);
+		assertEquals(accountController.activationurl+username+"/"+checksum,result.getModel().get("url"));
+		assertEquals("account/registrationSuccess",result.getViewName());
+	}
+	@Test
+	public void testCreateAccountFail(){
+		stub(mockAccount.getUsername()).toThrow(new RuntimeException());
+		ModelAndView result= accountController.createAccount(mockAccount, null);
+		assertEquals("account/registrationForm",result.getViewName());
+		assertEquals("There was an issue creating your account."
+				+ "Please contact the administrator for assistance.",result.getModel().get("message"));	
+	}
+	@Test
+	public void testSetPasswordSuccess(){
+		when(mockPassForm.getPassword()).thenReturn(passfield);
+		when(mockPassForm.getConfirmPassword()).thenReturn(passfield);
+		when(mockPassForm.getUsername()).thenReturn(username);
+		when(mockPassForm.getChecksum()).thenReturn(checksum);
+		when(mockAccountService.loadByUsernameAndChecksum(username, checksum)).thenReturn(mockAccount);
+
+		ModelAndView result= accountController.setPassword(mockPassForm);
+		
+		verify(mockAccount).setEnabled(true);
+		verify(mockAccount).setHashedPassword(passfield);
+		assertEquals("redirect:/",result.getViewName());
+	}
+	@Test
+	public void testSetPasswordFail(){
+		when(mockPassForm.getPassword()).thenReturn(passfield);
+		when(mockPassForm.getConfirmPassword()).thenReturn("mismatching passfield");
+
+		ModelAndView result= accountController.setPassword(mockPassForm);
+		
+		assertEquals("account/activationSuccess",result.getViewName());
+		assertEquals("Your passwords did not match, try again.",result.getModel().get("message"));
+		assertEquals(mockPassForm,result.getModel().get("passform"));
 	}
 }

@@ -23,11 +23,6 @@ public class AccountDaoImpl implements AccountDao {
 		
 	}
 	@Override
-	public Account loadAccountFromSession(){
-		return new Account(); //this.sessionFactory.getCurrentSession()
-		
-	}
-	@Override
 	public void saveAccount(Account account) {
 		logger.info("setting last access date before saving for "+account.getUsername());
 	    account.setLastAccessDate(new Date());

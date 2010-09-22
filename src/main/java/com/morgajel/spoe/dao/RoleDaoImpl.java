@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 public class RoleDaoImpl implements RoleDao {
 
 	@Autowired
-	private SessionFactory sessionFactory;
+	public SessionFactory sessionFactory;
 	private transient static Logger logger = Logger.getLogger("com.morgajel.spoe.dao.RoleDao");
 
 	public void setSessionFactory(SessionFactory sessionFactory){

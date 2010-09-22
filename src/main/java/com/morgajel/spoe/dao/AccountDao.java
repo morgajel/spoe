@@ -10,7 +10,6 @@ public interface AccountDao {
 	  
 	  // To get list of all accounts
 	  public List<Account> listAccounts();
-	  public Account loadAccountFromSession();
 	  public Account loadByUsername(String username);
 	  public Account loadByUsernameAndPassword(String userName, String password);
 	  public Account loadByUsernameAndChecksum(String userName, String checksum);

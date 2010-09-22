@@ -38,13 +38,13 @@ public class AccountController {
 	private VelocityEngine velocityEngine;
 	private MailSender mailSender;
 	private SimpleMailMessage templateMessage;
-	private String registrationTemplate ="/WEB-INF/templates/registrationEmail.vm";
+	private final String registrationTemplate ="/WEB-INF/templates/registrationEmail.vm";
+	public final String activationurl="http://127.0.0.62:8080/account/activate/";
 	@Autowired
 	private AccountService accountService;
 	@Autowired
 	private RoleService roleService;
 	private transient static Logger logger = Logger.getLogger("com.morgajel.spoe.controller.AccountController");
-
 	/** 
 	 * Activate account by comparing a given username and checksum against a given account. 
 	 * Account must be disabled for this to work. Maps /activate/{username}/{checksum}
@@ -97,12 +97,10 @@ public class AccountController {
 		// TODO unit test
 		ModelAndView mav= new ModelAndView();
 		try{
-			String tempPass=Account.generatePassword(10);
-			logger.trace("password set to '" +tempPass+"'");
-			account.setHashedPassword(tempPass);
+			account.setHashedPassword(Account.generatePassword(10));
 			logger.trace("password field set to '" + account.getPassword()+"', sending email...");
 
-			String url="http://127.0.0.62:8080/account/activate/" + account.getUsername() + "/" + account.activationChecksum();//XXX
+			String url=activationurl + account.getUsername() + "/" + account.activationChecksum();
 			sendRegEmail(account,url);
 			logger.info("Email sent, adding account "+account.getUsername());
 			accountService.addAccount(account);
@@ -124,8 +122,7 @@ public class AccountController {
 			logger.error("Message failed to send:"+ex);
 			mav.setViewName("account/registrationForm");
 			mav.addObject("message", "There was an issue creating your account."
-					+ "Please contact the administrator for assistance."
-					+ "<!--" + ex.toString() + "-->");
+					+ "Please contact the administrator for assistance.");
 		}
 		return mav;
 	}
@@ -217,10 +214,10 @@ public class AccountController {
 	@RequestMapping(value="/activation.setpassword", method = RequestMethod.POST)
 	public ModelAndView setPassword(SetPasswordForm passform) {
 		ModelAndView  mav=new ModelAndView();
-		if (passform.password.equals(passform.confirmPassword)){
+		if (passform.getPassword().equals(passform.getConfirmPassword())){
 			Account account = accountService.loadByUsernameAndChecksum(passform.getUsername(),passform.getChecksum());
 			account.setEnabled(true);
-			account.setHashedPassword(passform.password);
+			account.setHashedPassword(passform.getPassword());
 			accountService.addAccount(account);
 			logger.info("set password, then display view."+passform);
 			mav.setViewName("redirect:/");
