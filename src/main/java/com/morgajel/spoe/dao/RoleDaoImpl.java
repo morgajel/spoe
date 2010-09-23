@@ -34,24 +34,12 @@ public class RoleDaoImpl implements RoleDao {
 
 	}
 
-// TODO implement this somehow.
-	@Override
-	public Role loadByID(int roleId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	// TODO implement this somehow.
 	@Override
 	public Role loadByName(String name) {
 		//logger.debug("attempting to load role by "+name );
-		Session session=sessionFactory.getCurrentSession();
-		//logger.debug("snagged current session "+session );
-		Query nq=session.getNamedQuery("findRoleByName");
-		//logger.debug("snagged current query "+nq );
-		List roleList= nq.setString("name", name).list();
-		//logger.debug("snagged roleList "+roleList );
-		Role role= (Role)roleList.get(0);
-		logger.info("++++ loaded role "+role);
+		Role role= (Role) sessionFactory.getCurrentSession().getNamedQuery("findRoleByName").setString("name", name).list().get(0);
+		logger.debug("++++ loaded role "+role);
 		return role;
 		
 	}

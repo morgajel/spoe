@@ -17,7 +17,7 @@ public class AccountServiceImpl implements AccountService {
 
 
 	@Autowired
-	private AccountDao accountDao;
+	public AccountDao accountDao;
 	private transient static Logger logger = Logger.getLogger("com.morgajel.spoe.service.AccountService");
 
 	//TODO unit test
@@ -28,6 +28,7 @@ public class AccountServiceImpl implements AccountService {
 	public void setAccountDao(AccountDao accountdao){
 		this.accountDao=accountdao;  
 	}
+	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void addAccount(Account account) {

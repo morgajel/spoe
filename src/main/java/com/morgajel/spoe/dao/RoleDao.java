@@ -12,7 +12,5 @@ public interface RoleDao {
 	  public List<Role> listRoles();
 	  
 	  public Role loadByName(String name);
-	  public Role loadByID(int roleId);
-	  
 	
 }

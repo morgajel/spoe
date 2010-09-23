@@ -68,7 +68,12 @@ public class Account implements Serializable {
 	/**
 	 * returns all of the roles currently assigned to a user.
 	 **/
-    public Set<Role> getRoles() { return roles; }
+    public Set<Role> getRoles() {
+    	if (roles==null){
+			roles=new HashSet<Role>();
+		}
+    	return roles; 
+    }
     
     /**
      * returns all of the roles currently assigned to a user.
@@ -83,10 +88,10 @@ public class Account implements Serializable {
 	public void addRole(Role role) {
 		
 		logger.info("trying to add "+role+"to roles "+roles);
-		if (this.roles==null){
-			this.roles=new HashSet<Role>();
+		if (roles==null){
+			roles=new HashSet<Role>();
 		}
-		this.roles.add(role);
+		roles.add(role);
 		logger.info("added roll to "+username+", check it out:"+roles);
 	}
 	/**
@@ -95,8 +100,8 @@ public class Account implements Serializable {
      **/
 
 	public Set<Role> roles;
-	public static final String ALGORITHM = "SHA1";
-	public static final String PASSWDCHARSET = "!0123456789abcdefghijklmnopqrstuvwxyz";
+	public static String ALGORITHM = "SHA1";
+	public static String PASSWDCHARSET = "!0123456789abcdefghijklmnopqrstuvwxyz";
 	private static final long serialVersionUID = -6987219647522500285L;
 	private transient static Logger logger = Logger.getLogger("com.morgajel.spoe.model.Account");
 	
@@ -118,8 +123,7 @@ public class Account implements Serializable {
 			}
 		}catch(NoSuchAlgorithmException ex){
 			logger.error("couldn't find "+ALGORITHM+" to hash the password. ");
-			ex.printStackTrace();
-			//Not really sure what to return here.
+			//This should never ever happen, but needs to be caught.
 		}
 		logger.trace("Created hash "+hexStr.toString()+" from "+text);
 		return hexStr.toString();
@@ -249,7 +253,7 @@ public class Account implements Serializable {
      **/
 	public void setHashedPassword(String password) {
 		logger.trace("H setting password: "+password);
-		setPassword(Account.hashText(password));
+		this.setPassword(Account.hashText(password));
 		logger.trace("H password field is now: "+this.password);
 	}
 	/**
@@ -296,9 +300,6 @@ public class Account implements Serializable {
      **/
     @Column(name="creation_date")
 	public Date getCreationDate() {
-		if (creationDate == null) {
-			return null;
-		}
 		return (Date) creationDate.clone();
 	}
 
@@ -314,9 +315,6 @@ public class Account implements Serializable {
      **/
     @Column(name="last_access_date")
 	public Date getLastAccessDate() {
-		if (lastAccessDate == null) {
-			return null;
-		}
 		return (Date) lastAccessDate.clone();
 	}
     /**
@@ -350,8 +348,12 @@ public class Account implements Serializable {
 	/**
      * generates a temporary password length characters long using PASSWDCHARSET   
      **/
+	public static int MAXLENGTH=25;
 	public static String generatePassword(int length) {
 		//TODO Do I still need this?
+		if (length < 0 || length >25){
+			length=MAXLENGTH;
+		}
         Random rand = new Random(System.currentTimeMillis());
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < length; i++) {

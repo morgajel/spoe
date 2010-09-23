@@ -2,18 +2,31 @@ package com.morgajel.spoe.model;
 
 import static org.junit.Assert.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.morgajel.spoe.model.Account;
+import static org.mockito.Mockito.*;
 
 public class AccountTest {
 	private Account account;
-
+	private Date mockDate;
+	private Role mockRole;
+	private String password = "12345MatchedLuggage";
+	private String passwordHash="2ddcee8b16fc4740c3d31db70d65b073c10b7c3f";
+	private Long accountId = new Long("123123123");
+	private String username = "bobDole";
+	private String email = "foo@bar.com";
+	private String firstname = "Bob";
+	private String lastname = "Dole";
 	@Before
 	public void setUp() throws Exception {
+		mockDate = mock(Date.class);
+		mockRole = mock(Role.class);
 		account = new Account();
 	}
 
@@ -22,61 +35,52 @@ public class AccountTest {
 		account = null;
 	}
 
-//	verifyPassword(String)
+
 	@Test
 	public void testVerifyPassword() {
-		String password="123123";
 		account.setHashedPassword(password);
 		assertTrue(account.verifyPassword(password));
 		assertFalse(account.verifyPassword("not it"));
 	}
-//	Account()
+
 	@Test
 	public void testAccountConstructor() {
 		Account account = new Account();
 		assertFalse(account.getEnabled());
 	}
-//	getAccountId()
-//	setAccountId(Long)
+
 	@Test
 	public void testGetAndSetAccountId() {
-		Long accountId = new Long("123123123");
 		assertNull(account.getAccountId());
 		account.setAccountId(accountId);
 		assertEquals(accountId, account.getAccountId());
 	}
-//	getEmail()
-//	setEmail(String)
+
 	@Test
 	public void testGetAndSetEmail() {
 		//TODO, make sure non-email addresses don't validate
-		String testEmail = "foo@bar.com";
 		assertNull(account.getEmail());
-		account.setEmail(testEmail);
-		assertEquals(testEmail, account.getEmail());
+		account.setEmail(email);
+		assertEquals(email, account.getEmail());
 		//TODO this should error if you pass it a non-email address.
 	}
-//	getUsername()
-//	setUsername(String)
+
 	@Test
 	public void testGetAndSetUsername() {
-		String testUsername = "BobDole";
 		assertNull(account.getUsername());
-		account.setUsername(testUsername);
-		assertEquals(testUsername, account.getUsername());
+		account.setUsername(username);
+		assertEquals(username, account.getUsername());
 		//TODO this should error if you pass it a non-alphanumeric username
 	}
-//	getPassword()
-//	setPassword(String)
+
 	@Test
 	public void testGetAndSetPassword() {
-		String testPassword = "12345MatchedLuggage";
+		
 		assertNull(account.getPassword());
-		account.setHashedPassword(testPassword);
-		assertEquals(Account.hashText(testPassword), account.getPassword());
+		account.setHashedPassword(password);
+		assertEquals(Account.hashText(password), account.getPassword());
 	}
-//	getEnabled()
-//	setEnabled(Boolean)
+
 	@Test
 	public void testGetAndSetEnabled() {
 		assertFalse(account.getEnabled());
@@ -85,64 +89,103 @@ public class AccountTest {
 		account.setEnabled(false);
 		assertFalse(account.getEnabled());
 	}
-//	getFirstname()
-//	setFirstname(String)
+
 	@Test
 	public void testGetAndSetFirstname() {
-		String testFirstname = "Bob";
 		assertNull(account.getFirstname());
-		account.setFirstname(testFirstname);
-		assertEquals(testFirstname, account.getFirstname());
+		account.setFirstname(firstname);
+		assertEquals(firstname, account.getFirstname());
 	}
-//	getLastname()
-//	setLastname(String)
+
 	@Test
 	public void testGetAndSetLastname() {
-		String testLastname = "Dole";
 		assertNull(account.getLastname());
-		account.setLastname(testLastname);
-		assertEquals(testLastname, account.getLastname());
+		account.setLastname(lastname);
+		assertEquals(lastname, account.getLastname());
 	}
-//	getLastAccessDate()
-//	setLastAccessDate(Date)
+
 	@Test
 	public void testGetAndSetLastAccessDate() {
-		Date testDate = new Date();
+		when(mockDate.clone()).thenReturn(mockDate);
 		assertNotNull(account.getLastAccessDate());
-		account.setLastAccessDate(testDate);
-		assertEquals(testDate, account.getLastAccessDate());
+		account.setLastAccessDate(mockDate);
+		assertEquals(mockDate, account.getLastAccessDate());
+		
 	}
-//	getCreationDate()
-//	setCreationDate(Date)
+
 	@Test
 	public void testGetAndSetCreationDate() {
-		Date testDate = new Date();
-		//TODO should this really be null?
+		when(mockDate.clone()).thenReturn(mockDate);
 		assertNotNull(account.getCreationDate());
-		//TODO should this really be settable?
-		account.setCreationDate(testDate);
-		assertEquals(testDate, account.getCreationDate());
+		account.setCreationDate(mockDate);
+		assertEquals(mockDate, account.getCreationDate());
+
 	}
-//	toString()
+
+	@Test
+	public void testGetAndSetRoles(){
+		Set<Role> mockRoles = mock(HashSet.class);
+		account.setRoles(mockRoles);
+		assertEquals(mockRoles,account.getRoles());
+		
+	}
+	
+	@Test
+	public void testHashText(){
+		String hash=Account.hashText(password);
+		assertEquals(passwordHash,hash);
+		Account.ALGORITHM="borken" ;
+		hash=Account.hashText(password);
+		assertEquals("",hash);
+		Account.ALGORITHM="SHA" ;
+	}
+	@Test
+	public void textGeneratePassword(){
+		int length=10;
+		String pass = Account.generatePassword(length);
+		assertEquals(length,pass.length());
+		
+		length=-10;
+		pass = Account.generatePassword(length);
+		assertEquals(Account.MAXLENGTH,pass.length());
+		
+		length=30;
+		pass = Account.generatePassword(length);
+		assertEquals(Account.MAXLENGTH,pass.length());
+	}
+	
+	@Test
+	public void testAddRole(){
+		assertFalse(account.getRoles().contains(mockRole));
+		assertTrue(account.getRoles().isEmpty());
+		account.addRole(mockRole);
+		assertTrue(account.getRoles().contains(mockRole));
+	}
+	
+	@Test
+	public void testActivationChecksum(){
+		account.setHashedPassword(password);
+		account.setUsername(username);
+		account.setEnabled(true);
+		assertEquals("511fc691aae67b6af1f5a2e033db5cf474813ea2", account.activationChecksum());
+		account.setEnabled(false);
+		assertEquals("28a50a5f40f0817a391b8928c75c164a2f60adc6", account.activationChecksum());
+
+	}
+	
 	@Test
 	public void testToString() {
-		Long accountId = new Long("123123123");
 		account.setAccountId(accountId);
 		Date creationDate = new Date();
 		account.setCreationDate(creationDate);
 		Date lastAccessDate = new Date();
 		account.setLastAccessDate(lastAccessDate);
-		String email = "bob@example.com";
 		account.setEmail(email);
 		boolean enabled = true;
 		account.setEnabled(enabled);
-		String firstname = "Bob";
 		account.setFirstname(firstname);
-		String lastname = "Dole";
 		account.setLastname(lastname);
-		String password = ("password1");
 		account.setHashedPassword(password);
-		String username = "bobdole";
 		account.setUsername(username);
 		String toString = "Account "
 		+ "[ accountId=" + accountId 

@@ -3,6 +3,8 @@ package com.morgajel.spoe.dao;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.Before;
@@ -17,6 +19,7 @@ public class RoleDaoImplTest {
 	private RoleDaoImpl roleDao;
 	private SessionFactory mockSessionFactory;
 	private Role mockRole;
+	private String rolename="ROLE_REVIEWER";
 	@Before
 	public void setUp() throws Exception {
         mockSessionFactory = mock(SessionFactory.class,RETURNS_DEEP_STUBS);
@@ -28,8 +31,8 @@ public class RoleDaoImplTest {
 	@After
 	public void tearDown() throws Exception {
 		roleDao=null;
-		mockSessionFactory=null;
-		mockRole=null;
+		reset(mockSessionFactory);
+		reset(mockRole);
 	}
 
 	@Test
@@ -41,22 +44,25 @@ public class RoleDaoImplTest {
 	@Test
 	public void testSaveRole(){
 		roleDao.saveRole(mockRole);
-		verify(mockSessionFactory.getCurrentSession());
+		verify(mockSessionFactory).getCurrentSession();
+
 	}	
 
+	@Test
+	public void testListRoles(){
+		List<Role> mockRoleList = mock(List.class);
+		when(mockSessionFactory.getCurrentSession().createCriteria(Role.class).list()).thenReturn(mockRoleList);
+		List<Role> roles=roleDao.listRoles();
+		assertEquals(mockRoleList,roles);
+	}	
+	@Test
+	public void testLoadByName(){
+		
+		when(mockSessionFactory.getCurrentSession().getNamedQuery("findRoleByName").setString("name", rolename).list().get(0)).thenReturn(mockRole);
+		Role role=roleDao.loadByName(rolename);
+		assertEquals(mockRole,role);
+	}
 
-//		@Override
-//		public List<Role> listRoles() {
-//		    return (List<Role>) sessionFactory.getCurrentSession().createCriteria(Role.class).list();
-	//
-//		}
-	//
-	//// TODO implement this somehow.
-//		@Override
-//		public Role loadByID(int roleId) {
-//			// TODO Auto-generated method stub
-//			return null;
-//		}
 //		// TODO implement this somehow.
 //		@Override
 //		public Role loadByName(String name) {

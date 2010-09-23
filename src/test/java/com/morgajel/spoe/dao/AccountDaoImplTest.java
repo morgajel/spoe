@@ -13,11 +13,9 @@ import org.junit.Test;
 import com.morgajel.spoe.model.Account;
 import com.morgajel.spoe.dao.AccountDaoImpl;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.*;
+
 
 public class AccountDaoImplTest {
 	private AccountDaoImpl accountDao;
@@ -39,6 +37,8 @@ public class AccountDaoImplTest {
 	@After
 	public void tearDown() throws Exception {
 		this.accountDao = null;
+		mockSessionFactory=null;
+		mockAccount=null;
 	}
 
 	@Test
