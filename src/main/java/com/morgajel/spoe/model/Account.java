@@ -100,8 +100,8 @@ public class Account implements Serializable {
      **/
 
 	public Set<Role> roles;
-	public static String ALGORITHM = "SHA1";
-	public static String PASSWDCHARSET = "!0123456789abcdefghijklmnopqrstuvwxyz";
+	public static final String ALGORITHM = "SHA1";
+	public static final String PASSWDCHARSET = "!0123456789abcdefghijklmnopqrstuvwxyz";
 	private static final long serialVersionUID = -6987219647522500285L;
 	private transient static Logger logger = Logger.getLogger("com.morgajel.spoe.model.Account");
 	
@@ -124,6 +124,8 @@ public class Account implements Serializable {
 		}catch(NoSuchAlgorithmException ex){
 			logger.error("couldn't find "+ALGORITHM+" to hash the password. ");
 			//This should never ever happen, but needs to be caught.
+			//I'd rather have an unusable password than a blank password.
+			hexStr.append(Account.generatePassword(25)); 
 		}
 		logger.trace("Created hash "+hexStr.toString()+" from "+text);
 		return hexStr.toString();
