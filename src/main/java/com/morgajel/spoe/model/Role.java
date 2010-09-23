@@ -30,7 +30,7 @@ import javax.validation.Valid;
 	@NamedQuery(
 			name = "findRoleByName",
 			query = "from Role role where role.name = :name"
-		),
+		)
 })//username+passfield+account.getEnabled())
 
 @Entity
