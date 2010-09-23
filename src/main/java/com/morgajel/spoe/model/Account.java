@@ -69,9 +69,6 @@ public class Account implements Serializable {
 	 * returns all of the roles currently assigned to a user.
 	 **/
     public Set<Role> getRoles() {
-    	if (roles==null){
-			roles=new HashSet<Role>();
-		}
     	return roles; 
     }
     
@@ -86,11 +83,6 @@ public class Account implements Serializable {
      * HashSet and adds the role to it. 
      **/
 	public void addRole(Role role) {
-		
-		logger.info("trying to add "+role+"to roles "+roles);
-		if (roles==null){
-			roles=new HashSet<Role>();
-		}
 		roles.add(role);
 		logger.info("added roll to "+username+", check it out:"+roles);
 	}
@@ -190,6 +182,7 @@ public class Account implements Serializable {
     	this.enabled=false;
 	    this.setLastAccessDate(new Date());
 	    this.setCreationDate(new Date());
+	    this.roles=new HashSet<Role>();
     }
 	/**
      * returns this.accountId, which is the Primary Key for Accounts.  

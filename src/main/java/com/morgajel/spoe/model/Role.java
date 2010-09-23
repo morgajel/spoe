@@ -24,8 +24,6 @@ import org.apache.log4j.Logger;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
-import javax.validation.Valid;
-
 @NamedQueries({
 	@NamedQuery(
 			name = "findRoleByName",
@@ -49,12 +47,14 @@ public class Role implements Serializable {
 	 * returns all of the roles currently assigned to a user.
 	 **/
     public Set<Account> getAccounts() {
-    	if (accounts==null){
-			accounts=new HashSet<Account>();
-		}
+
     	return accounts; 
     }
-    
+	public void addAccount(Account account) {
+		accounts.add(account);
+		logger.info("added roll to "+account.getUsername()+", check it out:"+accounts);
+	}
+	
     /**
      * returns all of the accounts currently assigned to a user.
      **/
@@ -66,7 +66,9 @@ public class Role implements Serializable {
 	public Set<Account> accounts;
 	private static final long serialVersionUID = -2683827831742215212L;
 	private transient static Logger logger = Logger.getLogger("com.morgajel.spoe.model.Role");
-
+	public Role(){
+		accounts=new HashSet<Account>();
+	}
 
 	@NotNull
 	private Long roleId;
@@ -97,6 +99,7 @@ public class Role implements Serializable {
 	
 	@Override
 	public String toString() {
+		logger.debug("printing toString");
 		return "Role "
 				+ "[ roleId=" + roleId 
 				+ ", name=" + name

@@ -13,6 +13,8 @@ import static org.mockito.Mockito.*;
 public class RoleTest {
 	private Account mockAccount;
 	private Role role;
+	private Long roleId = new Long("123123123");
+	private String rolename="ROLE_REVIEWER";
 
 	@Before
 	public void setUp() throws Exception {
@@ -33,30 +35,39 @@ public class RoleTest {
 		assertEquals(mockAccounts,role.getAccounts());
 		
 	}
-//	
-//	@Test
-//	public void testGetRoleId() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testSetRoleId() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testGetName() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testSetName() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testToString() {
-//		fail("Not yet implemented");
-//	}
+	
+	@Test
+	public void testGetAndSetRoleId() {
+		assertNull(role.getRoleId());
+		role.setRoleId(roleId);
+		assertEquals(roleId, role.getRoleId());
+	}
+
+	@Test
+	public void testGetAndSetName() {
+		//TODO setRoleName vs setRoleID vs AccountName vs. AccountID, pick a convention.
+		assertNull(role.getName());
+		role.setName(rolename);
+		assertEquals(rolename, role.getName());
+
+	}
+	@Test
+	public void testAddAccount(){
+		assertFalse(role.getAccounts().contains(mockAccount));
+		assertTrue(role.getAccounts().isEmpty());
+		role.addAccount(mockAccount);
+		assertTrue(role.getAccounts().contains(mockAccount));
+	}
+
+	@Test
+	public void testToString() {
+		role.setName(rolename);
+		role.setRoleId(roleId);
+		String toString= "Role "
+					+ "[ roleId=" + roleId 
+					+ ", name=" + rolename
+					+  "]";
+		assertEquals(toString,role.toString());
+	}
 
 }
