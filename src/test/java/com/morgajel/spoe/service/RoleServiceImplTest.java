@@ -8,9 +8,7 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.Before;
 
-import com.morgajel.spoe.dao.AccountDao;
 import com.morgajel.spoe.dao.RoleDao;
-import com.morgajel.spoe.model.Account;
 import com.morgajel.spoe.model.Role;
 
 import static org.mockito.Mockito.*;

@@ -33,7 +33,7 @@ public class AccountControllerTest {
     private VelocityEngine mockVelocityEngine;
 	private final String username="morgo2";
 	private final String passfield="255edd2793e5286d4441ea6bfba734b59e915864";
-	private final String tempHash="df9dd14cbdb3b00f8a54b66f489241e8aeb903ff";
+	//private final String tempHash="df9dd14cbdb3b00f8a54b66f489241e8aeb903ff";
 	private final String checksum="279d8d8a18b94782ef606fbbadd6c011b1692ad0"; //morgo2+temphash+0
     
 	@Before

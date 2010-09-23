@@ -36,7 +36,7 @@ public class AccountDaoImpl implements AccountDao {
 		logger.info("loading accountDao"+username);
 		Session session=sessionFactory.getCurrentSession();
 		Query nq=session.getNamedQuery("findAccountByUsername");
-		List accountList= nq.setString("username", username).list();
+		List<Account> accountList= nq.setString("username", username).list();
 		Account account= (Account)accountList.get(0);
 		logger.info("++++ loaded account"+account);
 		return account;
@@ -45,7 +45,7 @@ public class AccountDaoImpl implements AccountDao {
 	
 	@Override
 	public List<Account> listAccounts() {
-	    return (List<Account>) sessionFactory.getCurrentSession().createCriteria(Account.class).list();	
+	    return (List<Account>)sessionFactory.getCurrentSession().createCriteria(Account.class).list();	
 	}
 	
 	@Override
@@ -61,7 +61,7 @@ public class AccountDaoImpl implements AccountDao {
 		logger.debug("snagged current session "+session );
 		Query nq=session.getNamedQuery("findAccountByUsernameAndChecksum");
 		logger.debug("snagged current quer y"+nq );
-		List accountList= nq.setString("username", username).setString("checksum", checksum).list();
+		List<Account> accountList= nq.setString("username", username).setString("checksum", checksum).list();
 		logger.debug("snagged accountList "+accountList );
 		Account account= (Account)accountList.get(0);
 		logger.info("++++ loaded account "+account);

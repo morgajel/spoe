@@ -1,12 +1,8 @@
 package com.morgajel.spoe.dao;
 import org.apache.log4j.Logger;
-import java.util.Date;
+
 import java.util.List;
-
 import com.morgajel.spoe.model.Role;
-
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

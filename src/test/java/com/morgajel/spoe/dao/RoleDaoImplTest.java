@@ -10,7 +10,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.morgajel.spoe.model.Account;
 import com.morgajel.spoe.model.Role;
 
 import static org.mockito.Mockito.*;

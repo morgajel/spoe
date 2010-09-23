@@ -6,9 +6,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 
+import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -44,12 +44,24 @@ public class Role implements Serializable {
             inverseJoinColumns=
                 @JoinColumn(name="account_id", referencedColumnName="account_id")
     )
-    public Set<Account> getAccounts() { return accounts; }
-	public void setAccounts( Set<Account> accounts) { 
+
+	/**
+	 * returns all of the roles currently assigned to a user.
+	 **/
+    public Set<Account> getAccounts() {
+    	if (accounts==null){
+			accounts=new HashSet<Account>();
+		}
+    	return accounts; 
+    }
+    
+    /**
+     * returns all of the accounts currently assigned to a user.
+     **/
+    public void setAccounts( Set<Account> accounts) {
 		this.accounts=accounts;
 	}
-
-
+	
 
 	public Set<Account> accounts;
 	private static final long serialVersionUID = -2683827831742215212L;
