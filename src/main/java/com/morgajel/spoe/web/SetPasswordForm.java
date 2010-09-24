@@ -10,7 +10,7 @@ public class SetPasswordForm {
 	public String confirmPassword;
 
 	/**
-	 * returns the checksum provided by a hidden field in the form
+	 * Returns the checksum provided by a hidden field in the form.
 	 */
 	public String getChecksum() {
 		return checksum;
