@@ -6,6 +6,8 @@ import org.apache.velocity.app.VelocityEngine;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.context.SecurityContext;
@@ -35,7 +37,10 @@ public class AccountControllerTest {
 	private final String passfield="255edd2793e5286d4441ea6bfba734b59e915864";
 	//private final String tempHash="df9dd14cbdb3b00f8a54b66f489241e8aeb903ff";
 	private final String checksum="279d8d8a18b94782ef606fbbadd6c011b1692ad0"; //morgo2+temphash+0
-    
+    public void init(){
+        MockitoAnnotations.initMocks(this);
+     }
+
 	@Before
 	public void setUp() throws Exception {
 		mockAccountService = mock(AccountService.class);
@@ -178,7 +183,7 @@ public class AccountControllerTest {
 		verify(mockRoleService).loadByName("ROLE_REVIEWER");
 		verify(mockAccount).addRole((Role) anyObject());
 		verify(mockAccountService).saveAccount(mockAccount);
-		assertEquals(accountController.activationurl+username+"/"+checksum,result.getModel().get("url"));
+		assertEquals(accountController.getActivationUrl()+username+"/"+checksum,result.getModel().get("url"));
 		assertEquals("account/registrationSuccess",result.getViewName());
 	}
 	@Test

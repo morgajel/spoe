@@ -10,25 +10,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
+/** 
+ * Default Account Service Implementation used for managing AccountDao 
+ */
 @Service("accountService")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class AccountServiceImpl implements AccountService {
-
 
 	@Autowired
 	public AccountDao accountDao;
 	private transient static Logger logger = Logger.getLogger("com.morgajel.spoe.service.AccountService");
 
-	//TODO unit test
-	public AccountServiceImpl() {
-	}
-	//TODO unit test
+	/** 
+	 * Set accountDao object for the datastore. 
+	 */
 	@Override
 	public void setAccountDao(AccountDao accountdao){
 		this.accountDao=accountdao;  
 	}
-	
+	/** 
+	 * Adds an account object to the datastore. 
+	 * NOTE: serves same purpose as save account currently. 
+	 */	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void addAccount(Account account) {
@@ -37,6 +40,9 @@ public class AccountServiceImpl implements AccountService {
 		accountDao.saveAccount(account);
 		logger.debug("added account "+account.getUsername());
 	}
+	/** 
+	 * Saves an account object to the datastore. 
+	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void saveAccount(Account account) {
@@ -44,20 +50,31 @@ public class AccountServiceImpl implements AccountService {
 		accountDao.saveAccount(account);
 		logger.debug("saved account "+account.getUsername());
 	}
+	/** 
+	 * List all accounts found in the datastore 
+	 */
 	@Override
 	public List<Account> listAccounts() {
 	    return accountDao.listAccounts();
 	}
+	/** 
+	 * Load account matching a given username. Will return null if none is found.
+	 */
 	@Override
 	public Account loadByUsername(String username) {
 		return accountDao.loadByUsername(username);
 	}
+	/** 
+	 * Load account matching a given username and checksum. Will return null if none is found.
+	 */
 	@Override
 	public Account loadByUsernameAndChecksum(String username,String checksum) {
 		logger.debug("attempting to load user by "+username+" and "+checksum );
 		return accountDao.loadByUsernameAndChecksum(username,checksum);
 	}
-
+	/** 
+	 * Load account matching a given username and password. Will return null if none is found.
+	 */
     @Override	
     public boolean login(String username, String password){
 		boolean valid = false;

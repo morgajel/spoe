@@ -4,7 +4,9 @@ import com.morgajel.spoe.model.Account;
 
 import java.util.List;
 import com.morgajel.spoe.dao.AccountDao;
-
+/** 
+ * Account Service for managing AccountDao 
+ */
 public interface AccountService {
 	/** 
 	 * Adds an account object to the datastore. 
@@ -18,14 +20,13 @@ public interface AccountService {
 	 * Returns an account object if the Username and checksum match. 
 	 */
     public Account loadByUsernameAndChecksum(String username,String checksum);
-    
     /** 
 	 * Saves details of an account to the datastore.  
 	 */
     public void saveAccount(Account account);
     /** 
-	 * List all accounts currently in the system 
-	 * (has the potential to be large, may need to paginate results.) 
+	 * List all accounts currently in the system. 
+	 * TODO: Has the potential to be large, may need to paginate results. 
 	 */
     public List<Account> listAccounts();
     /** 

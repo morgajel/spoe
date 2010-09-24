@@ -2,15 +2,24 @@ package com.morgajel.spoe.dao;
 
 import com.morgajel.spoe.model.Role;
 import java.util.List;
-
+/**
+ * Hibernate object interface used for storing and loading Roles.
+ */
 public interface RoleDao {
 
-	  // To Save the role detail
-	  public void saveRole ( Role role );
+	/**
+	 * Save a provided role to the datasource.
+	 */
+	public void saveRole ( Role role );
 	  
-	  // To get list of all Roles
-	  public List<Role> listRoles();
-	  
-	  public Role loadByName(String name);
+	/**
+	 * List all roles in the datasource
+	 */
+	public List<Role> listRoles();
+	
+	/**
+	 * Return an role with a given name, or else null.
+	 */
+	public Role loadByName(String name);
 	
 }

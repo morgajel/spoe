@@ -11,6 +11,9 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Implementation of the AccountDao interface, used to save and load accounts from the datasource
+ */
 @Repository("accountDao")
 public class AccountDaoImpl implements AccountDao {
 
@@ -18,10 +21,24 @@ public class AccountDaoImpl implements AccountDao {
 	private SessionFactory sessionFactory;
 	private transient static Logger logger = Logger.getLogger("com.morgajel.spoe.dao.AccountDao");
 
+	/**
+	 * Sets the Session Factory used to get the currentSession. 
+	 */
 	public void setSessionFactory(SessionFactory sessionFactory){
 		this.sessionFactory=sessionFactory;
 		
 	}
+	/**
+	 * returns a query based on a querystring and username, since that appears to be the 
+	 * common denominator among load methods. 
+	 */
+	private Query loadQueryByUsername(String queryString,String username){
+		Session session = sessionFactory.getCurrentSession();
+		return session.getNamedQuery(queryString).setString("username", username);
+	}
+	/**
+	 * Saves a given account to the datasource. 
+	 */
 	@Override
 	public void saveAccount(Account account) {
 		logger.info("setting last access date before saving for "+account.getUsername());
@@ -29,43 +46,44 @@ public class AccountDaoImpl implements AccountDao {
 	    sessionFactory.getCurrentSession().saveOrUpdate(account);
 	    logger.info("account appears saved");
 	}
-	@Override
-	public Account loadByUsername(String username){
-		//This, my friends, is a clusterfuck
-		//TODO refactor with other loadBy*
-		logger.info("loading accountDao"+username);
-		Session session=sessionFactory.getCurrentSession();
-		Query nq=session.getNamedQuery("findAccountByUsername");
-		List<Account> accountList= nq.setString("username", username).list();
-		Account account= (Account)accountList.get(0);
-		logger.info("++++ loaded account"+account);
-		return account;
-
-	}
-	
+	/**
+	 * Returns a List of all accounts from the datasource with no qualifications. 
+	 */
 	@Override
 	public List<Account> listAccounts() {
-	    return (List<Account>)sessionFactory.getCurrentSession().createCriteria(Account.class).list();	
+		logger.debug("attempting to list accounts" );
+	    return (List<Account>) sessionFactory.getCurrentSession().createCriteria(Account.class).list();	
 	}
-	
+
+	/**
+	 * returns an account matching a given username. will return null if none is found. 
+	 */
+	@Override
+	public Account loadByUsername(String username){
+		logger.debug("attempting to load user by "+username+" and password" );
+		Account account= (Account) loadQueryByUsername("findAccountByUsername",username).list().get(0);
+		logger.info("Loaded account "+account);
+		return account;
+	}
+	/**
+	 * returns an account matching a given username and password. Will return null if none is found. 
+	 */
 	@Override
 	public Account loadByUsernameAndPassword(String username, String password) {
-		//This is a lot of text to return a simple account
-		return (Account) sessionFactory.getCurrentSession().getNamedQuery("findAccountByUsernameAndPassword").setString("username", username).setString("password", password).list().get(0);
+		logger.debug("attempting to load user by "+username+" and password" );
+		Account account= (Account) loadQueryByUsername("findAccountByUsernameAndPassword", username).setString("password", password).list().get(0);
+		logger.info("Loaded account "+account);
+		return account;
 	}
+	/**
+	 * returns an account matching a given username and checksum. Will return null if none is found. 
+	 */
 	@Override
 	public Account loadByUsernameAndChecksum(String username, String checksum) {
 		//This is a lot of text to return a simple account
 		logger.debug("attempting to load user by "+username+" and "+checksum );
-		Session session=sessionFactory.getCurrentSession();
-		logger.debug("snagged current session "+session );
-		Query nq=session.getNamedQuery("findAccountByUsernameAndChecksum");
-		logger.debug("snagged current quer y"+nq );
-		List<Account> accountList= nq.setString("username", username).setString("checksum", checksum).list();
-		logger.debug("snagged accountList "+accountList );
-		Account account= (Account)accountList.get(0);
-		logger.info("++++ loaded account "+account);
+		Account account= (Account) loadQueryByUsername("findAccountByUsernameAndChecksum",username).setString("checksum", checksum).list().get(0);
+		logger.info("Loaded account "+account);
 		return account;
-
 	}
 }

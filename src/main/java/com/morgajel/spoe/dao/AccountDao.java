@@ -2,15 +2,33 @@ package com.morgajel.spoe.dao;
 
 import com.morgajel.spoe.model.Account;
 import java.util.List;
-
+/**
+ * Hibernate object interface used for storing and loading Accounts.
+ */
 public interface AccountDao {
 
-	  // To Save the account detail
-	  public void saveAccount ( Account account );
+	/**
+	 * Save a provided account to the datasource.
+	 */
+	public void saveAccount ( Account account );
 	  
-	  // To get list of all accounts
-	  public List<Account> listAccounts();
-	  public Account loadByUsername(String username);
-	  public Account loadByUsernameAndPassword(String userName, String password);
-	  public Account loadByUsernameAndChecksum(String userName, String checksum);
+	/**
+	 * List all accounts in the datasource
+	 */
+	public List<Account> listAccounts();
+
+	/**
+	 * Return an account with a given username, or else null.
+	 */
+	public Account loadByUsername(String username);
+
+	/**
+	 * Return an account with a given username and password, or else null.
+	 */
+	public Account loadByUsernameAndPassword(String userName, String password);
+
+	/**
+	 * Return an account with a given username and checksum, or else null
+	 */
+	public Account loadByUsernameAndChecksum(String userName, String checksum);
 }

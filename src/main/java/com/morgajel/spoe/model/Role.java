@@ -25,12 +25,18 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
 @NamedQueries({
+	/**
+	 * Returns a role identified by it's name
+	 **/
 	@NamedQuery(
 			name = "findRoleByName",
 			query = "from Role role where role.name = :name"
 		)
-})//username+passfield+account.getEnabled())
+})
 
+/**
+ * Determines what access a user has within the framework.
+ **/
 @Entity
 @Table(name="role")
 public class Role implements Serializable {
@@ -43,11 +49,25 @@ public class Role implements Serializable {
                 @JoinColumn(name="account_id", referencedColumnName="account_id")
     )
 
+    public Set<Account> accounts;
+	@NotNull
+	private Long roleId;
+	@NotNull
+	private String name;
+	private static final long serialVersionUID = -2683827831742215212L;
+	private transient static Logger logger = Logger.getLogger("com.morgajel.spoe.model.Role");
+
 	/**
-	 * returns all of the roles currently assigned to a user.
+	 * Primary constructor for Role, sets an empty Set to accounts.  
+	 **/
+	public Role(){
+		accounts=new HashSet<Account>();
+	}
+
+	/**
+	 * Returns all of the roles currently assigned to a user.
 	 **/
     public Set<Account> getAccounts() {
-
     	return accounts; 
     }
 	public void addAccount(Account account) {
@@ -56,62 +76,50 @@ public class Role implements Serializable {
 	}
 	
     /**
-     * returns all of the accounts currently assigned to a user.
+     * Returns all of the accounts currently assigned to a user.
      **/
     public void setAccounts( Set<Account> accounts) {
 		this.accounts=accounts;
 	}
-	
 
-	public Set<Account> accounts;
-	private static final long serialVersionUID = -2683827831742215212L;
-	private transient static Logger logger = Logger.getLogger("com.morgajel.spoe.model.Role");
-	public Role(){
-		accounts=new HashSet<Account>();
-	}
-
-	@NotNull
-	private Long roleId;
-
-	@NotNull
-	@Size(min = 1, max = 25)
-	private String name;
-	
-    @Id
+    /**
+     * Returns the roleId of the Role instance.
+     **/
+	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name="role_id")
 	public Long getRoleId() {
 		return roleId;
 	}
-	
+	/**
+     * Sets the roleId of the Role instance.
+     **/
 	public void setRoleId(Long roleId) {
 		this.roleId = roleId;
 	}
-
+	/**
+     * Returns the name of the Role instance.
+     **/
     @Column(name="name")
 	public String getName() {
 		return name;
 	}
-
+    /**
+     * Sets the name of the Role instance.
+     **/
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+	/**
+     * Overrides the toString with pertinent information.
+     **/
 	@Override
 	public String toString() {
+		//TODO may want to include userlist here.
 		logger.debug("printing toString");
 		return "Role "
 				+ "[ roleId=" + roleId 
 				+ ", name=" + name
 				+  "]";
 	}
-	
 }
-
-
-
-
-
-
-
-
