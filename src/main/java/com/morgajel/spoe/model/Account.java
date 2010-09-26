@@ -73,10 +73,16 @@ import org.hibernate.validator.constraints.Email;
 public class Account implements Serializable {
     @ManyToMany
     @JoinTable(name="account_role",
-    	joinColumns=@JoinColumn(name="account_id", referencedColumnName="account_id"),
-    	inverseJoinColumns=@JoinColumn(name="role_id", referencedColumnName="role_id")
+	        joinColumns=@JoinColumn(name="account_id"),
+	        inverseJoinColumns=@JoinColumn(name="role_id")
     )
-
+	/**
+	 * Returns all of the roles currently assigned to a user.
+	 **/
+    public Set<Role> getRoles() {
+    	return roles; 
+    }
+    
    	@NotNull
 	private Long accountId;
 	@NotNull
@@ -177,12 +183,6 @@ public class Account implements Serializable {
 	public Long getAccountId() {
 		return accountId;
 	}
-	/**
-	 * Returns all of the roles currently assigned to a user.
-	 **/
-    public Set<Role> getRoles() {
-    	return roles; 
-    }
     
     /**
      * Returns all of the roles currently assigned to a user.

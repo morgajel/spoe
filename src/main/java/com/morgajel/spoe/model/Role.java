@@ -43,12 +43,16 @@ public class Role implements Serializable {
 	
 	@ManyToMany
     @JoinTable(name="account_role",
-    		joinColumns=
-    			@JoinColumn(name="role_id", referencedColumnName="role_id"),
-            inverseJoinColumns=
-                @JoinColumn(name="account_id", referencedColumnName="account_id")
+	        joinColumns=@JoinColumn(name="role_id"),
+	        inverseJoinColumns=@JoinColumn(name="account_id")
     )
-
+	/**
+	 * Returns all of the roles currently assigned to a user.
+	 **/
+    public Set<Account> getAccounts() {
+    	return accounts; 
+    }
+	
     public Set<Account> accounts;
 	@NotNull
 	private Long roleId;
@@ -64,12 +68,6 @@ public class Role implements Serializable {
 		accounts=new HashSet<Account>();
 	}
 
-	/**
-	 * Returns all of the roles currently assigned to a user.
-	 **/
-    public Set<Account> getAccounts() {
-    	return accounts; 
-    }
 	public void addAccount(Account account) {
 		accounts.add(account);
 		logger.info("added roll to "+account.getUsername()+", check it out:"+accounts);
