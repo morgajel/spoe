@@ -51,10 +51,26 @@ insert  into account_role(account_id,role_id) values('3','3');
 -- Grunn the Reviewer
 insert  into account_role(account_id,role_id) values('4','1');
 
-select account.username, role.name 
+
+select  username,role.name as role_name
         from account 
             inner join account_role on account.account_id=account_role.account_id 
             inner join role on account_role.role_id=role.role_id order by username,name;
 
-select sha(concat(password,username)) ,username,password from account;
+
+DROP PROCEDURE IF EXISTS getChecksum;
+DELIMITER //
+  CREATE PROCEDURE getChecksum(IN username VARCHAR(255),  OUT checksum CHAR(40))
+     BEGIN
+        select  sha(concat(password,username)) as checksum into checksum
+            from account 
+                where account.username=username order by username;
+
+    END //
+DELIMITER ;
+
+
+call getChecksum('morgajel',@checksum); select @checksum;
+
+
 
