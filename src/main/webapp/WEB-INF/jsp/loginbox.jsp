@@ -1,7 +1,7 @@
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 
-
+<div style="height:75px"></div>
 <div id='loginbox'
 	style="float: right; position: absolute; right: 5px; top: 5px;">
 <sec:authorize access='! isAuthenticated()'>
@@ -31,6 +31,7 @@
 	</table>
 	</form>
 </sec:authorize> <sec:authorize access='isAuthenticated()'>
-	<p><a href="/profile">profile</a> | <a
-		href="/j_spring_security_logout">Logout</a>
-</sec:authorize></div>
+	<a href="/account">My Account</a> | <a href="/j_spring_security_logout">Logout</a>
+</sec:authorize>
+<br clear="all"/>
+</div>
