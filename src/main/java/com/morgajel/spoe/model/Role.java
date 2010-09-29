@@ -3,7 +3,7 @@ package com.morgajel.spoe.model;
 import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+
 
 
 import java.util.HashSet;
@@ -40,15 +40,15 @@ import org.hibernate.annotations.NamedQuery;
 @Entity
 @Table(name="role")
 public class Role implements Serializable {
-	
+
+	/**
+	 * Returns all of the roles currently assigned to a user.
+	 **/
 	@ManyToMany
     @JoinTable(name="account_role",
 	        joinColumns=@JoinColumn(name="role_id"),
 	        inverseJoinColumns=@JoinColumn(name="account_id")
     )
-	/**
-	 * Returns all of the roles currently assigned to a user.
-	 **/
     public Set<Account> getAccounts() {
     	return accounts; 
     }
@@ -65,7 +65,8 @@ public class Role implements Serializable {
 	 * Primary constructor for Role, sets an empty Set to accounts.  
 	 **/
 	public Role(){
-		accounts=new HashSet<Account>();
+		this.accounts= new HashSet<Account>();
+
 	}
 
 	public void addAccount(Account account) {
@@ -77,7 +78,7 @@ public class Role implements Serializable {
      * Returns all of the accounts currently assigned to a user.
      **/
     public void setAccounts( Set<Account> accounts) {
-		this.accounts=accounts;
+		this.accounts= accounts;
 	}
 
     /**

@@ -15,7 +15,7 @@
 <p>Now you need to set your password.</p>
 ${message}
 
-<form:form modelAttribute="passform" method="post" action="/account/activation.setpassword" >
+<form:form modelAttribute="passform" method="post" action="/account/activate.setpassword" >
 	<form:hidden path="checksum" value="${checksum}"/>
 	<form:hidden path="username" value="${username}"/>
 	<table>

@@ -30,7 +30,7 @@ public class RoleTest {
 
 	@Test
 	public void testGetAndSetAccounts(){
-		Set<Account> mockAccounts = mock(HashSet.class);
+		HashSet<Account> mockAccounts = mock(HashSet.class);
 		role.setAccounts(mockAccounts);
 		assertEquals(mockAccounts,role.getAccounts());
 		

@@ -5,15 +5,13 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <html>
-<head>
-<META  http-equiv="Content-Type"  content="text/html;charset=UTF-8">
-<title>View Account</title>
-</head>
-<body>
+	<%@ include file="/WEB-INF/jsp/header.jsp"%>
 Welcome to your account page, ${account.username}.
+<a href="/account/edit">edit account</a>
 <hr/>
 ${message} 
-</body>
+	<%@ include file="/WEB-INF/jsp/footer.jsp"%>
+	</body>
 </html>
 
 

@@ -22,6 +22,8 @@ import com.morgajel.spoe.model.Account;
 import com.morgajel.spoe.model.Role;
 import com.morgajel.spoe.service.AccountService;
 import com.morgajel.spoe.service.RoleService;
+import com.morgajel.spoe.web.EditAccountForm;
+import com.morgajel.spoe.web.RegistrationForm;
 import com.morgajel.spoe.web.SetPasswordForm;
 
 /** 
@@ -39,8 +41,8 @@ public class AccountController {
 	private RoleService roleService;
 	
 	
-	private final String registrationTemplate ="/WEB-INF/templates/registrationEmail.vm";
-	private final String activationUrl="http://127.0.0.62:8080/account/activate/";
+	private static final String registrationTemplate ="/WEB-INF/templates/registrationEmail.vm";
+	private static final String activationUrl="http://127.0.0.62:8080/account/activate/";
 	private transient static Logger logger = Logger.getLogger("com.morgajel.spoe.controller.AccountController");
 
 	/** 
@@ -87,33 +89,74 @@ public class AccountController {
 		}
 		return mav;
 	}
+	/** 
+	 * Displays the given user's public information 
+	 */
+	@RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
+	public ModelAndView activateAccount(@PathVariable String username){
+		logger.debug("trying to display "+username);
+		ModelAndView mav= new ModelAndView();
+		try{
+			Account account = accountService.loadByUsername(username);
+			logger.info(account);
+			if (account != null && ! username.equals("anonymousUser")){
+				mav.addObject("message",username);
+				mav.setViewName("account/viewUser");
+				mav.addObject("account",account);
+			}else{
+				logger.info("account doesn't exist");
+				String message="I'm sorry, "+username+" was not found.";
+				mav.setViewName("account/viewUser");
+				mav.addObject("message",message);
+			}
+		} catch(Exception ex) {
+			// TODO: catch actual errors and handle them
+			// TODO: tell the user wtf happened
+			logger.error("damnit, something failed."+ex);
+			mav.setViewName("account/activationFailure");
+			mav.addObject("message","<!--"+ex+"-->");
+		}
+		return mav;
+	}
+
 	
 	/** 
 	 * Create an account with the given information, then send the user an activation email.
 	 */
 	@RequestMapping(value = "/register.submit", method = RequestMethod.POST)
-	public ModelAndView createAccount(@ModelAttribute("account") Account account, BindingResult result) {
+	public ModelAndView createAccount(@ModelAttribute("registrationForm") RegistrationForm registrationForm, BindingResult result) {
 		// TODO unit test
 		ModelAndView mav= new ModelAndView();
 		try{
-			account.setHashedPassword(Account.generatePassword(10));
-			logger.trace("password field set to '" + account.getPassword()+"', sending email...");
+			if (registrationForm.getEmail().equals(registrationForm.getConfirmEmail())){
+				Account account= new Account();
+				account.importRegistration(registrationForm);
+				account.setHashedPassword(Account.generatePassword(10));
+				logger.trace("password field set to '" + account.getPassword()+"', sending email...");
+	
+				String url=activationUrl + account.getUsername() + "/" + account.activationChecksum();
+				sendRegEmail(account,url);
+				logger.info("Email sent, adding account "+account.getUsername());
+				accountService.addAccount(account);
+				
+				//FIXME this role addition should be done in the account service I think.
+				Role reviewerRole=roleService.loadByName("ROLE_REVIEWER");
+				logger.info("ready to add "+reviewerRole.getName()+" to account "+account);
+				account.addRole(reviewerRole);
+				
+				logger.info("created account "+ account.getUsername());
+				accountService.saveAccount(account);
+				
+				mav.setViewName("account/registrationSuccess");
+				mav.addObject("url",url);
+				mav.addObject("account",account);
+			}else{
+				logger.error("Email addresses did not match.");
+				mav.setViewName("account/registrationForm");
+				mav.addObject("message", "Sorry, your Email addresses didn't match.");
 
-			String url=activationUrl + account.getUsername() + "/" + account.activationChecksum();
-			sendRegEmail(account,url);
-			logger.info("Email sent, adding account "+account.getUsername());
-			accountService.addAccount(account);
-			
-			//FIXME this role addition should be done in the account service I think.
-			Role reviewerRole=roleService.loadByName("ROLE_REVIEWER");
-			logger.info("ready to add "+reviewerRole.getName()+" to account "+account);
-			account.addRole(reviewerRole);
-			
-			logger.info("created account "+ account.getUsername());
-			accountService.saveAccount(account);
-			
-			mav.setViewName("account/registrationSuccess");
-			mav.addObject("url",url); 		
+				
+			}
 
 		} catch(Exception ex) {
 			// TODO: catch actual errors and handle them
@@ -130,17 +173,46 @@ public class AccountController {
 	 * Displays the registration form for users to log in. 
 	 */
 	@RequestMapping("/register")
-	public ModelAndView getRegistrationForm(Account account) {
+	public ModelAndView getRegistrationForm(RegistrationForm registrationForm) {
 		logger.info("getregistrationForm loaded");
-		return new ModelAndView("account/registrationForm");
+		ModelAndView  mav=new ModelAndView();
+		mav.addObject("registrationForm",registrationForm);
+		mav.setViewName("account/registrationForm");
+		return mav;
 	}
-	
+	/**
+	 * Displays the form for Editing your account.
+	 */
+	@RequestMapping(value="/edit")
+	public ModelAndView editAccountForm(EditAccountForm eaForm){
+		ModelAndView  mav=new ModelAndView();
+		Account account=getContextAccount();
+		eaForm.loadAccount(account);
+		mav.addObject("eaForm",eaForm);
+		mav.setViewName("account/editAccountForm");
+		return mav;
+	}
+	/**
+	 * Saves changes when editing your account.
+	 */
+	@RequestMapping(value="/edit.submit")
+	public ModelAndView saveEditAccountForm(EditAccountForm eaForm){
+		ModelAndView  mav=new ModelAndView();
+		Account account=getContextAccount();
+		eaForm.loadAccount(account);
+		//TODO Do stuff here.
+		mav.addObject("eaForm",eaForm);
+		mav.addObject("message","your form has been submitted, but this is currently unimplemented...");
+		mav.setViewName("account/editAccountForm");
+		return mav;
+	}
+
 	/** 
 	 * Takes the checksum and username and sets it to the password that the user provides.
 	 * Account is enabled if passwords match and username/checksum is found.
 	 * Will bounce you back to activationSuccess if you give it mismatched passwords. 
 	 */
-	@RequestMapping(value="/activation.setpassword", method = RequestMethod.POST)
+	@RequestMapping(value="/activate.setpassword", method = RequestMethod.POST)
 	public ModelAndView setPassword(SetPasswordForm passform) {
 		ModelAndView  mav=new ModelAndView();
 		if (passform.getPassword().equals(passform.getConfirmPassword())){
@@ -262,5 +334,12 @@ public class AccountController {
 	}
 	public String getActivationUrl(){
 		return activationUrl;
+	}
+	/** 
+	 * Returns the account for the current context. 
+	 */	
+	public Account getContextAccount(){
+		String username= SecurityContextHolder.getContext().getAuthentication().getName();
+		return accountService.loadByUsername(username);
 	}
 }

@@ -124,7 +124,7 @@ public class AccountTest {
 
 	@Test
 	public void testGetAndSetRoles(){
-		Set<Role> mockRoles = mock(HashSet.class);
+		HashSet<Role> mockRoles = mock(HashSet.class);
 		account.setRoles(mockRoles);
 		assertEquals(mockRoles,account.getRoles());
 		

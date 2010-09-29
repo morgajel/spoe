@@ -13,7 +13,7 @@
 <body>
 ${message}
 
-<form:form modelAttribute="account" action="/account/register.submit" method="post">
+<form:form modelAttribute="registrationForm" action="/account/register.submit" method="post">
 
 	<table>
 
@@ -30,9 +30,9 @@ ${message}
 			<td><form:errors path="email" /></td>
 		</tr>
 		<tr>
-			<td><label name="confirmEmail">Confirm Email Address:</label></td>
-			<td><input type='text' name="confirmEmail" /></td>
-			<td></td>
+			<td><form:label for="confirmEmail" path="confirmEmail" cssErrorClass="error">Confirm Email Address:</form:label></td>
+			<td><form:input path="confirmEmail" /></td>
+			<td><form:errors path="confirmEmail" /></td>
 		</tr>
 
 		<tr>

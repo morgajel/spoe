@@ -12,11 +12,14 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import com.morgajel.spoe.model.Account;
 import com.morgajel.spoe.model.Role;
 import com.morgajel.spoe.service.AccountService;
 import com.morgajel.spoe.service.RoleService;
+import com.morgajel.spoe.web.EditAccountForm;
+import com.morgajel.spoe.web.RegistrationForm;
 import com.morgajel.spoe.web.SetPasswordForm;
 import com.morgajel.spoe.controller.AccountController;
 import static org.mockito.Mockito.*;
@@ -28,18 +31,22 @@ public class AccountControllerTest {
 	private SecurityContext mockContext;
 	private Role mockRole;
 	private AccountService mockAccountService;
+	private EditAccountForm mockEditAccountForm;
+	private RegistrationForm mockRegistrationForm;
 	private RoleService mockRoleService;
 	private MailSender mockMailSender;
 	private SetPasswordForm mockPassForm;
     private SimpleMailMessage mockTemplateMessage;
     private VelocityEngine mockVelocityEngine;
-	private final String username="morgo2";
-	private final String passfield="255edd2793e5286d4441ea6bfba734b59e915864";
+	private static final String username="morgo2";
+	private static final String firstname="Jesse";
+	private static final String lastname="Morgan";
+	private static final String email="morgo2@example.com";
+	private static final String passfield="255edd2793e5286d4441ea6bfba734b59e915864";
+	private static final String password="MatchedLuggage12345";
 	//private final String tempHash="df9dd14cbdb3b00f8a54b66f489241e8aeb903ff";
-	private final String checksum="279d8d8a18b94782ef606fbbadd6c011b1692ad0"; //morgo2+temphash+0
-    public void init(){
-        MockitoAnnotations.initMocks(this);
-     }
+	private static final String checksum="279d8d8a18b94782ef606fbbadd6c011b1692ad0"; //morgo2+temphash+0
+
 
 	@Before
 	public void setUp() throws Exception {
@@ -50,6 +57,8 @@ public class AccountControllerTest {
 		mockRole = mock(Role.class);
 		mockMailSender = mock(MailSender.class);
 		mockPassForm=mock(SetPasswordForm.class);
+		mockRegistrationForm=mock(RegistrationForm.class);
+		mockEditAccountForm=mock(EditAccountForm.class);
 		mockTemplateMessage=mock(SimpleMailMessage.class);
 		mockVelocityEngine=mock(VelocityEngine.class);
 		accountController = new AccountController();
@@ -66,6 +75,7 @@ public class AccountControllerTest {
 		mockRole = null;
 		mockMailSender = null;
 		mockPassForm=null;
+		mockEditAccountForm=null;
 		mockTemplateMessage=null;
 		mockVelocityEngine=null;
 		mockContext=null;
@@ -166,30 +176,46 @@ public class AccountControllerTest {
 	}	
 	@Test
 	public void testGetRegistrationForm(){
-		ModelAndView mav= accountController.getRegistrationForm(mockAccount);
+		ModelAndView mav= accountController.getRegistrationForm(mockRegistrationForm);
 		assertEquals(mav.getViewName(),"account/registrationForm");
 	}
 	@Test
 	public void testCreateAccountSuccess(){
 
-		when(mockAccount.getUsername()).thenReturn(username);
-		when(mockAccount.activationChecksum()).thenReturn(checksum);
-		when(mockRoleService.loadByName("ROLE_REVIEWER")).thenReturn(mockRole);
+		when(mockRegistrationForm.getUsername()).thenReturn(username);
+		when(mockRegistrationForm.getFirstname()).thenReturn(firstname);
+		when(mockRegistrationForm.getLastname()).thenReturn(lastname);
+		when(mockRegistrationForm.getEmail()).thenReturn(email);
+		when(mockRegistrationForm.getConfirmEmail()).thenReturn(email);
 
-		ModelAndView result= accountController.createAccount(mockAccount, null);
-		
-		verify(mockAccount).activationChecksum();
-		verify(mockAccountService).addAccount(mockAccount);
+		when(mockRoleService.loadByName("ROLE_REVIEWER")).thenReturn(mockRole);
+		ModelAndView result= accountController.createAccount(mockRegistrationForm, null);
+		Account account= (Account) result.getModel().get("account");
+
+		verify(mockAccountService).addAccount((Account) anyObject());
 		verify(mockRoleService).loadByName("ROLE_REVIEWER");
-		verify(mockAccount).addRole((Role) anyObject());
-		verify(mockAccountService).saveAccount(mockAccount);
-		assertEquals(accountController.getActivationUrl()+username+"/"+checksum,result.getModel().get("url"));
+
+		verify(mockAccountService).saveAccount((Account) anyObject());
+		assertEquals(accountController.getActivationUrl()+username+"/"+account.activationChecksum(),
+					result.getModel().get("url"));
 		assertEquals("account/registrationSuccess",result.getViewName());
 	}
 	@Test
-	public void testCreateAccountFail(){
+	public void testCreateAccountBadEmail(){
+		when(mockRegistrationForm.getUsername()).thenReturn(username);
+		when(mockRegistrationForm.getFirstname()).thenReturn(firstname);
+		when(mockRegistrationForm.getLastname()).thenReturn(lastname);
+		when(mockRegistrationForm.getEmail()).thenReturn(email);
+		when(mockRegistrationForm.getConfirmEmail()).thenReturn("wrong@Email.com");
+
+		ModelAndView result= accountController.createAccount(mockRegistrationForm, null);
+		assertEquals("account/registrationForm",result.getViewName());
+		assertEquals("Sorry, your Email addresses didn't match.",result.getModel().get("message"));	
+	}
+	@Test
+	public void testCreateAccountException(){
 		stub(mockAccount.getUsername()).toThrow(new RuntimeException());
-		ModelAndView result= accountController.createAccount(mockAccount, null);
+		ModelAndView result= accountController.createAccount(mockRegistrationForm, null);
 		assertEquals("account/registrationForm",result.getViewName());
 		assertEquals("There was an issue creating your account."
 				+ "Please contact the administrator for assistance.",result.getModel().get("message"));	
@@ -219,4 +245,48 @@ public class AccountControllerTest {
 		assertEquals("Your passwords did not match, try again.",result.getModel().get("message"));
 		assertEquals(mockPassForm,result.getModel().get("passform"));
 	}
+	@Test
+	public void testGetContextAccount(){
+		SecurityContextHolder.setContext(mockContext);
+		when(mockContext.getAuthentication().getName()).thenReturn(username);
+		when(mockAccountService.loadByUsername(username)).thenReturn(mockAccount);		
+		Account account=accountController.getContextAccount();
+		assertEquals(mockAccount,account);
+	}
+	@Test
+	public void testEditAccountForm(){
+		
+		when(mockEditAccountForm.getFirstname()).thenReturn(firstname);
+		when(mockEditAccountForm.getLastname()).thenReturn(lastname);
+		when(mockEditAccountForm.getPassword()).thenReturn(password);
+		when(mockEditAccountForm.getConfirmPassword()).thenReturn(password);
+		when(mockEditAccountForm.getEmail()).thenReturn(email);
+		when(mockEditAccountForm.getConfirmEmail()).thenReturn(email);
+
+		ModelAndView results=accountController.editAccountForm(mockEditAccountForm);
+		assertEquals(mockEditAccountForm,results.getModel().get("eaForm"));
+		assertEquals("account/editAccountForm",results.getViewName());
+	}
+	@Test
+	public void testEditAccountFormSubmit(){
+		when(mockEditAccountForm.getFirstname()).thenReturn(firstname);
+		when(mockEditAccountForm.getLastname()).thenReturn(lastname);
+		when(mockEditAccountForm.getPassword()).thenReturn(password);
+		when(mockEditAccountForm.getConfirmPassword()).thenReturn(password);
+		when(mockEditAccountForm.getEmail()).thenReturn(email);
+		when(mockEditAccountForm.getConfirmEmail()).thenReturn(email);
+		ModelAndView results=accountController.saveEditAccountForm(mockEditAccountForm);
+
+		assertEquals(mockEditAccountForm,results.getModel().get("eaForm"));
+		assertEquals("your form has been submitted, but this is currently unimplemented...",results.getModel().get("message"));
+		assertEquals("account/editAccountForm",results.getViewName());
+	}
+//	public ModelAndView saveEditAccountForm(EditAccountForm eaForm){
+//		eaForm.loadAccount(account);
+//		mav.addObject("eaForm",eaForm);
+//		mav.addObject("message","your form has been submitted, but this is currently unimplemented...");
+//		mav.setViewName("account/editAccountForm");
+//		return mav;
+//	}
+	
 }

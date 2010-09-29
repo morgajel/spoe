@@ -61,9 +61,14 @@ public class AccountDaoImpl implements AccountDao {
 	@Override
 	public Account loadByUsername(String username){
 		logger.debug("attempting to load user by "+username+" and password" );
-		Account account= (Account) loadQueryByUsername("findAccountByUsername",username).list().get(0);
-		logger.info("Loaded account "+account);
-		return account;
+		//FIXME: throws npe if the list is empty.
+		List acclist=loadQueryByUsername("findAccountByUsername",username).list();
+		if (acclist.size() >0 ){
+			logger.info("Loaded account "+acclist.get(0));
+			return (Account) acclist.get(0);
+		}else{
+			return null;
+		}
 	}
 	/**
 	 * returns an account matching a given username and password. Will return null if none is found. 
@@ -71,9 +76,13 @@ public class AccountDaoImpl implements AccountDao {
 	@Override
 	public Account loadByUsernameAndPassword(String username, String password) {
 		logger.debug("attempting to load user by "+username+" and password" );
-		Account account= (Account) loadQueryByUsername("findAccountByUsernameAndPassword", username).setString("password", password).list().get(0);
-		logger.info("Loaded account "+account);
-		return account;
+		List acclist=loadQueryByUsername("findAccountByUsernameAndPassword", username).setString("password", password).list();
+		if (acclist.size() >0 ){
+			logger.info("Loaded account "+acclist.get(0));
+			return (Account) acclist.get(0);
+		}else{
+			return null;
+		}
 	}
 	/**
 	 * returns an account matching a given username and checksum. Will return null if none is found. 
@@ -82,8 +91,12 @@ public class AccountDaoImpl implements AccountDao {
 	public Account loadByUsernameAndChecksum(String username, String checksum) {
 		//This is a lot of text to return a simple account
 		logger.debug("attempting to load user by "+username+" and "+checksum );
-		Account account= (Account) loadQueryByUsername("findAccountByUsernameAndChecksum",username).setString("checksum", checksum).list().get(0);
-		logger.info("Loaded account "+account);
-		return account;
+		List acclist=loadQueryByUsername("findAccountByUsernameAndChecksum",username).setString("checksum", checksum).list();
+		if (acclist.size() >0 ){
+			logger.info("Loaded account "+acclist.get(0));
+			return (Account) acclist.get(0);
+		}else{
+			return null;
+		}
 	}
 }

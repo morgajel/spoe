@@ -31,6 +31,7 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.validator.constraints.Email;
 
+import com.morgajel.spoe.web.RegistrationForm;
 
 @NamedQueries({
 	/**
@@ -71,17 +72,6 @@ import org.hibernate.validator.constraints.Email;
 @Entity
 @Table(name="account")
 public class Account implements Serializable {
-    @ManyToMany
-    @JoinTable(name="account_role",
-	        joinColumns=@JoinColumn(name="account_id"),
-	        inverseJoinColumns=@JoinColumn(name="role_id")
-    )
-	/**
-	 * Returns all of the roles currently assigned to a user.
-	 **/
-    public Set<Role> getRoles() {
-    	return roles; 
-    }
     
    	@NotNull
 	private Long accountId;
@@ -106,8 +96,8 @@ public class Account implements Serializable {
 	private Date lastAccessDate;
 	@DateTimeFormat
 	private Date creationDate;
-	public Set<Role> roles;
-	
+   	public Set<Role> roles;
+   	
 	public static final String ALGORITHM = "SHA1";
 	public static final String PASSWDCHARSET = "!0123456789abcdefghijklmnopqrstuvwxyz";
 	private static final long serialVersionUID = -6987219647522500285L;
@@ -172,7 +162,7 @@ public class Account implements Serializable {
     	this.enabled=false;
 	    this.setLastAccessDate(new Date());
 	    this.setCreationDate(new Date());
-	    this.roles=new HashSet<Role>();
+	    this.roles= new HashSet<Role>();
     }
 	/**
      * Returns this.accountId, which is the Primary Key for Accounts.  
@@ -184,13 +174,24 @@ public class Account implements Serializable {
 		return accountId;
 	}
     
+
+	/**
+	 * Returns all of the roles currently assigned to a user.
+	 **/
+    @ManyToMany
+    @JoinTable(name="account_role",
+	        joinColumns=@JoinColumn(name="account_id"),
+	        inverseJoinColumns=@JoinColumn(name="role_id")
+    )
+    public Set<Role> getRoles() {
+    	return roles; 
+    }
     /**
      * Returns all of the roles currently assigned to a user.
      **/
     public void setRoles( Set<Role> roles) {
-		this.roles=roles;
+		this.roles= roles;
 	}
-
 	/**
      * Adds a role to the current set of Role. if roles is null, instantiates a new 
      * HashSet and adds the role to it. 
@@ -326,7 +327,16 @@ public class Account implements Serializable {
 		//FIXME should be lastModifiedDate
 		this.lastAccessDate = (Date) lastAccessDate.clone();
 	}
-    /**
+	/**
+	 * Import registration form to populate data 
+	 */
+	public void importRegistration(RegistrationForm registerForm){
+		firstname=registerForm.getFirstname();
+		lastname=registerForm.getLastname();
+		email=registerForm.getEmail();
+		username=registerForm.getUsername();
+	}
+	/**
      * Overrides the default toString, which should tell you quite a bit about your account.  
      **/
 	@Override
@@ -347,8 +357,8 @@ public class Account implements Serializable {
 				+  "]";
 	}
 	/**
-     * Generates a temporary password length characters long using PASSWDCHARSET.   
-     **/
+	 * Generates a temporary password length characters long using PASSWDCHARSET.   
+	 **/
 	public static int MAXLENGTH=25;
 	public static String generatePassword(int length) {
 		//TODO Do I still need this?
