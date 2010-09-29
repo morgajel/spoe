@@ -7,6 +7,10 @@
   <packaging>war</packaging>
   <version>0.0.1-SNAPSHOT</version>
   <name>Second Pair of Eyes</name>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>javax.activation</groupId>
@@ -336,7 +340,7 @@
     	<scope>provided</scope>
     </dependency>
     <dependency>
-    	<groupId>javax.xml</groupId>
+    	<groupId>javax.xml.bind</groupId>
     	<artifactId>jaxb-api</artifactId>
     	<version>2.1</version>
     	<scope>provided</scope>
