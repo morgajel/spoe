@@ -359,7 +359,7 @@ public class Account implements Serializable {
 	/**
 	 * Generates a temporary password length characters long using PASSWDCHARSET.   
 	 **/
-	public static int MAXLENGTH=25;
+	public static final int MAXLENGTH=25;
 	public static String generatePassword(int length) {
 		//TODO Do I still need this?
 		if (length < 0 || length >25){
