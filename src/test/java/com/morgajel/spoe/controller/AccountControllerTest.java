@@ -12,7 +12,9 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import com.morgajel.spoe.model.Account;
 import com.morgajel.spoe.model.Role;
@@ -288,5 +290,48 @@ public class AccountControllerTest {
 //		mav.setViewName("account/editAccountForm");
 //		return mav;
 //	}
+	@Test
+	public void testDisplayUserSuccess() {
+		when(mockAccount.getPassword()).thenReturn(passfield);
+		when(mockAccount.getUsername()).thenReturn(username);
+		when(mockAccount.getFirstname()).thenReturn(firstname);
+		when(mockAccount.getLastname()).thenReturn(lastname);
+		when(mockAccount.getEmail()).thenReturn(email);
+		when(mockAccountService.loadByUsername(username)).thenReturn(mockAccount);
+		
+		ModelAndView mav=accountController.displayUser(username);
+		
+		assertEquals(username,mav.getModel().get("message"));
+		assertEquals("account/viewUser",mav.getViewName());
+		assertEquals(mockAccount,mav.getModel().get("account"));
+	}
+	@Test
+	public void testDisplayUserNotFound() {
+		when(mockAccount.getPassword()).thenReturn(passfield);
+		when(mockAccount.getUsername()).thenReturn(username);
+		when(mockAccount.getFirstname()).thenReturn(firstname);
+		when(mockAccount.getLastname()).thenReturn(lastname);
+		when(mockAccount.getEmail()).thenReturn(email);
+		when(mockAccountService.loadByUsername(username)).thenReturn(null);
+		
+		ModelAndView mav=accountController.displayUser(username);
+		
+		assertEquals("I'm sorry, "+username+" was not found.",mav.getModel().get("message"));
+		assertEquals("account/viewUser",mav.getViewName());
+	}
+	@Test
+	public void testDisplayUserException() {
+		when(mockAccount.getPassword()).thenReturn(passfield);
+		when(mockAccount.getUsername()).thenReturn(username);
+		when(mockAccount.getFirstname()).thenReturn(firstname);
+		when(mockAccount.getLastname()).thenReturn(lastname);
+		when(mockAccount.getEmail()).thenReturn(email);
+		stub(mockAccountService.loadByUsername(username)).toThrow(new RuntimeException());
+		
+		ModelAndView mav=accountController.displayUser(username);
+		
+		assertEquals("Something failed while trying to display "+username,mav.getModel().get("message"));
+		assertEquals("account/activationFailure",mav.getViewName());
+	}
 	
 }

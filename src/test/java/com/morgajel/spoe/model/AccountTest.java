@@ -134,11 +134,7 @@ public class AccountTest {
 	public void testHashText(){
 		String hash=Account.hashText(password);
 		assertEquals(passwordHash,hash);
-		// need to mock this up so I can catch the exception
-		//Account.ALGORITHM="borken" ; 
-		//hash=Account.hashText(password);
-		//assertNotEquals("",hash);
-
+		//HULK SMASH, no way to test a missing algorithm
 	}
 	@Test
 	public void textGeneratePassword(){

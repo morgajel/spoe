@@ -120,9 +120,10 @@ public class Account implements Serializable {
 			}
 		}catch(NoSuchAlgorithmException ex){
 			logger.error("Couldn't find "+ALGORITHM+" to hash the password. ");
+			hexStr.append(Account.generatePassword(25)); 
 			//This should never ever happen, but needs to be caught.
 			//I'd rather have an unusable password than a blank password.
-			hexStr.append(Account.generatePassword(25)); 
+			//NOTE: there is no way to test this :/
 		}
 		logger.trace("Created hash "+hexStr.toString()+" from "+text);
 		return hexStr.toString();

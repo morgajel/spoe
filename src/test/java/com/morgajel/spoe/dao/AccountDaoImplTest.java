@@ -16,7 +16,6 @@ import com.morgajel.spoe.dao.AccountDaoImpl;
 import org.hibernate.SessionFactory;
 import static org.mockito.Mockito.*;
 
-
 public class AccountDaoImplTest {
 	private AccountDaoImpl accountDao;
 	private SessionFactory mockSessionFactory;
@@ -31,16 +30,13 @@ public class AccountDaoImplTest {
         mockAccount=mock(Account.class);
         accountDao = new AccountDaoImpl();
         accountDao.setSessionFactory(mockSessionFactory);
-        
 	}
-
 	@After
 	public void tearDown() throws Exception {
 		this.accountDao = null;
 		mockSessionFactory=null;
 		mockAccount=null;
 	}
-
 	@Test
 	public void testSaveAccount(){
 		accountDao.saveAccount(mockAccount);
@@ -57,31 +53,52 @@ public class AccountDaoImplTest {
 		assertEquals(results,accountDao.listAccounts());
 	}
 	@Test
-	public void testLoadByUsername(){
-//		List<Account> acclist=new ArrayList<Account>();
-//		acclist.add(mockAccount);
-//		when(mockSessionFactory.getCurrentSession().getNamedQuery("findAccountByUsername").setString("username", username).list()).thenReturn(acclist);
-//		Account account=accountDao.loadByUsernameAndChecksum(username, checksum);
-//		assertEquals(mockAccount,account);
+	public void testLoadByUsernameSuccess(){
+		List<Account> acclist=new ArrayList<Account>();
+		acclist.add(mockAccount);
+		when(mockSessionFactory.getCurrentSession().getNamedQuery("findAccountByUsername")
+				.setString("username", username).list()).thenReturn(acclist);
+		Account account=accountDao.loadByUsername(username);
+		assertEquals(mockAccount,account);
 	}
 	@Test
-	public void testLoadByUsernameAndPassword(){
+	public void testLoadByUsernameFail(){
+		List<Account> acclist=new ArrayList<Account>();
+		when(mockSessionFactory.getCurrentSession().getNamedQuery("findAccountByUsername")
+				.setString("username", username).list()).thenReturn(acclist);
+		Account account=accountDao.loadByUsername(username);
+		assertEquals(null,account);
+	}
+	@Test
+	public void testLoadByUsernameAndPasswordSuccess(){
 		List<Account> acclist=new ArrayList<Account>();
 		acclist.add(mockAccount);
 		when(mockSessionFactory.getCurrentSession().getNamedQuery("findAccountByUsernameAndPassword")
 				.setString("username", username).setString("password", tempHash).list()).thenReturn(acclist);
 		Account account=accountDao.loadByUsernameAndPassword(username, tempHash);
 		assertEquals(mockAccount,account);
-
 	}
-
 	@Test
-	public void testLoadByUsernameAndChecksum(){
+	public void testLoadByUsernameAndPasswordFail(){
+		List<Account> acclist=new ArrayList<Account>();
+		when(mockSessionFactory.getCurrentSession().getNamedQuery("findAccountByUsernameAndPassword")
+				.setString("username", username).setString("password", tempHash).list()).thenReturn(acclist);
+		Account account=accountDao.loadByUsernameAndPassword(username, tempHash);
+		assertEquals(null,account);
+	}
+	@Test
+	public void testLoadByUsernameAndChecksumSuccess(){
 		List<Account> acclist=new ArrayList<Account>();
 		acclist.add(mockAccount);
 		when(mockSessionFactory.getCurrentSession().getNamedQuery("findAccountByUsernameAndChecksum").setString("username", username).setString("checksum", checksum).list()).thenReturn(acclist);
 		Account account=accountDao.loadByUsernameAndChecksum(username, checksum);
 		assertEquals(mockAccount,account);
 	}
-
+	@Test
+	public void testLoadByUsernameAndChecksumFail(){
+		List<Account> acclist=new ArrayList<Account>();
+		when(mockSessionFactory.getCurrentSession().getNamedQuery("findAccountByUsernameAndChecksum").setString("username", username).setString("checksum", checksum).list()).thenReturn(acclist);
+		Account account=accountDao.loadByUsernameAndChecksum(username, checksum);
+		assertEquals(null,account);
+	}
 }

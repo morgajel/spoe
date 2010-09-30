@@ -93,7 +93,7 @@ public class AccountController {
 	 * Displays the given user's public information 
 	 */
 	@RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
-	public ModelAndView activateAccount(@PathVariable String username){
+	public ModelAndView displayUser(@PathVariable String username){
 		logger.debug("trying to display "+username);
 		ModelAndView mav= new ModelAndView();
 		try{
@@ -114,7 +114,7 @@ public class AccountController {
 			// TODO: tell the user wtf happened
 			logger.error("damnit, something failed."+ex);
 			mav.setViewName("account/activationFailure");
-			mav.addObject("message","<!--"+ex+"-->");
+			mav.addObject("message","Something failed while trying to display "+username);
 		}
 		return mav;
 	}
