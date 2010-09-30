@@ -96,7 +96,6 @@ public class Account implements Serializable {
 	private Date lastAccessDate;
 	@DateTimeFormat
 	private Date creationDate;
-   	public Set<Role> roles;
    	
 	public static final String ALGORITHM = "SHA1";
 	public static final String PASSWDCHARSET = "!0123456789abcdefghijklmnopqrstuvwxyz";
@@ -174,15 +173,16 @@ public class Account implements Serializable {
 		return accountId;
 	}
     
-
-	/**
-	 * Returns all of the roles currently assigned to a user.
-	 **/
+    public Set<Role> roles;
     @ManyToMany
     @JoinTable(name="account_role",
-	        joinColumns=@JoinColumn(name="account_id"),
-	        inverseJoinColumns=@JoinColumn(name="role_id")
+	        joinColumns=@JoinColumn(name="account_id",referencedColumnName="account_id"),
+	        inverseJoinColumns=@JoinColumn(name="role_id",referencedColumnName="role_id")
     )
+    
+    /**
+	 * Returns all of the roles currently assigned to a user.
+	 **/
     public Set<Role> getRoles() {
     	return roles; 
     }

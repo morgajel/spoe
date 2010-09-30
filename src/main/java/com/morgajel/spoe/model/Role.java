@@ -40,20 +40,29 @@ import org.hibernate.annotations.NamedQuery;
 @Entity
 @Table(name="role")
 public class Role implements Serializable {
-
+	public Set<Account> accounts;
 	/**
 	 * Returns all of the roles currently assigned to a user.
 	 **/
 	@ManyToMany
     @JoinTable(name="account_role",
-	        joinColumns=@JoinColumn(name="role_id"),
-	        inverseJoinColumns=@JoinColumn(name="account_id")
+	        joinColumns=@JoinColumn(name="role_id",referencedColumnName="role_id"),
+	        inverseJoinColumns=@JoinColumn(name="account_id",referencedColumnName="account_id")
     )
+    
+    /**
+     * Returns all of the accounts currently assigned to a user.
+     **/
     public Set<Account> getAccounts() {
     	return accounts; 
     }
-	
-    public Set<Account> accounts;
+    /**
+     * Sets a list of accounts that use the role.
+     **/
+    public void setAccounts( Set<Account> accounts) {
+		this.accounts= accounts;
+	}	
+    
 	@NotNull
 	private Long roleId;
 	@NotNull
@@ -74,12 +83,6 @@ public class Role implements Serializable {
 		logger.info("added roll to "+account.getUsername()+", check it out:"+accounts);
 	}
 	
-    /**
-     * Returns all of the accounts currently assigned to a user.
-     **/
-    public void setAccounts( Set<Account> accounts) {
-		this.accounts= accounts;
-	}
 
     /**
      * Returns the roleId of the Role instance.
