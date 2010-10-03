@@ -9,7 +9,7 @@
 Welcome to your account page, ${account.username}.
 <a href="/account/edit">edit account</a>
 <hr/>
-${message} 
+${message}
 	<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 	</body>
 </html>
