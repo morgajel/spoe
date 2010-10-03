@@ -32,340 +32,377 @@ import org.hibernate.annotations.NamedQuery;
 import org.hibernate.validator.constraints.Email;
 
 import com.morgajel.spoe.web.RegistrationForm;
-
+/**
+ * Named Queries for Account.
+ */
 @NamedQueries({
-	/**
-	 * Returns an account matching a given username.
-	 */	
-	@NamedQuery(
-		name = "findAccountByUsername",
-		query = "from Account acc where acc.username = :username"
-	),
-	/**
-	 * Returns an account matching a given email address. 
-	 */	
-	@NamedQuery(
-		name = "findAccountByEmail",
-		query = "from Account acc where acc.email = :email"
-	),
-	/**
-	 * Returns an account matching a given username and password. 
-	 */	
-	@NamedQuery(
-		name = "findAccountByUsernameAndPassword",
-		query = "from Account acc where acc.username = :username and acc.password = sha1(:password)"
-	),
-	/**
-	 * Returns an account matching a given username and checksum. 
-	 * The checksum is calculated by concatenating the username password and whether or not the 
-	 * account is enabled.
-	 */	
-	@NamedQuery(
-			name = "findAccountByUsernameAndChecksum",
-			query = "from Account acc where acc.username = :username and sha1(concat(acc.username,acc.password,acc.enabled)) = :checksum" 
-	)
+    /**
+     * Returns an account matching a given username.
+     */
+    @NamedQuery(
+        name = "findAccountByUsername",
+        query = "from Account acc where acc.username = :username"
+    ),
+    /**
+     * Returns an account matching a given email address.
+     */
+    @NamedQuery(
+        name = "findAccountByEmail",
+        query = "from Account acc where acc.email = :email"
+    ),
+    /**
+     * Returns an account matching a given username and password.
+     */
+    @NamedQuery(
+        name = "findAccountByUsernameAndPassword",
+        query = "from Account acc where acc.username = :username and acc.password = sha1(:password)"
+    ),
+    /**
+     * Returns an account matching a given username and checksum.
+     * The checksum is calculated by concatenating the username password and whether or not the
+     * account is enabled.
+     */
+    @NamedQuery(
+            name = "findAccountByUsernameAndChecksum",
+            query = "from Account acc where acc.username = :username and sha1(concat(acc.username,acc.password,acc.enabled)) = :checksum"
+    )
 })
 
-/** 
+/**
  * Models a users interaction with the rest of the system.
  */
 @Entity
-@Table(name="account")
+@Table(name = "account")
 public class Account implements Serializable {
-    
-   	@NotNull
-	private Long accountId;
-	@NotNull
-	@Size(min = 1, max = 25)
-	private String username;
-	@NotNull
-	@Size(min = 5, max = 255)
-	private String email;
-	@NotNull
-	@Size(min=6, max=255)
-	private String password;
-	@NotNull
-	private Boolean enabled;
-	@NotNull
-	@Size(min=5, max=255)
-	private String firstname;
-	@NotNull
-	@Size(min=5, max=255)
-	private String lastname;
-	@DateTimeFormat
-	private Date lastAccessDate;
-	@DateTimeFormat
-	private Date creationDate;
-   	
-	public static final String ALGORITHM = "SHA1";
-	public static final String PASSWDCHARSET = "!0123456789abcdefghijklmnopqrstuvwxyz";
-	private static final long serialVersionUID = -6987219647522500285L;
-	private transient static Logger logger = Logger.getLogger("com.morgajel.spoe.model.Account");
-	
-	/**
-     * Takes a given string and hashes it with ALGORITHM 
-     * Same as sha1() in mysql when using ALGORITHM=SHA1; 
+//FIXME: use pVariable format
+    @NotNull
+    private Long accountId;
+    @NotNull
+    @Size(min = 3, max = 25)
+    private String username;
+    @NotNull
+    @Size(min = 5, max = 255)
+    private String email;
+    @NotNull
+    @Size(min = 6, max = 255)
+    private String password;
+    @NotNull
+    private Boolean enabled;
+    @NotNull
+    @Size(min = 2, max = 255)
+    private String firstname;
+    @NotNull
+    @Size(min = 2, max = 255)
+    private String lastname;
+    @DateTimeFormat
+    private Date lastModifiedDate;
+    @DateTimeFormat
+    private Date creationDate;
+
+    public static final String ALGORITHM = "SHA1";
+    public static final String PASSWDCHARSET = "!0123456789abcdefghijklmnopqrstuvwxyz";
+    private static final long serialVersionUID = -6987219647522500285L;
+    private static transient Logger logger = Logger.getLogger("com.morgajel.spoe.model.Account");
+
+    /**
+     * Takes a given string and hashes it with ALGORITHM.
+     * Same as sha1() in mysql when using ALGORITHM=SHA1
+     * @return String hashedText
+     * @param text Text to hash
      **/
-	public static String hashText(String text) {
-		//TODO factor this out into a utility class
-		StringBuilder hexStr= new StringBuilder();
-		try {
-			MessageDigest md = MessageDigest.getInstance(ALGORITHM);
-			md.reset();
-			byte[] buffer = text.getBytes();
-			md.update(buffer);
-			byte[] digest = md.digest();
-			for (int i = 0; i < digest.length; i++) {
-				hexStr.append( Integer.toString( ( digest[i] & 0xff ) + 0x100, 16).substring( 1 ));
-			}
-		}catch(NoSuchAlgorithmException ex){
-			logger.error("Couldn't find "+ALGORITHM+" to hash the password. ");
-			hexStr.append(Account.generatePassword(25)); 
-			//This should never ever happen, but needs to be caught.
-			//I'd rather have an unusable password than a blank password.
-			//NOTE: there is no way to test this :/
-		}
-		logger.trace("Created hash "+hexStr.toString()+" from "+text);
-		return hexStr.toString();
-	}
-	
-	/**
-     * Create a checksum that can be used for activation purposes. Checksum consists 
-     * of username + password hash + enabled status hashed together. 
+    public static String hashText(String text) {
+        //TODO factor this out into a utility class
+        StringBuilder hexStr = new StringBuilder();
+        try {
+            MessageDigest md = MessageDigest.getInstance(ALGORITHM);
+            md.reset();
+            byte[] buffer = text.getBytes();
+            md.update(buffer);
+            byte[] digest = md.digest();
+            for (int i = 0; i < digest.length; i++) {
+                hexStr.append(
+                            Integer.toString(
+                                    (digest[i] & 0xff) + 0x100, 16
+                            ).substring(1));
+            }
+        } catch (NoSuchAlgorithmException ex) {
+            logger.error("Couldn't find " + ALGORITHM + " to hash the password. ");
+            hexStr.append(Account.generatePassword(MAXLENGTH));
+            //This should never ever happen, but needs to be caught.
+            //I'd rather have an unusable password than a blank password.
+        }
+        logger.trace("Created hash " + hexStr.toString() + " from " + text);
+        return hexStr.toString();
+    }
+
+    /**
+     * Create a checksum that can be used for activation purposes. Checksum consists
+     * of username + password hash + enabled status hashed together.
+     * @return String checksum
      **/
-	public String activationChecksum(){
-		//TODO can this be refactored with the namedQuery findAccountByUsernameAndChecksum?
-		//converting enabled to int rather than string representation so NamedQuery using mysql int works.
-		Integer enabled= this.enabled?1:0;
-		String checksum=hashText(username+password+enabled);
-		logger.info("create checksum: "+username+" + "+password+" + "+enabled+" = "+checksum);
-		return  checksum;
-	}
-	
-	/**
-     * Takes a given string, hashes it, and compares it to the password; returns true if equal 
+    public String activationChecksum() {
+        //TODO can this be refactored with the namedQuery findAccountByUsernameAndChecksum?
+        //converting enabled to int rather than string representation so NamedQuery using mysql int works.
+        Integer enable = this.enabled?1:0;
+        String checksum = hashText(username + password + enable);
+        logger.info("create checksum: " + username + " + " + password + " + " + enable + " = " + checksum);
+        return checksum;
+    }
+
+    /**
+     * Takes a given string, hashes it, and compares it to the password; returns true if equal.
+     * @return boolean verification
+     * @param pPassword see if a given password matches the password field when hashed.
      **/
-	public boolean verifyPassword(String password){
-		//FIXME is this still needed?
-		if (Account.hashText(password).equals(this.password)){
-			return true;
-		}
-		return false;
-	}
-	
-	/**
+    public boolean verifyPassword(String pPassword) {
+        //FIXME is this still needed?
+        if (Account.hashText(pPassword).equals(this.password)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Constructor for Account class.
-     * Disables and sets LastAccessDate and CreationDate, creates a new Set of roles 
-     * and disables the account. 
+     * Disables and sets LastModifiedDate and CreationDate, creates a new Set of roles
+     * and disables the account.
      **/
     public Account() {
-    	this.enabled=false;
-	    this.setLastAccessDate(new Date());
-	    this.setCreationDate(new Date());
-	    this.roles= new HashSet<Role>();
+        this.enabled = false;
+        this.setLastModifiedDate(new Date());
+        this.setCreationDate(new Date());
+        this.roles = new HashSet<Role>();
     }
-	/**
-     * Returns this.accountId, which is the Primary Key for Accounts.  
+    /**
+     * Returns this.accountId, which is the Primary Key for Accounts.
+     * @return Long accountId
      **/
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    @Column(name="account_id")
-	public Long getAccountId() {
-		return accountId;
-	}
-    
-    public Set<Role> roles;
-    @ManyToMany
-    @JoinTable(name="account_role",
-	        joinColumns=@JoinColumn(name="account_id",referencedColumnName="account_id"),
-	        inverseJoinColumns=@JoinColumn(name="role_id",referencedColumnName="role_id")
-    )
-    
-    /**
-	 * Returns all of the roles currently assigned to a user.
-	 **/
-    public Set<Role> getRoles() {
-    	return roles; 
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "account_id")
+    public Long getAccountId() {
+        return accountId;
     }
+
+    private Set<Role> roles;
+
     /**
      * Returns all of the roles currently assigned to a user.
+     * @return Set<Role>
      **/
-    public void setRoles( Set<Role> roles) {
-		this.roles= roles;
-	}
-	/**
-     * Adds a role to the current set of Role. if roles is null, instantiates a new 
-     * HashSet and adds the role to it. 
+    @ManyToMany
+    @JoinTable(name = "account_role",
+            joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id")
+    )
+    public Set<Role> getRoles() {
+        return roles;
+    }
+    /**
+     * Sets the roles for a user.
+     * @param pRoles A set of Roles to give to the account.
+     *
      **/
-	public void addRole(Role role) {
-		roles.add(role);
-		logger.info("added roll to "+username+", check it out:"+roles);
-	}
+    public void setRoles(Set<Role> pRoles) {
+        this.roles = pRoles;
+    }
+    /**
+     * Adds a role to the current set of Role. if roles is null, instantiates a new
+     * HashSet and adds the role to it.
+     * @param role a role to add to the account.
+     **/
+    public void addRole(Role role) {
+        roles.add(role);
+        logger.info("added roll to " + username + ", check it out:" + roles);
+    }
 
-	/**
-     * Sets this.accountId, which is the Primary Key for Accounts.  
-     **/	
-	public void setAccountId(Long accountId) {
-		this.accountId = accountId;
-	}
-	/**
-     * Returns this.email, which is required for password recovery and account creation.  
+    /**
+     * Sets this.accountId, which is the Primary Key for Accounts.
+     * @param pAccountId The ID for this account.
+     **/
+    public void setAccountId(Long pAccountId) {
+        this.accountId = pAccountId;
+    }
+    /**
+     * Returns this.email, which is required for password recovery and account creation.
+     * @return email
      **/
     @Email
-    @Column(name="email", length=255, nullable=false)
-	public String getEmail() {
-		return email;
-	}
+    @Column(name = "email", nullable = false)
+    public String getEmail() {
+        return email;
+    }
     /**
-     * Sets this.email, which is required for password recovery and account creation.  
+     * Sets this.email, which is required for password recovery and account creation.
+     * @param pEmail Email to set for the account.
      **/
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	/**
-     * Returns this.username, which is required for login.  
-     **/
-    @Column(name="username")
-	public String getUsername() {
-		return username;
-	}
+    public void setEmail(String pEmail) {
+        this.email = pEmail;
+    }
     /**
-     * Sets this.username, which is required for login.  
+     * Returns this.username, which is required for login.
+     * @return String
      **/
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	/**
-     * Returns this.password, which is a hashed copy of the user's password.  
-     **/
-    @Column(name="password")
-	public String getPassword() {
-    	logger.debug("getting password:"+this.password);
-		return this.password;
-	}
+    @Column(name = "username")
+    public String getUsername() {
+        return username;
+    }
     /**
-     * Sets this.password directly without hashing.  
+     * Sets this.username, which is required for login.
+     * @param uname username for account
      **/
-	private void setPassword(String password) {
-		logger.trace("setting password: "+password);
-		this.password = password;
-		logger.trace("password field is now: "+this.password);
-	}
-	/**
-     * Sets this.password after hashing the given string.  
-     **/
-	public void setHashedPassword(String password) {
-		logger.trace("H setting password: "+password);
-		this.setPassword(Account.hashText(password));
-		logger.trace("H password field is now: "+this.password);
-	}
-	/**
-     * Gets this.enabled, which is required for login.  
-     **/
-    @Column(name="enabled", nullable=false )
-	public Boolean getEnabled() {
-		return enabled;
-	}
-	/**
-     * Sets this.enabled, which is required for login.  
-     **/
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
-	}
-	/**
-     * Gets this.Firstname, which is rarely ever used except for addressing people.  
-     **/
-    @Column(name="firstname")
-	public String getFirstname() {
-		return firstname;
-	}
+    public void setUsername(String uname) {
+        this.username = uname;
+    }
     /**
-     * Sets this.Firstname, which is rarely ever used except for addressing people.  
+     * Returns this.password, which is a hashed copy of the user's password.
+     * @return String password
      **/
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
-	/**
-     * Gets this.Lastname, which is rarely ever used except for addressing people.  
+    @Column(name = "password")
+    public String getPassword() {
+        logger.debug("getting password:" + this.password);
+        return this.password;
+    }
+    /**
+     * Sets this.password directly without hashing.
+     * @param passwordHash hash of user's password
      **/
-    @Column(name="lastname")
-	public String getLastname() {
-		return lastname;
-	}
-	/**
-     * Sets this.Lastname, which is rarely ever used except for addressing people.  
+    private void setPassword(String passwordHash) {
+        logger.trace("setting password: " + passwordHash);
+        this.password = passwordHash;
+        logger.trace("password field is now: " + this.password);
+    }
+    /**
+     * Hashes the given string before setting it.
+     * @param pword plaintext password
      **/
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
-	/**
-     * Gets this.creationDate, the date when the account was created.  
+    public void setHashedPassword(String pword) {
+        logger.trace("H setting password: " + pword);
+        this.setPassword(Account.hashText(pword));
+        logger.trace("H password field is now: " + this.password);
+    }
+    /**
+     * Gets this.enabled, which is required for login.
+     * @return boolean enabled
      **/
-    @Column(name="creation_date")
-	public Date getCreationDate() {
-		return (Date) creationDate.clone();
-	}
+    @Column(name = "enabled", nullable = false)
+    public Boolean getEnabled() {
+        return enabled;
+    }
+    /**
+     * Sets this.enabled, which is required for login.
+     * @param enable status of the account
+     **/
+    public void setEnabled(Boolean enable) {
+        this.enabled = enable;
+    }
+    /**
+     * Gets this.Firstname, which is rarely ever used except for addressing people.
+     * @return String firstname
+     **/
+    @Column(name = "firstname")
+    public String getFirstname() {
+        return firstname;
+    }
+    /**
+     * Sets this.Firstname, which is rarely ever used except for addressing people.
+     * @param fname first name of user
+     **/
+    public void setFirstname(String fname) {
+        this.firstname = fname;
+    }
+    /**
+     * Gets this.Lastname, which is rarely ever used except for addressing people.
+     * @return lastname
+     **/
+    @Column(name = "lastname")
+    public String getLastname() {
+        return lastname;
+    }
+    /**
+     * Sets this.Lastname, which is rarely ever used except for addressing people.
+     * @param lname last name of account
+     **/
+    public void setLastname(String lname) {
+        this.lastname = lname;
+    }
+    /**
+     * Gets this.creationDate, the date when the account was created.
+     * @return Date creationDate
+     **/
+    @Column(name = "creation_date")
+    public Date getCreationDate() {
+        return (Date) creationDate.clone();
+    }
 
     /**
      * Sets this.creationDate, which should only be used once.
+     * @param cDate date of creation of account
      **/
-	public void setCreationDate(Date creationDate) {
-		//TODO: need to enforce this as only happening once; perhaps final?
-		this.creationDate = (Date) creationDate.clone();
-	}
-	/**
-     * Gets this.lastAccessDate, which tells when the account was last modified.  
-     **/
-    @Column(name="last_access_date")
-	public Date getLastAccessDate() {
-		return (Date) lastAccessDate.clone();
-	}
+    public void setCreationDate(Date cDate) {
+        //TODO need to enforce this as only happening once, perhaps final?
+        this.creationDate = (Date) cDate.clone();
+    }
     /**
-     * Sets this.lastAccessDate, which tells when the account was last modified.  
+     * Gets this.lastModifiedDate, which tells when the account was last modified.
+     * @return Date lastModifiedDate
      **/
-	public void setLastAccessDate(Date lastAccessDate) {
-		//TODO change this to timestamp in mysql and it will auto update
-		//FIXME should be lastModifiedDate
-		this.lastAccessDate = (Date) lastAccessDate.clone();
-	}
-	/**
-	 * Import registration form to populate data 
-	 */
-	public void importRegistration(RegistrationForm registerForm){
-		firstname=registerForm.getFirstname();
-		lastname=registerForm.getLastname();
-		email=registerForm.getEmail();
-		username=registerForm.getUsername();
-	}
-	/**
-     * Overrides the default toString, which should tell you quite a bit about your account.  
+    @Column(name = "last_modified_date")
+    public Date getLastModifiedDate() {
+        return (Date) lastModifiedDate.clone();
+    }
+    /**
+     * Sets this.lastModifiedDate, which tells when the account was last modified.
+     * @param pLastModifiedDate date that code was last modified.
      **/
-	@Override
-	public String toString() {
-		//FIXME: I need to update this. perhaps include roles
-		return "Account "
-				+ "[ accountId=" + accountId 
-				+ ", username=" + username
-				+ ", email=" + email
-				+ ", password="	+ password
-				+ ", enabled=" + enabled
-				+ ", firstname=" + firstname
-				+ ", lastname=" + lastname
-				+ ", lastAccessDate=" +	lastAccessDate
-				+ ", creationDate=" + creationDate
-				+ ", PASSWDCHARSET=" + PASSWDCHARSET
-				+ ", ALGORITHM=" + ALGORITHM
-				+  "]";
-	}
-	/**
-	 * Generates a temporary password length characters long using PASSWDCHARSET.   
-	 **/
-	public static final int MAXLENGTH=25;
-	public static String generatePassword(int length) {
-		//TODO Do I still need this?
-		if (length < 0 || length >25){
-			length=MAXLENGTH;
-		}
+    public void setLastModifiedDate(Date pLastModifiedDate) {
+        //TODO change this to timestamp in mysql and it will auto update
+        //FIXME should be lastModifiedDate
+        this.lastModifiedDate = (Date) pLastModifiedDate.clone();
+    }
+    /**
+     * Import registration form to populate data.
+     * @param registerForm registration form containing Account info
+     */
+    public void importRegistration(RegistrationForm registerForm) {
+        firstname = registerForm.getFirstname();
+        lastname = registerForm.getLastname();
+        email = registerForm.getEmail();
+        username = registerForm.getUsername();
+    }
+    /**
+     * Overrides the default toString, which should tell you quite a bit about your account.
+     * @return String
+     **/
+    @Override
+    public String toString() {
+        //FIXME: I need to update this. perhaps include roles
+        return "Account "
+                + "[ accountId=" + accountId
+                + ", username=" + username
+                + ", email=" + email
+                + ", password="    + password
+                + ", enabled=" + enabled
+                + ", firstname=" + firstname
+                + ", lastname=" + lastname
+                + ", lastModifiedDate=" +    lastModifiedDate
+                + ", creationDate=" + creationDate
+                + ", PASSWDCHARSET=" + PASSWDCHARSET
+                + ", ALGORITHM=" + ALGORITHM
+                +  "]";
+    }
+    public static final int MAXLENGTH = 25;
+    public static final int MINLENGTH = 6;
+    /**
+     * Generates a temporary password length characters long using PASSWDCHARSET.
+     * @param length length of the password
+     * @return String
+     **/
+    public static String generatePassword(int length) {
+        //TODO Do I still need this?
+        if (length < MINLENGTH || length > MAXLENGTH) {
+            length = MAXLENGTH;
+        }
         Random rand = new Random(System.currentTimeMillis());
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < length; i++) {
@@ -373,5 +410,5 @@ public class Account implements Serializable {
             sb.append(PASSWDCHARSET.charAt(pos));
         }
         return sb.toString();
-	}
+    }
 }

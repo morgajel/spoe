@@ -11,46 +11,51 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-/** 
- * Default Role Service Implementation used for managing RoleDao
+/**
+ * Default Role Service Implementation used for managing RoleDao.
  */
 @Service("roleService")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class RoleServiceImpl implements RoleService {
-	
-	@Autowired
-	private RoleDao roleDao;
-	private transient static Logger logger = Logger.getLogger("com.morgajel.spoe.service.RoleService");
 
-	/** 
-	 * Set RoleDao for accessing the datasource. 
-	 */
-	@Override
-	public void setRoleDao(RoleDao roleDao){
-		this.roleDao=roleDao;  
-	}
-	/** 
-	 * Add a given Role to the datasource. 
-	 */
-	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public void addRole(Role role) {
-		roleDao.saveRole(role);
-	}
-	/** 
-	 * Returns a list of services with no qualifications. 
-	 */
-	@Override
-	public List<Role> listRoles() {
-	    return roleDao.listRoles();
-	}
-	/** 
-	 * Load a Role from the datasource matching a given name. Will return null if none is found. 
-	 */
-	@Override
-	public Role loadByName(String name) {
-		logger.info("Loading role "+name);
-		Role role=roleDao.loadByName(name);
-		return role;
-	}
+    @Autowired
+    private RoleDao roleDao;
+    private static transient Logger logger = Logger.getLogger("com.morgajel.spoe.service.RoleService");
+
+    /**
+     * Set RoleDao for accessing the datasource.
+     * @param pRoleDao the roleDao you wish to set
+     */
+    @Override
+    public void setRoleDao(RoleDao pRoleDao) {
+        this.roleDao = pRoleDao;
+    }
+    /**
+     * Add a given Role to the datasource.
+     * @param pRole the role you wish to add
+     */
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+    public void addRole(Role pRole) {
+        roleDao.saveRole(pRole);
+    }
+    /**
+     * Returns a list of services with no qualifications.
+     * @return List<Role>
+     */
+    @Override
+    public List<Role> listRoles() {
+        return roleDao.listRoles();
+    }
+    /**
+     * Load a Role from the datasource matching a given name. Will return null if none is found.
+     * @param pName the name you wish to search by
+     * @return Role
+     */
+    @Override
+    public Role loadByName(String pName) {
+        logger.info("Loading role " + pName);
+        Role role = roleDao.loadByName(pName);
+        return role;
+    }
 }

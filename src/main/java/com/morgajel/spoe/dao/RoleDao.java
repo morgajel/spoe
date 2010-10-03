@@ -7,19 +7,23 @@ import java.util.List;
  */
 public interface RoleDao {
 
-	/**
-	 * Save a provided role to the datasource.
-	 */
-	public void saveRole ( Role role );
-	  
-	/**
-	 * List all roles in the datasource
-	 */
-	public List<Role> listRoles();
-	
-	/**
-	 * Return an role with a given name, or else null.
-	 */
-	public Role loadByName(String name);
-	
+    /**
+     * Save a provided role to the datasource.
+     * @param role role to save
+     */
+    void saveRole(Role role);
+
+    /**
+     * List all roles in the datasource.
+     * @return List<Role>
+     */
+    List<Role> listRoles();
+
+    /**
+     * Return an role with a given name, or else null.
+     * @param name role name to load
+     * @return Role
+     */
+    Role loadByName(String name);
+
 }
