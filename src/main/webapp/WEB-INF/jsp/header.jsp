@@ -21,6 +21,9 @@
     <li><a href="/review/"><span>Submit A Review</span></a></li>
     <li><a href="/snippet/"><span>Submit A Snippet</span></a></li>
     <li><a href="/search/advanced"><span>Advanced Search</span></a></li>
+    <sec:authorize access='isAuthenticated()'>
+    <li><a href="/account"><span>My Account</span></a></li>
+    </sec:authorize> 
 </ul>
 <br clear="all"/>
 <div style="background-color:#00dddd;border:1px solid black;">
