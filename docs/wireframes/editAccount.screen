@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Master" x="16" y="8" measuredWidth="793" measuredHeight="529" dimmed="true">
+    <screen href="master.screen#/"/>
+  </widgets>
+  <widgets xsi:type="model:HLine" x="16" y="96" width="793" measuredWidth="793" measuredHeight="6" foreground="#666666"/>
+  <widgets xsi:type="model:Group" x="50" y="152" width="535" height="289" text="Edit Account" measuredWidth="535" measuredHeight="289" background="#93c47d" alpha="64"/>
+  <widgets xsi:type="model:Group" x="611" y="152" width="169" height="110" text="Actions" measuredWidth="169" measuredHeight="110" background="#b6d7a8" alpha="64"/>
+  <widgets xsi:type="model:Text" x="621" y="176" width="149" height="72" text="- [Edit My Account]&#xA;" measuredWidth="149" measuredHeight="72">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TextField" x="208" y="176" width="124" measuredWidth="124" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Button" x="208" y="406" text="save" measuredWidth="49" measuredHeight="25">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="107" y="176" width="95" text="First Name" measuredWidth="95" measuredHeight="23" textAlignment="Right">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TextField" x="208" y="208" width="124" measuredWidth="124" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="91" y="208" width="111" text="Last Name" measuredWidth="111" measuredHeight="23" textAlignment="Right">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TextField" x="208" y="240" width="124" measuredWidth="124" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="66" y="240" width="136" text="Email Address" measuredWidth="136" measuredHeight="23" textAlignment="Right">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TextField" x="208" y="272" width="124" measuredWidth="124" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="52" y="272" width="150" text="Confirm Email Address" measuredWidth="150" measuredHeight="23" textAlignment="Right">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TextField" x="208" y="304" width="124" measuredWidth="124" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="90" y="304" width="112" text="Password" measuredWidth="112" measuredHeight="23" textAlignment="Right">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TextField" x="208" y="336" width="124" measuredWidth="124" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="63" y="336" width="139" text="Confirm Password" measuredWidth="139" measuredHeight="23" textAlignment="Right">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Master" x="478" y="17" measuredWidth="312" measuredHeight="115">
+    <screen href="Logged_in.screen#/"/>
+  </widgets>
+  <hRuler>
+    <guides position="60"/>
+    <guides position="415"/>
+    <guides position="201"/>
+  </hRuler>
+  <vRuler/>
+  <font/>
+</model:Screen>

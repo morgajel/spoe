@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Master" x="15" y="8" measuredWidth="793" measuredHeight="529" dimmed="true">
+    <screen href="master.screen#/"/>
+  </widgets>
+  <widgets xsi:type="model:HLine" x="16" y="96" width="793" measuredWidth="793" measuredHeight="6" foreground="#666666"/>
+  <widgets xsi:type="model:Group" x="50" y="152" width="535" height="289" text="login" measuredWidth="535" measuredHeight="289" background="#93c47d" alpha="64"/>
+  <widgets xsi:type="model:Tabs" x="39" y="104" text="Home" measuredWidth="58" measuredHeight="27" selection="0"/>
+  <widgets xsi:type="model:Master" x="604" y="17" measuredWidth="176" measuredHeight="76">
+    <screen href="loginbox.screen#/"/>
+  </widgets>
+  <widgets xsi:type="model:Master" x="60" y="200" measuredWidth="176" measuredHeight="76">
+    <screen href="loginbox.screen#/"/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="60" y="173" text="I'm sorry, you password didn't match or your account wasn't found." measuredWidth="483" measuredHeight="23" foreground="#ff0000">
+    <font bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:Link" x="60" y="277" text="I can't remember my username/password." measuredWidth="265" measuredHeight="23">
+    <font/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font/>
+</model:Screen>

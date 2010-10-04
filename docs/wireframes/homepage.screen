@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
-  <widgets xsi:type="model:Panel" x="16" y="8" width="793" height="529" measuredWidth="793" measuredHeight="529" background="#eeeeee" foreground="#cccccc"/>
-  <widgets xsi:type="model:Placeholder" x="40" y="18" width="153" height="74" text="SPoE Icon" measuredWidth="153" measuredHeight="74"/>
-  <widgets xsi:type="model:Label" x="294" y="44" text="Second Pair of Eyes" measuredWidth="181" measuredHeight="27">
-    <font size="12" bold="true"/>
+  <widgets xsi:type="model:Master" x="15" y="8" measuredWidth="793" measuredHeight="529" dimmed="true">
+    <screen href="master.screen#/"/>
   </widgets>
   <widgets xsi:type="model:HLine" x="16" y="96" width="793" measuredWidth="793" measuredHeight="6" foreground="#666666"/>
-  <widgets xsi:type="model:TabbedPane" x="32" y="104" width="758" height="377" text="Home, Review A Snippet, Submit A Snippet" measuredWidth="758" measuredHeight="377" selection="0" background="#cccccc"/>
   <widgets xsi:type="model:Group" x="50" y="152" width="535" height="110" text="Recently Added Snippets" measuredWidth="535" measuredHeight="110" background="#93c47d" alpha="64"/>
   <widgets xsi:type="model:Text" x="60" y="173" width="515" height="77" text="- [Conan's Bestest Birthday] - Written by [Bob Dinder]&#xA;- [Wide World of Tar] - Written by [Dennis Gorn]&#xA;- [Fun with Taters] - Written by  [Anonymous]&#xA;&#xA;[more...]" measuredWidth="515" measuredHeight="77">
     <font/>
@@ -19,45 +16,18 @@
   <widgets xsi:type="model:Text" x="621" y="289" width="149" height="172" text="[Fantasy], [Scifi], [Vampires], [Urban Fantasy], [Paranormal], [Ghosts], [Swords], [Mystery], [Young Adult], [Comedy], [Children], [Horror], [Memoir], [Thriller]" measuredWidth="149" measuredHeight="172">
     <font/>
   </widgets>
-  <widgets xsi:type="model:Group" x="611" y="152" width="169" height="110" text="Snippet Sizes" measuredWidth="169" measuredHeight="110" background="#b6d7a8" alpha="64"/>
-  <widgets xsi:type="model:WidgetGroup" x="606" y="19" measuredWidth="176" measuredHeight="76">
-    <widgets xsi:type="model:TextField" x="68" width="108" measuredWidth="108" measuredHeight="23">
-      <font/>
-    </widgets>
-    <widgets xsi:type="model:TextField" x="68" y="25" width="108" measuredWidth="108" measuredHeight="23">
-      <font/>
-    </widgets>
-    <widgets xsi:type="model:Button" y="54" width="69" height="21" text="login" measuredWidth="69" measuredHeight="21">
-      <font/>
-    </widgets>
-    <widgets xsi:type="model:Link" x="115" y="53" text="Register" measuredWidth="54" measuredHeight="23">
-      <font/>
-    </widgets>
-    <widgets xsi:type="model:Label" text="Username" measuredWidth="69" measuredHeight="23">
-      <font/>
-    </widgets>
-    <widgets xsi:type="model:Label" x="5" y="24" text="Password" measuredWidth="64" measuredHeight="23">
-      <font/>
-    </widgets>
-    <widgets xsi:type="model:Label" x="88" y="53" text="or" measuredWidth="18" measuredHeight="23">
-      <font/>
-    </widgets>
-  </widgets>
-  <widgets xsi:type="model:ButtonBar" x="32" y="480" text="Home, Review A Snippet, Submit A Snippet" measuredWidth="310" measuredHeight="27" selection="" background="#d9ead3">
-    <font/>
-  </widgets>
-  <widgets xsi:type="model:ButtonBar" x="341" y="480" width="449" text="                                                       ,SPoE (C) 2010 morgajel.net" measuredWidth="449" measuredHeight="27" selection="" background="#d9ead3">
-    <font/>
-  </widgets>
+  <widgets xsi:type="model:Group" x="611" y="152" width="169" height="110" text="Snippets" measuredWidth="169" measuredHeight="110" background="#b6d7a8" alpha="64"/>
   <widgets xsi:type="model:Text" x="656" y="174" text="[Paragraphs]&#xA;[Scenes]&#xA;[Chapters]&#xA;[Short Stories]&#xA;[Novellas]" measuredWidth="82" measuredHeight="75">
     <font/>
   </widgets>
   <widgets xsi:type="model:Text" x="621" y="174" width="28" text="642&#xA;123&#xA;80&#xA;21&#xA;3" measuredWidth="28" measuredHeight="75" textAlignment="Right">
     <font/>
   </widgets>
-  <hRuler>
-    <guides position="60"/>
-  </hRuler>
+  <widgets xsi:type="model:Tabs" x="39" y="104" text="Home" measuredWidth="58" measuredHeight="27" selection="0"/>
+  <widgets xsi:type="model:Master" x="604" y="17" measuredWidth="176" measuredHeight="76">
+    <screen href="loginbox.screen#/"/>
+  </widgets>
+  <hRuler/>
   <vRuler/>
   <font/>
 </model:Screen>
