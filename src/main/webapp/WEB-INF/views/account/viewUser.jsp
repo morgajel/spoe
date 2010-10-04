@@ -5,8 +5,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <html>
+        <%@ include file="/WEB-INF/jsp/header.jsp"%>
 
-	<%@ include file="/WEB-INF/jsp/header.jsp"%>
+
 Info about ${account.username}.
 <table>
 <tr><td> ${account.firstname} ${account.lastname} </td></tr>
@@ -17,8 +18,7 @@ Info about ${account.username}.
 
 
 ${message} 
-	<%@ include file="/WEB-INF/jsp/footer.jsp"%>
-</body>
+
+<%@ include file="/WEB-INF/jsp/footer.jsp"%>
+    </body>
 </html>
-
-

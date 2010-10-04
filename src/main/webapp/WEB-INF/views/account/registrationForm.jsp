@@ -4,13 +4,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-
+<%@ taglib prefix="sec"
+    uri="http://www.springframework.org/security/tags"%>
 <html>
-<head>
-<meta  http-equiv="Content-Type"  content="text/html;charset=UTF-8">
-<title>Registration Form</title>
-</head>
-<body>
+        <%@ include file="/WEB-INF/jsp/header.jsp"%>
+
+<h2> Registration Form</h2>
 ${message}
 
 <form:form modelAttribute="registrationForm" action="/account/register.submit" method="post">
@@ -58,6 +57,6 @@ ${message}
 	<i>Note:</i> An activation email will be sent to you.
 	</form:form>
 
-
-</body>
+<%@ include file="/WEB-INF/jsp/footer.jsp"%>
+    </body>
 </html>

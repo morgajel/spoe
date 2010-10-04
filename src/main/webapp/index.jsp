@@ -3,11 +3,14 @@
 <html>
 		<%@ include file="/WEB-INF/jsp/header.jsp"%>
 
-<h1>Home Page</h1>
 
+Welcome to SPoE
 
-<p>Welcome to SPoE!</p>
+    <div id='junkplaceholder'style="height:300px;">
 
+    </div>
+
+</div>
 
 
 <%@ include file="/WEB-INF/jsp/footer.jsp"%>
