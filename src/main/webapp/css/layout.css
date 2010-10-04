@@ -6,6 +6,11 @@
 	   padding-right:5px;
 	   padding-top:2px;
 	   padding-bottom:2px;
+	   background: #ffce87;
+}
+.bottommenu:hover{
+    background:#ffa740;
+    padding-right: 10px
 }
 
 
