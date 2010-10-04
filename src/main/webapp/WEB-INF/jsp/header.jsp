@@ -26,7 +26,7 @@
     </sec:authorize> 
 </ul>
 <br clear="all"/>
-<div style="background-color:#00dddd;border:1px solid black;">
+<div style="background-color:#dddddd;border:1px solid black;">
 
 
 
