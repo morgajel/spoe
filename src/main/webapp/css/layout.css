@@ -1,0 +1,61 @@
+@CHARSET "UTF-8";
+
+.bottommenu{
+	   border:1px solid black;
+	   padding-left:5px;
+	   padding-right:5px;
+	   padding-top:2px;
+	   padding-bottom:2px;
+}
+
+
+
+
+
+#navigation a
+{
+color: #000;
+background: url(/images/left-tab.png) left top no-repeat;
+text-decoration: none;
+padding-left: 10px
+}
+
+#navigation a span
+{
+background: #ffce87;
+padding-right: 10px;
+border-top: 1px solid black;
+border-right: 1px solid black;
+}
+
+#navigation a, #navigation a span
+{
+display: block;
+float: left
+}
+
+#navigation a:hover
+{
+background: url(/images/left-tab-hover.png) left top no-repeat;
+padding-left: 10px
+}
+
+#navigation a:hover span
+{
+	background:#ffa740;
+padding-right: 10px
+               
+}
+
+#navigation
+{
+list-style: none; 
+padding: 0;
+margin: 0
+}
+
+#navigation li
+{
+float: left;
+margin: 0;
+} 
