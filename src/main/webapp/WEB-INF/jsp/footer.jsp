@@ -11,7 +11,7 @@
     <sec:authorize access='isAuthenticated()'>
     <li><a href="/account"><span>My Account</span></a></li>
     </sec:authorize>
-    <li style="float:right;"><a href="/account"><span>&copy; morgajel.net</span></a></li>
+    <li style="float:right;"><a href="http://morgajel.net"><span>&copy; morgajel.net</span></a></li>
 </ul>
 <br clear="all"/>
 
