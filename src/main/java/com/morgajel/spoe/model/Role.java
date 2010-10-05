@@ -73,7 +73,7 @@ public class Role implements Serializable {
     @NotNull
     private String name;
     private static final long serialVersionUID = -2683827831742215212L;
-    private static transient Logger logger = Logger.getLogger("com.morgajel.spoe.model.Role");
+    private static transient Logger logger = Logger.getLogger(Role.class);
 
     /**
      * Primary constructor for Role, sets an empty Set to accounts.

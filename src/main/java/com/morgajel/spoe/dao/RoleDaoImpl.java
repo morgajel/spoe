@@ -18,7 +18,7 @@ public class RoleDaoImpl implements RoleDao {
 
     @Autowired
     private SessionFactory sessionFactory;
-    private static transient Logger logger = Logger.getLogger("com.morgajel.spoe.dao.RoleDao");
+    private static transient Logger logger = Logger.getLogger(RoleDao.class);
 
     /**
      * Sets the Session Factory used to get the currentSession.

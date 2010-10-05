@@ -19,7 +19,7 @@ public class AccountDaoImpl implements AccountDao {
 
     @Autowired
     private SessionFactory sessionFactory;
-    private static transient Logger logger = Logger.getLogger("com.morgajel.spoe.dao.AccountDao");
+    private static transient Logger logger = Logger.getLogger(AccountDao.class);
 
     /**
      * Sets the Session Factory used to get the currentSession.

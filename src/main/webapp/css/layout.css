@@ -1,66 +1,61 @@
 @CHARSET "UTF-8";
 
-.bottommenu{
-	   border:1px solid black;
-	   padding-left:5px;
-	   padding-right:5px;
-	   padding-top:2px;
-	   padding-bottom:2px;
-	   background: #ffce87;
+
+#top-navigation a {
+    background: url(/images/menu-top.png) left top no-repeat;
 }
-.bottommenu:hover{
+#top-navigation a:hover {
+    background: url(/images/menu-top-hover.png) left top no-repeat;    
+}
+#bottom-navigation a {
+    background: url(/images/menu-bottom.png) left top no-repeat;
+}
+#bottom-navigation a:hover {
+    background: url(/images/menu-bottom-hover.png) left top no-repeat;    
+}
+
+#top-navigation a, #bottom-navigation a {
+    color: #000;
+    text-decoration: none;
+    padding-left: 10px
+}
+#top-navigation a:hover, #bottom-navigation a:hover {
+    padding-left: 10px
+}
+
+#top-navigation span{
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+}
+
+#bottom-navigation span{
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+}
+
+#top-navigation  a span , #bottom-navigation a span {
+    background: #ffce87;
+    padding-right: 10px;
+}
+
+#top-navigation a, #bottom-navigation a, #top-navigation a span, #bottom-navigation a span {
+    display: block;
+    float: left;
+}
+
+
+#top-navigation  a:hover span, #bottom-navigation a:hover span {
     background:#ffa740;
-    padding-right: 10px
+    padding-right: 10px           
 }
 
-
-
-
-
-#navigation a
-{
-color: #000;
-background: url(/images/left-tab.png) left top no-repeat;
-text-decoration: none;
-padding-left: 10px
+#top-navigation, #bottom-navigation {
+    list-style: none; 
+    padding: 0;
+    margin: 0
 }
 
-#navigation a span
-{
-background: #ffce87;
-padding-right: 10px;
-border-top: 1px solid black;
-border-right: 1px solid black;
-}
-
-#navigation a, #navigation a span
-{
-display: block;
-float: left
-}
-
-#navigation a:hover
-{
-background: url(/images/left-tab-hover.png) left top no-repeat;
-padding-left: 10px
-}
-
-#navigation a:hover span
-{
-	background:#ffa740;
-padding-right: 10px
-               
-}
-
-#navigation
-{
-list-style: none; 
-padding: 0;
-margin: 0
-}
-
-#navigation li
-{
-float: left;
-margin: 0;
+#top-navigation li, #bottom-navigation li {
+    float: left;
+    margin: 0;
 } 

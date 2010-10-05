@@ -5,9 +5,11 @@
     <logger name="org.apache">
         <level value="WARN"/>
     </logger>
+
     <logger name="org.springframework">
         <level value="WARN"/>
        </logger>
+
     <logger name="com.morgajel.spoe">
         <level value="DEBUG"/>
     </logger>

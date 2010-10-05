@@ -102,7 +102,7 @@ public class Account implements Serializable {
     public static final String ALGORITHM = "SHA1";
     public static final String PASSWDCHARSET = "!0123456789abcdefghijklmnopqrstuvwxyz";
     private static final long serialVersionUID = -6987219647522500285L;
-    private static transient Logger logger = Logger.getLogger("com.morgajel.spoe.model.Account");
+    private static transient Logger logger = Logger.getLogger(Account.class);
 
     /**
      * Takes a given string and hashes it with ALGORITHM.

@@ -16,7 +16,7 @@
 </div>
 <hr width="100%"/>
 
-<ul id="navigation" >
+<ul id="top-navigation" >
     <li><a href="/"><span>Home</span></a></li>
     <li><a href="/review/"><span>Submit A Review</span></a></li>
     <li><a href="/snippet/"><span>Submit A Snippet</span></a></li>

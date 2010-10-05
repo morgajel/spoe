@@ -4,7 +4,7 @@
 		<%@ include file="/WEB-INF/jsp/header.jsp"%>
 
 
-Welcome to SPoE
+Welcome to SPoE!
 
     <div id='junkplaceholder'style="height:300px;">
 

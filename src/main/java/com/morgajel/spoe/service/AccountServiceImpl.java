@@ -19,7 +19,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private AccountDao accountDao;
-    private static transient Logger logger = Logger.getLogger("com.morgajel.spoe.service.AccountService");
+    private static transient Logger logger = Logger.getLogger(AccountService.class);
 
     /**
      * Set accountDao object for the datastore.

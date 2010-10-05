@@ -43,7 +43,7 @@ public class AccountController {
 
     private static final String REGISTRATION_TEMPLATE = "/WEB-INF/templates/registrationEmail.vm";
     private static final String ACTIVATION_URL = "http://127.0.0.62:8080/account/activate/";
-    private static transient Logger logger = Logger.getLogger("com.morgajel.spoe.controller.AccountController");
+    private static transient Logger logger = Logger.getLogger(AccountController.class);
 
     /**
      * Activate account by comparing a given username and checksum against a given account.
