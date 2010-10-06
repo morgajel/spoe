@@ -4,7 +4,7 @@
 drop table if exists role, account_role, account;
 
 
-create table role(
+create table role (
         role_id integer      not null auto_increment primary key, 
         name    varchar(255) not null unique
 );
@@ -17,7 +17,7 @@ create table account_role (
         primary key (account_id,role_id)
 );
 
-create table account(
+create table account (
         account_id          integer      not null auto_increment primary key,
         email               varchar(255) not null unique, 
         username            varchar(32)  not null unique,
@@ -28,6 +28,27 @@ create table account(
         creation_date       datetime,
         last_modified_date    datetime     
 );
+
+create table snippet (
+        snippet_id          integer      not null auto_increment primary key,
+        title               varchar(255) not null unique, 
+        account_id          integer      not null,
+        CONSTRAINT FOREIGN KEY (account_id) REFERENCES account(account_id),
+        last_modified_date  timestamp    not null default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        creation_date       datetime,
+        content             mediumtext   not null
+
+
+
+);
+
+
+
+insert into snippet(title,account_id,content ) values('Text test1',1,'first block of text');
+insert into snippet(title,account_id,content ) values('Text test2',2,'second block of text');
+insert into snippet(title,account_id,content ) values('Text test3',1,'third block of text');
+
+
 
 insert  into role(name) values('ROLE_REVIEWER');
 insert  into role(name) values('ROLE_AUTHOR');

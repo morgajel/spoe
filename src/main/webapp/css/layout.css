@@ -1,6 +1,17 @@
 @CHARSET "UTF-8";
+
+body {
+    background-color:#92CCC5;
+}
+
+/*
+37882e dark green
+F14A53 Red
+92CCC5 blue
+b5e8b0 light gree
+*/
 #content-window, #header{
-    background-color:#6a9d9b;
+    background-color:#b5e8b0;
     border:1px solid black;
 }
 
@@ -20,17 +31,17 @@
 #top-navigation a, #bottom-navigation a {
     color: #000;
     text-decoration: none;
-    padding-left: 10px
+    padding-left: 12px
 }
 #top-navigation a:hover, #bottom-navigation a:hover {
-    padding-left: 10px
+    padding-left: 12px
 }
 
 #top-navigation span{
     background: url("/images/menu-top.png") repeat-x;
     border-right:1px solid black;
-    padding-top:2px;
-    margin-bottom:-1px;
+    padding-top:3px;
+    
 }
 #top-navigation span:hover {
 	background: url("/images/menu-top-hover.png") repeat-x;
@@ -38,19 +49,19 @@
 #bottom-navigation span {
     background: url("/images/menu-bottom.png") repeat-x;
     border-right:1px solid black;
-    padding-bottom:2px;
+    padding-bottom:5px;
 }
 #bottom-navigation span:hover {
     background: url("/images/menu-bottom-hover.png") repeat-x;
 }
 #top-navigation  a span , #bottom-navigation a span {
-    padding-right: 10px;
+    padding-right: 12px;
 
 }
 
 #top-navigation  a:hover span, #bottom-navigation a:hover span {
     
-    padding-right: 10px           
+    padding-right: 12px           
 }
 
 #top-navigation a, #bottom-navigation a, #top-navigation a span, #bottom-navigation a span {
