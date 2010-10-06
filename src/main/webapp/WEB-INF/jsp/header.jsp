@@ -8,7 +8,13 @@
 </head>
 <body style="margin-left:auto;margin-right:auto;width:900px;">
 <script type="text/javascript">
-setMinHeight(300, '#content-window');
+function searchClear(searchbox){
+	if ($(searchbox).val() == "quick search"){
+		$(searchbox).val('');
+		$(searchbox).css('color','black');
+	}
+}
+
 </script>
 <div id='header' style="height:100px;vertical-align:middle;">
 <img src="/images/spoe-icon.png" style="vertical-align:middle;padding-left:20px;"/>
@@ -33,8 +39,8 @@ setMinHeight(300, '#content-window');
     </sec:authorize>
     <li>
         <form method="get" action="/search">
-        <input type="submit" value="Search" class="search_button"  style="float:right;height:20px;margin-top:-1px;"/>
-            <input type="text" value="quick search" name="search" id="search_box" class='search_box' style="margin-left:50px;float:right;height:20px;margin-top:-1px;"/>
+        <input type="submit" value="Search" class="search_button"  style="float:right;height:22px;"/>
+            <input type="text" value="quick search" name="search" id="search_box" class='search_box' onclick='searchClear(this);'/>
         </form>
     </li>
     
