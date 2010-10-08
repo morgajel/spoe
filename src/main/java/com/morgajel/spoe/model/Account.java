@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -73,31 +74,49 @@ import com.morgajel.spoe.web.RegistrationForm;
 public class Account implements Serializable {
 //FIXME: use pVariable format
     @NotNull
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "account_id")
     private Long accountId;
     @NotNull
     @Size(min = 3, max = 25)
+    @Column(name = "username")
     private String username;
     @NotNull
-    @Size(min = 5, max = 255)
+    @Size(max = 255)
+    @Email
+    @Column(name = "email", nullable = false)
     private String email;
     @NotNull
     @Size(min = 6, max = 255)
+    @Column(name = "password")
     private String password;
     @NotNull
+    @Column(name = "enabled", nullable = false)
     private Boolean enabled;
     @NotNull
     @Size(min = 2, max = 255)
+    @Column(name = "firstname")
     private String firstname;
     @NotNull
     @Size(min = 2, max = 255)
+    @Column(name = "lastname")
     private String lastname;
     @DateTimeFormat
+    @Column(name = "last_modified_date")
     private Date lastModifiedDate;
     @DateTimeFormat
+    @Column(name = "creation_date")
     private Date creationDate;
 
+    @ManyToMany (fetch=FetchType.EAGER)
+    @JoinTable(name = "account_role",
+            joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id")
+    )
+    private Set<Role> roles;
 
-    @OneToMany
+    @OneToMany (fetch=FetchType.EAGER)
     @JoinColumn (name = "account_id")
     private Set<Snippet> snippets = new HashSet();
     
@@ -201,24 +220,14 @@ public class Account implements Serializable {
      * Returns this.accountId, which is the Primary Key for Accounts.
      * @return Long accountId
      **/
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "account_id")
     public Long getAccountId() {
         return accountId;
     }
-
-    private Set<Role> roles;
 
     /**
      * Returns all of the roles currently assigned to a user.
      * @return Set<Role>
      **/
-    @ManyToMany
-    @JoinTable(name = "account_role",
-            joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "account_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id")
-    )
     public Set<Role> getRoles() {
         return roles;
     }
@@ -251,8 +260,6 @@ public class Account implements Serializable {
      * Returns this.email, which is required for password recovery and account creation.
      * @return email
      **/
-    @Email
-    @Column(name = "email", nullable = false)
     public String getEmail() {
         return email;
     }
@@ -267,7 +274,6 @@ public class Account implements Serializable {
      * Returns this.username, which is required for login.
      * @return String
      **/
-    @Column(name = "username")
     public String getUsername() {
         return username;
     }
@@ -282,7 +288,6 @@ public class Account implements Serializable {
      * Returns this.password, which is a hashed copy of the user's password.
      * @return String password
      **/
-    @Column(name = "password")
     public String getPassword() {
         logger.debug("getting password:" + this.password);
         return this.password;
@@ -309,7 +314,6 @@ public class Account implements Serializable {
      * Gets this.enabled, which is required for login.
      * @return boolean enabled
      **/
-    @Column(name = "enabled", nullable = false)
     public Boolean getEnabled() {
         return enabled;
     }
@@ -324,7 +328,6 @@ public class Account implements Serializable {
      * Gets this.Firstname, which is rarely ever used except for addressing people.
      * @return String firstname
      **/
-    @Column(name = "firstname")
     public String getFirstname() {
         return firstname;
     }
@@ -339,7 +342,6 @@ public class Account implements Serializable {
      * Gets this.Lastname, which is rarely ever used except for addressing people.
      * @return lastname
      **/
-    @Column(name = "lastname")
     public String getLastname() {
         return lastname;
     }
@@ -354,7 +356,6 @@ public class Account implements Serializable {
      * Gets this.creationDate, the date when the account was created.
      * @return Date creationDate
      **/
-    @Column(name = "creation_date")
     public Date getCreationDate() {
         return (Date) creationDate.clone();
     }
@@ -371,7 +372,6 @@ public class Account implements Serializable {
      * Gets this.lastModifiedDate, which tells when the account was last modified.
      * @return Date lastModifiedDate
      **/
-    @Column(name = "last_modified_date")
     public Date getLastModifiedDate() {
         return (Date) lastModifiedDate.clone();
     }

@@ -34,14 +34,14 @@ import org.springframework.format.annotation.DateTimeFormat;
      */
     @NamedQuery(
         name = "findSnippetById",
-        query = "from Snippet snip where snip.snippetId = :id"
+        query = "from Snippet snip where snip.snippetId = :snippet_id"
     ),
     /**
      * Returns snippets matching a given account_id.
      */
     @NamedQuery(
         name = "findSnippetByAuthor",
-        query = "from Snippet snip where snip.account_id = :accountId"
+        query = "from Snippet snip where snip.accountId = :account_id"
     )
 })
 
@@ -55,7 +55,7 @@ public class Snippet implements Serializable {
     
     
     @ManyToOne
-    @JoinColumn (name="accountr_id", updatable = false, insertable = false)
+    @JoinColumn (name="account_id", updatable = false, insertable = false)
     private Account author;
     /**
      * Returns the account associated as the author of the snippet.
@@ -73,16 +73,24 @@ public class Snippet implements Serializable {
     }
 
     @NotNull
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "snippet_id")
     private Long snippetId;
     @NotNull
+    @Column(name = "account_id")
     private Long accountId;
     @NotNull
+    @Column(name = "title")
     private String title;
     @DateTimeFormat
+    @Column(name = "last_modified_date")
     private Date lastModifiedDate;
     @DateTimeFormat
+    @Column(name = "creation_date")
     private Date creationDate;
     @NotNull
+    @Column(name = "content")
     private String content;
 
 
@@ -90,6 +98,17 @@ public class Snippet implements Serializable {
 
     private static transient Logger logger = Logger.getLogger(Snippet.class);
 
+    
+    /**
+     * Constructor for snippet.
+     **/
+    public Snippet() {
+        this.setLastModifiedDate(new Date());
+        this.setCreationDate(new Date());
+        this.content = "";
+
+    }
+    
     /**
      * Primary constructor for snippet.
      * @param pAuthor Account that created the snippet.
@@ -106,9 +125,6 @@ public class Snippet implements Serializable {
      * Returns the snippetId of the Snippet instance.
      * @return Long
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "snippet_id")
     public Long getSnippetId() {
         return snippetId;
     }
@@ -116,7 +132,6 @@ public class Snippet implements Serializable {
      * Returns the accountId of the Snippet instance.
      * @return Long
      */
-    @Column(name = "account_id")
     public Long getAccountId() {
         return this.accountId;
     }
@@ -141,7 +156,6 @@ public class Snippet implements Serializable {
      * Gets this.creationDate, the date when the snippet was created.
      * @return Date creationDate
      **/
-    @Column(name = "creation_date")
     public Date getCreationDate() {
         return (Date) creationDate.clone();
     }
@@ -160,7 +174,6 @@ public class Snippet implements Serializable {
      * Gets this.lastModifiedDate, which tells when the snippet was last modified.
      * @return Date lastModifiedDate
      **/
-    @Column(name = "last_modified_date")
     public Date getLastModifiedDate() {
         return (Date) lastModifiedDate.clone();
     }
@@ -178,7 +191,6 @@ public class Snippet implements Serializable {
      * Returns the content of the Snippet instance.
      * @return String
      **/
-    @Column(name = "content")
     public String getContent() {
         return this.content;
     }
@@ -194,7 +206,6 @@ public class Snippet implements Serializable {
      * Returns the title of the Snippet instance.
      * @return String
      **/
-    @Column(name = "title")
     public String getTitle() {
         return this.title;
     }

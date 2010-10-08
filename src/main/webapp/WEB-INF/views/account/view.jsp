@@ -10,8 +10,24 @@
 
 
 Welcome to your account page, ${account.username}.
-<a href="/account/edit">edit account</a>
+<div style="position:relative;top:5px;right:5px;float:right;"><a href="/account/edit">edit account</a></div>
 <hr/>
+<table border='1'>
+<tr>
+     		<th>Snippet ID</th>
+          	<th> Title</th>
+          	<th>Last Modified</th>
+        </tr>
+	<c:forEach var="snippet" items="${account.snippets}"> 
+   		<tr>
+     		<td>${snippet.snippetId}</td>
+          	<td>${snippet.title}</td>
+          	<td>${snippet.lastModifiedDate}</td>
+        </tr>
+	</c:forEach>
+</table>
+<br/
+
 ${message}
 	<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 	</body>

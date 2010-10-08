@@ -17,7 +17,7 @@ function searchClear(searchbox){
 
 </script>
 <div id='header' style="height:100px;vertical-align:middle;">
-<img src="/images/spoe-icon.png" style="vertical-align:middle;padding-left:20px;"/>
+<img src="/images/spoe-icon.png" style="vertical-align:middle;padding-left:10px;"/>
 <span style="font-size:30px;">Second Pair of Eyes</span>
 
 <%@ include file="/WEB-INF/jsp/loginbox.jsp"%>

@@ -56,7 +56,7 @@ public class SnippetDaoImpl implements SnippetDao {
     }
     @Override
     public Snippet loadById(Long id) {
-        List sniplist = sessionFactory.getCurrentSession().getNamedQuery("findSnippetById").setLong("id", id).list();
+        List sniplist = sessionFactory.getCurrentSession().getNamedQuery("findSnippetById").setLong("snippet_id", id).list();
         if (sniplist.size() > 0) {
             logger.info("Loaded snippet " + sniplist.get(0));
             return (Snippet) sniplist.get(0);
@@ -66,7 +66,7 @@ public class SnippetDaoImpl implements SnippetDao {
     }
     @Override
     public List<Snippet> loadByAuthor(Account account) {
-        return (List<Snippet>) sessionFactory.getCurrentSession().getNamedQuery("findSnippetByAuthor").setLong("accountId", account.getAccountId()).list();
+        return (List<Snippet>) sessionFactory.getCurrentSession().getNamedQuery("findSnippetByAuthor").setLong("account_id", account.getAccountId()).list();
     }
 
 }

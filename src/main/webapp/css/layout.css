@@ -13,6 +13,7 @@ b5e8b0 light gree
 #content-window, #header{
     background-color:#b5e8b0;
     border:1px solid black;
+    padding:5px;
 }
 
 #top-navigation a {
@@ -81,7 +82,7 @@ b5e8b0 light gree
 }
 
 #search_box{
-    margin-left:50px;
+    width:125px;
     float:right;
     height:22px;
     color:gray;
