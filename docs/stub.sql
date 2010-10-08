@@ -1,7 +1,7 @@
 -- A simple schema and stub accounts
 
 
-drop table if exists role, account_role, account;
+drop table if exists role, account_role, account, snippet;
 
 
 create table role (
