@@ -2,6 +2,9 @@ package com.morgajel.spoe.controller;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.velocity.app.VelocityEngine;
 import org.junit.After;
 import org.junit.Before;
@@ -13,8 +16,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.ModelAndView;
 import com.morgajel.spoe.model.Account;
 import com.morgajel.spoe.model.Role;
+import com.morgajel.spoe.model.Snippet;
 import com.morgajel.spoe.service.AccountService;
 import com.morgajel.spoe.service.RoleService;
+import com.morgajel.spoe.service.SnippetService;
 import com.morgajel.spoe.web.EditAccountForm;
 import com.morgajel.spoe.web.RegistrationForm;
 import com.morgajel.spoe.web.SetPasswordForm;
@@ -28,9 +33,11 @@ import static org.mockito.Mockito.*;
 public class AccountControllerTest {
     private AccountController accountController;
     private Account mockAccount;
+    private Snippet mockSnippet;
     private SecurityContext mockContext;
     private Role mockRole;
     private AccountService mockAccountService;
+    private SnippetService mockSnippetService;
     private EditAccountForm mockEditAccountForm;
     private RegistrationForm mockRegistrationForm;
     private RoleService mockRoleService;
@@ -38,6 +45,8 @@ public class AccountControllerTest {
     private SetPasswordForm mockPassForm;
     private SimpleMailMessage mockTemplateMessage;
     private VelocityEngine mockVelocityEngine;
+    private List<Account> accountList;
+    private List<Snippet> snippetList;
     private final String username = "morgo2";
     private final String firstname = "Jesse";
     private final String lastname = "Morgan";
@@ -54,19 +63,26 @@ public class AccountControllerTest {
     @Before
     public void setUp() throws Exception {
         mockAccountService = mock(AccountService.class);
+        mockSnippetService = mock(SnippetService.class);
         mockRoleService = mock(RoleService.class);
         mockAccount = mock(Account.class);
         mockContext = mock(SecurityContext.class, RETURNS_DEEP_STUBS);
         mockRole = mock(Role.class);
+        mockSnippet = mock(Snippet.class);
         mockMailSender = mock(MailSender.class);
         mockPassForm = mock(SetPasswordForm.class);
         mockRegistrationForm = mock(RegistrationForm.class);
         mockEditAccountForm = mock(EditAccountForm.class);
         mockTemplateMessage = mock(SimpleMailMessage.class);
         mockVelocityEngine = mock(VelocityEngine.class);
+        List<Account> accountList=new ArrayList();
+        accountList.add(mockAccount);
+        List<Snippet> snippetList=new ArrayList();
+        snippetList.add(mockSnippet);
         accountController = new AccountController();
         accountController.setAccountService(mockAccountService);
         accountController.setRoleService(mockRoleService);
+        accountController.setSnippetService(mockSnippetService);
         accountController.setMailSender(mockMailSender);
         accountController.setTemplateMessage(mockTemplateMessage);
         accountController.setVelocityEngine(mockVelocityEngine);
@@ -78,6 +94,7 @@ public class AccountControllerTest {
     @After
     public void tearDown() throws Exception {
         mockAccountService = null;
+        mockSnippetService = null;
         mockAccount = null;
         mockRole = null;
         mockMailSender = null;
@@ -100,6 +117,7 @@ public class AccountControllerTest {
         when(mockAccount.getEnabled()).thenReturn(false);
         when(mockAccountService.loadByUsername(username)).thenReturn(mockAccount);
         when(mockAccountService.loadByUsernameAndChecksum(username, checksum)).thenReturn(mockAccount);
+        when(mockSnippetService.loadByAuthor(mockAccount)).thenReturn(snippetList);
         ModelAndView results = accountController.activateAccount(username, checksum, new SetPasswordForm());
         assertEquals("account/activationSuccess", results.getViewName());
     }

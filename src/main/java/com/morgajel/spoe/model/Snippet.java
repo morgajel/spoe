@@ -1,9 +1,6 @@
 package com.morgajel.spoe.model;
 
 import java.io.Serializable;
-
-import javax.validation.constraints.NotNull;
-
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -11,26 +8,54 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.apache.log4j.Logger;
-
 import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * Named Queries for retrieving Snippets.
  **/
 @NamedQueries({
+    /**
+     * Returns a snippet matching a given title.
+     */
+    @NamedQuery(
+        name = "findSnippetByTitle",
+        query = "from Snippet snip where snip.title = :title"
+    ),
+    /**
+     * Returns a snippet matching a given id.
+     */
+    @NamedQuery(
+        name = "findSnippetById",
+        query = "from Snippet snip where snip.snippetId = :id"
+    ),
+    /**
+     * Returns snippets matching a given account_id.
+     */
+    @NamedQuery(
+        name = "findSnippetByAuthor",
+        query = "from Snippet snip where snip.account_id = :accountId"
+    )
 })
 
 /**
  * Snippet manager displays, edits and performs all other snippet-related tasks.
  **/
 @Entity
-@Table(name = "role")
+@Table(name = "snippet")
 public class Snippet implements Serializable {
 
+    
+    
+    @ManyToOne
+    @JoinColumn (name="accountr_id", updatable = false, insertable = false)
     private Account author;
     /**
      * Returns the account associated as the author of the snippet.
@@ -41,7 +66,7 @@ public class Snippet implements Serializable {
     }
     /**
      * Set an Account as the author of a Snippet.
-     * @param pAuthor accounts to associate with the role
+     * @param pAuthor accounts to associate with the snippet
      **/
     public void setAuthor(Account pAuthor) {
         this.author = pAuthor;
@@ -50,6 +75,8 @@ public class Snippet implements Serializable {
     @NotNull
     private Long snippetId;
     @NotNull
+    private Long accountId;
+    @NotNull
     private String title;
     @DateTimeFormat
     private Date lastModifiedDate;
@@ -57,8 +84,8 @@ public class Snippet implements Serializable {
     private Date creationDate;
     @NotNull
     private String content;
-    
-    
+
+
     private static final long serialVersionUID = -5461020313014420728L;
 
     private static transient Logger logger = Logger.getLogger(Snippet.class);
@@ -71,7 +98,7 @@ public class Snippet implements Serializable {
     public Snippet(Account pAuthor, String pTitle) {
         this.setLastModifiedDate(new Date());
         this.setCreationDate(new Date());
-        this.content="";
+        this.content = "";
         this.author = pAuthor;
         this.title = pTitle;
     }
@@ -86,21 +113,40 @@ public class Snippet implements Serializable {
         return snippetId;
     }
     /**
+     * Returns the accountId of the Snippet instance.
+     * @return Long
+     */
+    @Column(name = "account_id")
+    public Long getAccountId() {
+        return this.accountId;
+    }
+
+    /**
      * Sets the snippetId of the Snippet instance.
      * @param pSnippetId sets the snippetId
      **/
     public void setSnippetId(Long pSnippetId) {
         this.snippetId = pSnippetId;
     }
-
     /**
-     * Gets this.creationDate, the date when the account was created.
+     * Sets the accountId of the Snippet instance.
+     * @param pAccountId sets the snippetId
+     **/
+    public  void setAccountId( Long pAccountId) {
+        this.accountId=pAccountId;
+    }
+
+    
+    /**
+     * Gets this.creationDate, the date when the snippet was created.
      * @return Date creationDate
      **/
     @Column(name = "creation_date")
     public Date getCreationDate() {
         return (Date) creationDate.clone();
     }
+
+
 
     /**
      * Sets this.creationDate, which should only be used once.

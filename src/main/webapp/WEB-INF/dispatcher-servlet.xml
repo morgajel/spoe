@@ -24,6 +24,7 @@
             <list>
                 <value>com.morgajel.spoe.model.Account</value>
                 <value>com.morgajel.spoe.model.Role</value>
+                <value>com.morgajel.spoe.model.Snippet</value>
             </list>
         </property>
         <property name="hibernateProperties">

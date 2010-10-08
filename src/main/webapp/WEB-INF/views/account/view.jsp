@@ -8,6 +8,7 @@
 <html>
         <%@ include file="/WEB-INF/jsp/header.jsp"%>
 
+
 Welcome to your account page, ${account.username}.
 <a href="/account/edit">edit account</a>
 <hr/>

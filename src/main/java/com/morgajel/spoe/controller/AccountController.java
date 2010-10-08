@@ -1,6 +1,7 @@
 package com.morgajel.spoe.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -20,8 +21,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.morgajel.spoe.model.Account;
 import com.morgajel.spoe.model.Role;
+import com.morgajel.spoe.model.Snippet;
 import com.morgajel.spoe.service.AccountService;
 import com.morgajel.spoe.service.RoleService;
+import com.morgajel.spoe.service.SnippetService;
 import com.morgajel.spoe.web.EditAccountForm;
 import com.morgajel.spoe.web.RegistrationForm;
 import com.morgajel.spoe.web.SetPasswordForm;
@@ -39,7 +42,8 @@ public class AccountController {
     private AccountService accountService;
     @Autowired
     private RoleService roleService;
-
+    @Autowired
+    private SnippetService snippetService;
 
     private static final String REGISTRATION_TEMPLATE = "/WEB-INF/templates/registrationEmail.vm";
     private static final String ACTIVATION_URL = "http://127.0.0.62:8080/account/activate/";
@@ -262,7 +266,6 @@ public class AccountController {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Account account = accountService.loadByUsername(username);
-
         mav.setViewName("account/view");
         mav.addObject("message", "show the default view for " + username);
         mav.addObject("account", account);
@@ -359,6 +362,15 @@ public class AccountController {
     public void setVelocityEngine(VelocityEngine pVelocityEngine) {
         this.velocityEngine = pVelocityEngine;
     }
+    /**
+     * Sets the Snippet Service which is autowired.
+     * @param pSnippetService service to set
+     */
+    public void setSnippetService(SnippetService pSnippetService) {
+        this.snippetService = pSnippetService;
+    }
+
+
     /**
      * Returns the Activation URL.
      * @return String

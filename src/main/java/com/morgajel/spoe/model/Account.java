@@ -1,13 +1,13 @@
 package com.morgajel.spoe.model;
 
+import java.io.Serializable;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,20 +16,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.apache.log4j.Logger;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.util.Random;
-//import org.hibernate.validator.constraints.impl.EmailValidator;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.validator.constraints.Email;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.morgajel.spoe.web.RegistrationForm;
 /**
@@ -68,6 +64,7 @@ import com.morgajel.spoe.web.RegistrationForm;
     )
 })
 
+
 /**
  * Models a users interaction with the rest of the system.
  */
@@ -99,6 +96,33 @@ public class Account implements Serializable {
     @DateTimeFormat
     private Date creationDate;
 
+
+    @OneToMany
+    @JoinColumn (name = "account_id")
+    private Set<Snippet> snippets = new HashSet();
+    
+    public Set<Snippet> getSnippets() {
+        return snippets;
+    }
+    /**
+     * Sets the snippets for a user.
+     * @param pSnippets A set of snippetss to give to the account.
+     *
+     **/
+    public void setSnippets(Set<Snippet> pSnippets) {
+        this.snippets = pSnippets;
+    }
+    /**
+     * Adds a snippet to the current set of Snippet. if snippets is null, instantiates a new
+     * HashSet and adds the snippet to it.
+     * @param snippet a snippet to add to the account.
+     **/
+    public void addSnippet(Snippet snippet) {
+        snippets.add(snippet);
+        logger.info("added snippet to " + username + ", check it out:" + snippets);
+    }
+    
+    
     public static final String ALGORITHM = "SHA1";
     public static final String PASSWDCHARSET = "!0123456789abcdefghijklmnopqrstuvwxyz";
     private static final long serialVersionUID = -6987219647522500285L;

@@ -20,7 +20,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Autowired
     private RoleDao roleDao;
-    private static transient Logger logger = Logger.getLogger(RoleService.class);
+    private static transient Logger logger = Logger.getLogger(RoleServiceImpl.class);
 
     /**
      * Set RoleDao for accessing the datasource.
