@@ -24,14 +24,14 @@ function searchClear(searchbox){
 </div>
 
 <hr width="100%"/>
-
+<!-- 
     <form method="get" action="/search" >
         <fieldset id="search_fields" >
             <input type="text" value="quick search" id="search_box" onclick='searchClear(this);'/>
             <input type="submit" value="Search" id="search_button"  />
         </fieldset>
     </form>
-
+ -->
 <ul id="top-navigation" >
     <li><a href="/"><span>Home</span></a></li>
     <li><a href="/review/"><span>Submit A Review</span></a></li>
