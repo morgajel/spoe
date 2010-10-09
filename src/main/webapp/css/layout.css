@@ -2,8 +2,19 @@
 
 body {
     background-color:#92CCC5;
+    margin-left:auto;
+    margin-right:auto;
+    width:900px;
 }
-
+#header{
+    height:100px;
+    vertical-align:middle;
+    
+}
+#logo{
+    vertical-align:middle;
+    padding-left:10px;
+}
 /*
 37882e dark green
 F14A53 Red
@@ -56,13 +67,13 @@ b5e8b0 light gree
     background: url("/images/menu-bottom-hover.png") repeat-x;
 }
 #top-navigation  a span , #bottom-navigation a span {
-    padding-right: 12px;
+    padding-right: 6px;
 
 }
 
 #top-navigation  a:hover span, #bottom-navigation a:hover span {
     
-    padding-right: 12px           
+    padding-right: 6px           
 }
 
 #top-navigation a, #bottom-navigation a, #top-navigation a span, #bottom-navigation a span {
@@ -77,13 +88,22 @@ b5e8b0 light gree
 }
 
 #top-navigation li, #bottom-navigation li {
-    float: left;
+    block:inline;
     margin: 0;
 }
 
+#search_fields{
+    border:0px;
+    height:22px;
+    margin:0px;
+    padding:0px;
+    float:right;
+    margin-left:auto;text-align:right;
+}
 #search_box{
     width:125px;
-    float:right;
-    height:22px;
     color:gray;
+}
+#search_button {
+    width:65px;
 }
