@@ -9,7 +9,7 @@
   		  http://www.springframework.org/schema/jee/spring-jee.xsd">
 
 
-	<jee:jndi-lookup id="dataSource" jndi-name="java:DefaultDS" />
+	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/MySQL_DataSource" />
 
 	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
 	    <property name="velocityProperties">

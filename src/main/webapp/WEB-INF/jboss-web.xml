@@ -7,7 +7,7 @@
 <jboss-web>
 	<context-root>/</context-root>
 	<resource-ref>
-		<res-ref-name>/DefaultDS</res-ref-name>
-		<jndi-name>java:DefaultDS</jndi-name>
+		<res-ref-name>jdbc/MySQL_DataSource</res-ref-name>
+		<jndi-name>MySQL_DataSource</jndi-name>
 	</resource-ref>
 </jboss-web>

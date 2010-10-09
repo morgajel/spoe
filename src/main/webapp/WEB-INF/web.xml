@@ -63,13 +63,13 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
-	<resource-ref>
-		<description>Default Datasource Connection</description>
-		<res-ref-name>/DefaultDS</res-ref-name>
-		<res-type>javax.sql.DataSource</res-type>
-		<res-auth>Container</res-auth>
-		<res-sharing-scope>Shareable</res-sharing-scope>
-	</resource-ref>
+    <resource-ref>
+        <description>MySQL Connection</description>
+        <res-ref-name>jdbc/MySQL_DataSource</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+        <res-sharing-scope>Shareable</res-sharing-scope>
+    </resource-ref>
 	<!--
  
 		<error-page> <error-code>404</error-code>
