@@ -27,5 +27,4 @@
 </sec:authorize> <sec:authorize access='isAuthenticated()'>
     <a href="/account">My Account</a> | <a href="/j_spring_security_logout">Logout</a>
 </sec:authorize>
-<br clear="all"/>
 </div>
