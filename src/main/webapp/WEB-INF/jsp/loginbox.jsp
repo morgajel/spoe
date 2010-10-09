@@ -1,7 +1,7 @@
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 
-<div id='loginbox' style="float: right; position: relative;">
+<div id='loginbox' style="float:right; ">
 <sec:authorize access='! isAuthenticated()'>
     <form name='f' action='/j_spring_security_check' method='POST'>
     <table style='border: 0px solid black;'>
