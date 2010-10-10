@@ -34,67 +34,10 @@ body {
     vertical-align:middle;
     padding-left:10px;
 }
-/*
-37882e dark green
-F14A53 Red
-92CCC5 blue
-b5e8b0 light gree
-*/
-
-/*#top-navigation a {*/
-/*    background: url("/images/menu-top-left.png") left top no-repeat;*/
-/*    background: url("/images/menu-top-left-hover.png") left top no-repeat;    */
-/*    background: url("/images/menu-bottom-left.png") left top no-repeat;*/
-/*    background: url("/images/menu-bottom-left-hover.png") left top no-repeat;    */
-/*    background: url("/images/menu-top.png") repeat-x;*/
-/*	background: url("/images/menu-top-hover.png") repeat-x;*/
-/*    background: url("/images/menu-bottom.png") repeat-x;*/
-/*    background: url("/images/menu-bottom-hover.png") repeat-x;*/
-/*}*/
-/**/
-
-
-
-/*sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss*/
-#topmenu { 
-    text-align:left;
-    width:900px;
-    z-index: 1; 
-    margin:0px;
-    padding-left:0px;
-    margin-top:10px;    
-    } 
-
-#topmenu li { 
-    height:25px;
-    display: inline; 
-    overflow: hidden; 
-    list-style-type: none;
-    vertical-align:bottom;
-}
-#topmenu span{  background: url("/images/menu-top.png") left bottom repeat-x; }
-#topmenu a {    background: url("/images/menu-top-left.png") left bottom no-repeat;}
-#topmenu span:hover{  background: url("/images/menu-top-hover.png") left bottom repeat-x; }
-#topmenu a:hover {    background: url("/images/menu-top-left-hover.png") left bottom no-repeat;}
-
-
-#topmenu span{
-
-    height:25px;
-    padding-top:3px;
-    padding-right:5px;
-    vertical-align:bottom;
-    border-right:1px solid black;
-}
-
-#topmenu a {
-    padding-left:12px;
-    padding-top:4px;
-    height:25px;
-    color:black;
-    font: normal 1em verdana, Arial, sans-serif; 
-    text-decoration: none; 
-    cursor:hand;
+#searchform{
+    float:right;
+    margin-top:5px;
+    margin-right:5px;
 }
 
 #loginbox{

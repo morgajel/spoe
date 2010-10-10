@@ -7,11 +7,11 @@
     <table style='border: 0px solid black;'>
         <tr>
             <td><label for='j_username'>User:</label></td>
-            <td><input type='text' name='j_username' value='' /></td>
+            <td><input type='text' name='j_username' value='' style="width:100px;" /></td>
         </tr>
         <tr>
             <td><label for='j_password'>Password:</label></td>
-            <td><input type='password' name='j_password' /></td>
+            <td><input type='password' name='j_password' style="width:100px;" /></td>
         </tr>
         <tr>
             <td colspan='2'><input type='checkbox'
@@ -19,7 +19,7 @@
                 for='_spring_security_remember_me'>Remember me</label></td>
         </tr>
         <tr>
-            <td colspan='2' style="text-align:right;"> <input name="submit" type="submit" value='Log In' /> or <a href="/account/register">Register</a></td>
+            <td colspan='2' > <input name="submit" type="submit" value='Log In' /> or <a href="/account/register">Register</a></td>
         </tr>
     </table>
     </form>
