@@ -5,12 +5,31 @@ body {
     margin-left:auto;
     margin-right:auto;
     width:900px;
+    text-align: center;
 }
 #header{
     height:100px;
     vertical-align:middle;
     
 }
+#footer{
+    text-decoration:none;
+    margin-top:10px;
+    width:900px;
+    text-align:right;
+}
+
+#content,#header {
+    font: 0.9em/1.3em verdana, sans-serif;
+    text-align:left;
+    background-color:#b5e8b0; 
+    border: 1px solid black;
+    width:900px;
+    margin-left:auto;
+    margin-right:auto;
+    z-index: 2;
+}
+
 #logo{
     vertical-align:middle;
     padding-left:10px;
@@ -21,85 +40,68 @@ F14A53 Red
 92CCC5 blue
 b5e8b0 light gree
 */
-#content-window, #header{
-    background-color:#b5e8b0;
-    border:1px solid black;
-    padding:5px;
-}
 
-#top-navigation a {
-    background: url("/images/menu-top-left.png") left top no-repeat;
-}
-#top-navigation a:hover {
-    background: url("/images/menu-top-left-hover.png") left top no-repeat;    
-}
-#bottom-navigation a {
-    background: url("/images/menu-bottom-left.png") left top no-repeat;
-}
-#bottom-navigation a:hover {
-    background: url("/images/menu-bottom-left-hover.png") left top no-repeat;    
-}
+/*#top-navigation a {*/
+/*    background: url("/images/menu-top-left.png") left top no-repeat;*/
+/*    background: url("/images/menu-top-left-hover.png") left top no-repeat;    */
+/*    background: url("/images/menu-bottom-left.png") left top no-repeat;*/
+/*    background: url("/images/menu-bottom-left-hover.png") left top no-repeat;    */
+/*    background: url("/images/menu-top.png") repeat-x;*/
+/*	background: url("/images/menu-top-hover.png") repeat-x;*/
+/*    background: url("/images/menu-bottom.png") repeat-x;*/
+/*    background: url("/images/menu-bottom-hover.png") repeat-x;*/
+/*}*/
+/**/
 
-#top-navigation a, #bottom-navigation a {
-    color: #000;
-    text-decoration: none;
-    padding-left: 12px
-}
-#top-navigation a:hover, #bottom-navigation a:hover {
-    padding-left: 12px
-}
 
-#top-navigation span{
-    background: url("/images/menu-top.png") repeat-x;
-    border-right:1px solid black;
-    padding-top:3px;
-    
-}
-#top-navigation span:hover {
-	background: url("/images/menu-top-hover.png") repeat-x;
-}
-#bottom-navigation span {
-    background: url("/images/menu-bottom.png") repeat-x;
-    border-right:1px solid black;
-    padding-bottom:5px;
-}
-#bottom-navigation span:hover {
-    background: url("/images/menu-bottom-hover.png") repeat-x;
-}
-#top-navigation  a span , #bottom-navigation a span {
-    padding-right: 6px;
 
-}
-
-#top-navigation  a:hover span, #bottom-navigation a:hover span {
-    
-    padding-right: 6px           
-}
-
-#top-navigation a, #bottom-navigation a, #top-navigation a span, #bottom-navigation a span {
-    display: block;
-    float: left;
-}
-
-#top-navigation, #bottom-navigation {
-    list-style: none; 
-    padding: 0;
-    margin: 0;
-}
-
-#top-navigation li, #bottom-navigation li {
-    block:inline;
-    margin: 0;
-}
-
-#search_fields{
-    border:0px;
-    height:22px;
+/*sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss*/
+#topmenu { 
+    text-align:left;
+    width:900px;
+    z-index: 1; 
     margin:0px;
-    padding:0px;
-    float:right;
-    margin-left:auto;text-align:right;
+    padding-left:0px;
+    margin-top:10px;    
+    } 
+
+#topmenu li { 
+    height:25px;
+    display: inline; 
+    overflow: hidden; 
+    list-style-type: none;
+    vertical-align:bottom;
 }
+#topmenu span{  background: url("/images/menu-top.png") left bottom repeat-x; }
+#topmenu a {    background: url("/images/menu-top-left.png") left bottom no-repeat;}
+#topmenu span:hover{  background: url("/images/menu-top-hover.png") left bottom repeat-x; }
+#topmenu a:hover {    background: url("/images/menu-top-left-hover.png") left bottom no-repeat;}
+
+
+#topmenu span{
+
+    height:25px;
+    padding-top:3px;
+    padding-right:5px;
+    vertical-align:bottom;
+    border-right:1px solid black;
+}
+
+#topmenu a {
+    padding-left:12px;
+    padding-top:4px;
+    height:25px;
+    color:black;
+    font: normal 1em verdana, Arial, sans-serif; 
+    text-decoration: none; 
+    cursor:hand;
+}
+
+#loginbox{
+float:right;
+height:100px;
+}
+
 #search_box{
     width:125px;
     color:gray;
@@ -107,3 +109,8 @@ b5e8b0 light gree
 #search_button {
     width:65px;
 }
+
+
+
+
+
