@@ -32,8 +32,8 @@ function searchClear(searchbox){
  
 <ul id='topmenu' > 
     <li><a href="/"><span>Home</span></a></li>
-    <li><a href="/review/"><span>Submit A Review</span></a></li>
-    <li><a href="/snippet/"><span>Submit A Snippet</span></a></li>
+    <li><a href="/review/"><span>Reviews</span></a></li>
+    <li><a href="/snippet/"><span>Snippets</span></a></li>
     <li><a href="/search/advanced"><span>Advanced Search</span></a></li>
     <sec:authorize access='isAuthenticated()'>
     <li><a href="/account"><span>My Account</span></a></li>
