@@ -11,11 +11,8 @@
 	<global-method-security pre-post-annotations="enabled" />
 
 	<http auto-config='true' use-expressions="true">
-		<intercept-url pattern="/account/register**" access="permitAll" />
-		<intercept-url pattern="/account/activate/**" access="permitAll" />
-		<intercept-url pattern="/account/activate**" access="permitAll" />
-		<intercept-url pattern="/account/user/**" access="permitAll" />
-		<intercept-url pattern="/account/**" access="isAuthenticated()" />
+		<intercept-url pattern="/account" access="isAuthenticated()" />
+        <intercept-url pattern="/account/edit**" access="isAuthenticated()" />
 		<intercept-url pattern="/**" access="permitAll" />
 		<form-login default-target-url='/account' always-use-default-target='true' /> 
 		<logout logout-success-url='/index.jsp?logout=success'/>

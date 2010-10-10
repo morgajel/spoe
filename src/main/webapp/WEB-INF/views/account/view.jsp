@@ -26,7 +26,7 @@ Welcome to your account page, ${account.username}.
         </tr>
 	</c:forEach>
 </table>
-<br/
+<br/>
 
 ${message}
 	<%@ include file="/WEB-INF/jsp/footer.jsp"%>
