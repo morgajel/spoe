@@ -6,7 +6,7 @@
 
 	<display-name>Second Pair of Eyes</display-name>
 
-	<context-param> 
+	<context-param>
 		<param-name>log4jConfigLocation</param-name>
 		<param-value>classpath:/log4j.xml</param-value>
 	</context-param>
@@ -29,7 +29,10 @@
 		<servlet-name>dispatcher</servlet-name>
 		<url-pattern>/account/*</url-pattern>
 	</servlet-mapping>
-
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/snippet/*</url-pattern>
+    </servlet-mapping>
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>

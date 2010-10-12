@@ -21,7 +21,7 @@ Welcome to your account page, ${account.username}.
 	<c:forEach var="snippet" items="${account.snippets}"> 
    		<tr>
      		<td>${snippet.snippetId}</td>
-          	<td>${snippet.title}</td>
+          	<td><a href="/snippet/id/${snippet.snippetId}">${snippet.title}</a></td>
           	<td>${snippet.lastModifiedDate}</td>
         </tr>
 	</c:forEach>

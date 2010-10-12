@@ -10,9 +10,7 @@
         http://www.springframework.org/schema/context 
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-
 	<context:component-scan base-package="com.morgajel.spoe" />
-
 
 	<import resource="spring/mvc-config.xml" />
 
@@ -30,8 +28,7 @@
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-                <prop key="hibernate.show_sql">true</prop>
-
+                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
             </props>
         </property>
     </bean>

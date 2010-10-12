@@ -48,7 +48,7 @@ function searchClear(searchbox){
                 
     <ul id="topmenu" class="dropmenu">
         <li ><a href="/" class="first">Home</a></li>
-        <li><a href="/review/">Reviews</a>
+        <li><a href="/review">Reviews</a>
             <ul>
                 <sec:authorize access='isAuthenticated()'>
                 <li><a href="/review/my">My Reviews</a></li>
@@ -57,7 +57,7 @@ function searchClear(searchbox){
                 <li><a href="/review/find">Find A Review</a></li>
             </ul>
         </li>
-        <li><a href="/snippet/">Snippets</a>
+        <li><a href="/snippet">Snippets</a>
             <ul>
                 <sec:authorize access='isAuthenticated()'>
                 <li><a href="/snippet/my">My Snippets</a></li>

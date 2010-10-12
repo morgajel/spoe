@@ -18,10 +18,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 import com.morgajel.spoe.model.Account;
 import com.morgajel.spoe.model.Role;
-import com.morgajel.spoe.model.Snippet;
+
 import com.morgajel.spoe.service.AccountService;
 import com.morgajel.spoe.service.RoleService;
 import com.morgajel.spoe.service.SnippetService;
@@ -33,7 +34,7 @@ import com.morgajel.spoe.web.SetPasswordForm;
  * Controls all account interactions from changing passwords, registering and activating accounts, etc.
  */
 @Controller
-public class AccountController {
+public class AccountController  extends MultiActionController {
 
     private VelocityEngine velocityEngine;
     private MailSender mailSender;
@@ -259,7 +260,7 @@ public class AccountController {
      * Will show user's account information in the future.
      * @return ModelAndView mav
      */
-    @RequestMapping("*")
+    @RequestMapping
     public ModelAndView defaultView() {
         logger.info("showing the default view");
         ModelAndView  mav = new ModelAndView();

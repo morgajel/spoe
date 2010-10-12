@@ -11,7 +11,6 @@
 	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
 	<bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping" />
 
-
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
 		<property name="prefix" value="/WEB-INF/views/" />
@@ -23,6 +22,9 @@
         <property name="mailSender" ref="mailSender"/>
         <property name="templateMessage" ref="templateRegistrationMessage"/>
         <property name="velocityEngine"><ref bean="velocityEngine"/></property>
+    </bean>
+    <bean id="snippetController" class="com.morgajel.spoe.controller.SnippetController">
+        <property name="mailSender" ref="mailSender"/>
     </bean>
 </beans>
 
