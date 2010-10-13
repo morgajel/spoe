@@ -7,12 +7,11 @@
     uri="http://www.springframework.org/security/tags"%>
 <html>
         <%@ include file="/WEB-INF/jsp/header.jsp"%>
-${editlink}
-<h1>${snippet.title}(${snippet.snippetId})</h1>
 
+Snippet Failure
 <hr/>
-${snippet.content}
-<hr/>
+<br/>
+
 ${message}
 	<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 	</body>

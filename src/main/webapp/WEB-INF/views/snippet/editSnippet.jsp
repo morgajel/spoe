@@ -51,7 +51,7 @@ jQuery(function() {
 <h1>Create a Snippet</h1>
 <form method="post" action="">
 <label>Title:</label>
-<input type='text' class='wym_title' name='title' size='40' />
+<input type='text' class='wym_title' name='title' size='40' value="${title}" />
 
 <textarea class="wymeditor">${content}</textarea>
 

@@ -4,6 +4,7 @@ package com.morgajel.spoe.controller;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,7 +52,46 @@ public class SnippetController extends MultiActionController {
         return this.mailSender;
     }
     
-    
+    /**
+     * Displays the form for editing a given snippet
+     * @param snippetId The snippet you wish to edit.
+     * @return ModelAndView mav
+     */
+    @RequestMapping(value = "/edit/{snippetId}", method = RequestMethod.GET)
+    public ModelAndView editSnippet(@PathVariable Long snippetId) {
+        logger.debug("trying to edit " + snippetId);
+        ModelAndView mav = new ModelAndView();
+        try {
+            Snippet snippet = snippetService.loadById(snippetId);
+            Account account=getContextAccount();
+            logger.info(snippet);
+            if (snippet != null) {
+                if (snippet.getAuthor().getUsername().equals(account.getUsername())){
+                    mav.setViewName("snippet/editSnippet");
+                    mav.addObject("content", snippet.getContent());
+                    mav.addObject("title", snippet.getTitle());
+                }else{
+                    logger.info(account.getUsername() + " isn't the author " + snippet.getAuthor().getUsername());
+                    String message = "I'm sorry, Only the author can edit a snippet.";
+                    mav.setViewName("snippet/viewSnippet");
+                    mav.addObject("snippet", snippet);
+                    mav.addObject("message", message);                	
+                }            	
+            } else {
+                logger.info("snippet doesn't exist");
+                String message = "I'm sorry, " + snippetId + " was not found.";
+                mav.setViewName("snippet/snippetFailure");
+                mav.addObject("message", message);
+            }
+        } catch (Exception ex) {
+            // TODO catch actual errors and handle them
+            // TODO tell the user wtf happened
+            logger.error("damnit, something failed." + ex);
+            mav.setViewName("snippet/snippetFailure");
+            mav.addObject("message", "Something failed while trying to display " + snippetId);
+        }
+        return mav;
+    }    
     
     /**
      * Displays the basic info for a given Snippet
@@ -59,13 +99,17 @@ public class SnippetController extends MultiActionController {
      * @return ModelAndView mav
      */
     @RequestMapping(value = "/id/{snippetId}", method = RequestMethod.GET)
-    public ModelAndView displayUser(@PathVariable Long snippetId) {
+    public ModelAndView displaySnippet(@PathVariable Long snippetId) {
         logger.debug("trying to display " + snippetId);
         ModelAndView mav = new ModelAndView();
+        Account account=getContextAccount();
         try {
             Snippet snippet = snippetService.loadById(snippetId);
             logger.info(snippet);
             if (snippet != null) {
+                if (snippet.getAuthor().getUsername().equals(account.getUsername())){
+                	mav.addObject("editlink", "<div style='float:right;'><a href='/snippet/edit/"+snippet.getSnippetId()+"'>[edit]</a></div>");	
+                }
                 mav.addObject("message", "<!-- nothing important-->");
                 mav.setViewName("snippet/viewSnippet");
                 mav.addObject("snippet", snippet);
@@ -128,4 +172,13 @@ public class SnippetController extends MultiActionController {
     public void setAccountService(AccountService pAccountService) {
         this.accountService = pAccountService;
     }
+    /**
+     * Returns the account for the current context.
+     * @return Account
+     */
+    public Account getContextAccount() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return accountService.loadByUsername(username);
+    }
+    
 }

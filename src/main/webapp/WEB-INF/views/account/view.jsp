@@ -17,12 +17,14 @@ Welcome to your account page, ${account.username}.
      		<th>Snippet ID</th>
           	<th> Title</th>
           	<th>Last Modified</th>
+            <th>Edit</th>
         </tr>
 	<c:forEach var="snippet" items="${account.snippets}"> 
    		<tr>
      		<td>${snippet.snippetId}</td>
           	<td><a href="/snippet/id/${snippet.snippetId}">${snippet.title}</a></td>
           	<td>${snippet.lastModifiedDate}</td>
+            <td><a href="/snippet/edit/${snippet.snippetId}">[edit]</a></td>
         </tr>
 	</c:forEach>
 </table>
