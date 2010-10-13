@@ -85,7 +85,19 @@ public class SnippetController extends MultiActionController {
         return mav;
     }
 
-    
+    /**
+     * This will display the snippet creation form.
+     * @return ModelAndView mav
+     */
+    @RequestMapping("/create")
+    public ModelAndView createSnippetForm() {
+        logger.info("showing the createSnippetForm");
+        ModelAndView  mav = new ModelAndView();
+        mav.setViewName("snippet/editSnippet");
+        mav.addObject("content", "It was the best of times, it was the worst of times.");
+        return mav;
+    }
+
     /**
      * This is the default view for snippet, a catch-all for most any one-offs.
      * Will show the generic snippet page.
