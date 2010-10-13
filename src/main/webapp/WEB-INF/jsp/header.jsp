@@ -16,6 +16,9 @@
                 maxWidth        : 0
             }
         );
+        if ($('#content').height() <400) {
+        	$('#content').height(400);
+        }
     });
 </script>
 
