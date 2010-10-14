@@ -49,14 +49,17 @@ jQuery(function() {
 </script>
 
 <h1>Create a Snippet</h1>
-<form method="post" action="">
-<label>Title:</label>
-<input type='text' class='wym_title' name='title' size='40' value="${title}" />
+<div class="msg">${message}</div>
+<form:form modelAttribute="snippet" action="/snippet/save" method="post">
+    <form:label for="title" path="title" cssErrorClass="error">Title:</form:label>
+    <form:input path="title" cssClass='wym_title' size='40'  />
+    <form:errors path="title" />
 
-<textarea class="wymeditor">${content}</textarea>
+    <form:textarea path="content" cssClass="wymeditor"/>
+        <form:errors path="content" />
 
-<input type="submit" class="wymupdate" value="save" />
-</form>
+    <input type="submit" class="wymupdate" value="save" />
+</form:form>
 
 
 

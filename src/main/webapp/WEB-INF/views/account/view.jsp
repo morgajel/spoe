@@ -15,7 +15,7 @@ Welcome to your account page, ${account.username}.
 <table border='1'>
 <tr>
      		<th>Snippet ID</th>
-          	<th> Title</th>
+          	<th>Title</th>
           	<th>Last Modified</th>
             <th>Edit</th>
         </tr>

@@ -13,11 +13,11 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 import com.morgajel.spoe.model.Account;
-import com.morgajel.spoe.model.Role;
 import com.morgajel.spoe.model.Snippet;
 import com.morgajel.spoe.service.AccountService;
 import com.morgajel.spoe.service.RoleService;
 import com.morgajel.spoe.service.SnippetService;
+import com.morgajel.spoe.web.SetPasswordForm;
 
 /**
  * Controls all account interactions from changing passwords, registering and activating accounts, etc.
@@ -53,6 +53,44 @@ public class SnippetController extends MultiActionController {
     }
     
     /**
+     * Saves the results of the incoming snippet form
+     * @param snippetId The snippet you wish to edit.
+     * @return ModelAndView mav
+     */
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    public ModelAndView saveSnippet(Snippet snippet) {
+
+        //logger.debug("trying to save " + snippet);
+    	ModelAndView mav = new ModelAndView();
+        try{
+        	Account account=getContextAccount();
+        	if (snippet.getSnippetId() == null){
+        		snippet.setAuthor(account);
+        		snippetService.saveSnippet(snippet);
+        		logger.info("saved new snippet " + snippet);
+        	}else{
+        		if (snippet.getAuthor().getUsername().equals(account.getUsername())){
+        			snippetService.saveSnippet(snippet);
+        			logger.info("saved existing snippet " + snippet);
+        		}
+        	}
+        	mav.setViewName("snippet/editSnippet");
+        	mav.addObject("snippet", snippet);
+        	mav.addObject("message"," snippet saved.");
+        	//if id, check if owner
+        	//  if owner, save
+        } catch (Exception ex) {
+            // TODO catch actual errors and handle them
+            // TODO tell the user wtf happened
+            logger.error("damnit, something failed." + ex);
+        	mav.setViewName("snippet/editSnippet");
+        	mav.addObject("message","something failed" +ex);
+        	mav.addObject("snippet", snippet);
+        }
+        
+        return mav;
+    }
+    /**
      * Displays the form for editing a given snippet
      * @param snippetId The snippet you wish to edit.
      * @return ModelAndView mav
@@ -66,10 +104,9 @@ public class SnippetController extends MultiActionController {
             Account account=getContextAccount();
             logger.info(snippet);
             if (snippet != null) {
-                if (snippet.getAuthor().getUsername().equals(account.getUsername())){
+                if (account != null && snippet.getAuthor().getUsername().equals(account.getUsername())){
                     mav.setViewName("snippet/editSnippet");
-                    mav.addObject("content", snippet.getContent());
-                    mav.addObject("title", snippet.getTitle());
+                    mav.addObject("snippet", snippet);
                 }else{
                     logger.info(account.getUsername() + " isn't the author " + snippet.getAuthor().getUsername());
                     String message = "I'm sorry, Only the author can edit a snippet.";
@@ -107,7 +144,7 @@ public class SnippetController extends MultiActionController {
             Snippet snippet = snippetService.loadById(snippetId);
             logger.info(snippet);
             if (snippet != null) {
-                if (snippet.getAuthor().getUsername().equals(account.getUsername())){
+                if (account != null && snippet.getAuthor().getUsername().equals(account.getUsername())){
                 	mav.addObject("editlink", "<div style='float:right;'><a href='/snippet/edit/"+snippet.getSnippetId()+"'>[edit]</a></div>");	
                 }
                 mav.addObject("message", "<!-- nothing important-->");
@@ -138,7 +175,7 @@ public class SnippetController extends MultiActionController {
         logger.info("showing the createSnippetForm");
         ModelAndView  mav = new ModelAndView();
         mav.setViewName("snippet/editSnippet");
-        mav.addObject("content", "It was the best of times, it was the worst of times.");
+        mav.addObject("snippet", new Snippet());
         return mav;
     }
 
