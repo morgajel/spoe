@@ -23,6 +23,10 @@ public class SnippetServiceImpl implements SnippetService {
     private SnippetDao snippetDao;
     private static transient Logger logger = Logger.getLogger(SnippetServiceImpl.class);
 
+    public void setSnippetDao(SnippetDao pSnippetDao) {
+        this.snippetDao = pSnippetDao;
+    }
+
     /**
      * Set snippetDao for accessing the datasource.
      * @param snippet the snippetDao you wish to set

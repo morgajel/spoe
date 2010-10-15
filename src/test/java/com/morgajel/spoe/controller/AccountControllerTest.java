@@ -75,9 +75,9 @@ public class AccountControllerTest {
         mockEditAccountForm = mock(EditAccountForm.class);
         mockTemplateMessage = mock(SimpleMailMessage.class);
         mockVelocityEngine = mock(VelocityEngine.class);
-        List<Account> accountList=new ArrayList();
+        List<Account> accountList = new ArrayList();
         accountList.add(mockAccount);
-        List<Snippet> snippetList=new ArrayList();
+        List<Snippet> snippetList = new ArrayList();
         snippetList.add(mockSnippet);
         accountController = new AccountController();
         accountController.setAccountService(mockAccountService);

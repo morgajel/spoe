@@ -76,13 +76,12 @@ public class SnippetTest {
 
     @Test
     public void testToString() {
-        when(mockAccount.getUsername()).thenReturn(username);
         snippet.setTitle(title);
         snippet.setSnippetId(snippetId);
         String toString = "Snippet "
                     + "[ snippetId=" + snippetId
                     + ", title=" + title
-                    + ", author=" + mockAccount.getUsername()
+                    + ", author=" + mockAccount
                     +  "]";
         assertEquals(toString, snippet.toString());
     }
