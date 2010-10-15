@@ -79,27 +79,22 @@ public class Account implements Serializable {
     @Column(name = "account_id")
     private Long accountId;
     @NotNull
-    @Size(min = 3, max = 25)
     @Column(name = "username")
     private String username;
     @NotNull
-    @Size(max = 255)
     @Email
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
     @NotNull
-    @Size(min = 6, max = 255)
     @Column(name = "password")
     private String password;
     @NotNull
     @Column(name = "enabled", nullable = false)
     private Boolean enabled;
     @NotNull
-    @Size(min = 2, max = 255)
     @Column(name = "firstname")
     private String firstname;
     @NotNull
-    @Size(min = 2, max = 255)
     @Column(name = "lastname")
     private String lastname;
     @DateTimeFormat
@@ -109,25 +104,21 @@ public class Account implements Serializable {
     @Column(name = "creation_date")
     private Date creationDate;
 
-    @ManyToMany (fetch=FetchType.EAGER)
+    @ManyToMany (fetch = FetchType.EAGER)
     @JoinTable(name = "account_role",
             joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "account_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id")
     )
     private Set<Role> roles;
 
-    @OneToMany (fetch=FetchType.EAGER)
+    @OneToMany (fetch = FetchType.EAGER)
     @JoinColumn (name = "account_id")
     private Set<Snippet> snippets = new HashSet();
-    
+
     public Set<Snippet> getSnippets() {
         return snippets;
     }
-    /**
-     * Sets the snippets for a user.
-     * @param pSnippets A set of snippetss to give to the account.
-     *
-     **/
+
     public void setSnippets(Set<Snippet> pSnippets) {
         this.snippets = pSnippets;
     }
@@ -140,8 +131,7 @@ public class Account implements Serializable {
         snippets.add(snippet);
         logger.info("added snippet to " + username + ", check it out:" + snippets);
     }
-    
-    
+
     public static final String ALGORITHM = "SHA1";
     public static final String PASSWDCHARSET = "!0123456789abcdefghijklmnopqrstuvwxyz";
     private static final long serialVersionUID = -6987219647522500285L;
@@ -186,7 +176,7 @@ public class Account implements Serializable {
     public String activationChecksum() {
         //TODO can this be refactored with the namedQuery findAccountByUsernameAndChecksum?
         //converting enabled to int rather than string representation so NamedQuery using mysql int works.
-        Integer enable = this.enabled?1:0;
+        Integer enable = this.enabled ? 1 : 0;
         String checksum = hashText(username + password + enable);
         logger.info("create checksum: " + username + " + " + password + " + " + enable + " = " + checksum);
         return checksum;
@@ -216,26 +206,14 @@ public class Account implements Serializable {
         this.setCreationDate(new Date());
         this.roles = new HashSet<Role>();
     }
-    /**
-     * Returns this.accountId, which is the Primary Key for Accounts.
-     * @return Long accountId
-     **/
+
     public Long getAccountId() {
         return accountId;
     }
-
-    /**
-     * Returns all of the roles currently assigned to a user.
-     * @return Set<Role>
-     **/
     public Set<Role> getRoles() {
         return roles;
     }
-    /**
-     * Sets the roles for a user.
-     * @param pRoles A set of Roles to give to the account.
-     *
-     **/
+
     public void setRoles(Set<Role> pRoles) {
         this.roles = pRoles;
     }
@@ -249,57 +227,33 @@ public class Account implements Serializable {
         logger.info("added roll to " + username + ", check it out:" + roles);
     }
 
-    /**
-     * Sets this.accountId, which is the Primary Key for Accounts.
-     * @param pAccountId The ID for this account.
-     **/
     public void setAccountId(Long pAccountId) {
         this.accountId = pAccountId;
     }
-    /**
-     * Returns this.email, which is required for password recovery and account creation.
-     * @return email
-     **/
+
     public String getEmail() {
         return email;
     }
-    /**
-     * Sets this.email, which is required for password recovery and account creation.
-     * @param pEmail Email to set for the account.
-     **/
+
     public void setEmail(String pEmail) {
         this.email = pEmail;
     }
-    /**
-     * Returns this.username, which is required for login.
-     * @return String
-     **/
+
     public String getUsername() {
         return username;
     }
-    /**
-     * Sets this.username, which is required for login.
-     * @param uname username for account
-     **/
+
     public void setUsername(String uname) {
         this.username = uname;
     }
-    /**
-     * Returns this.password, which is a hashed copy of the user's password.
-     * @return String password
-     **/
+
     public String getPassword() {
-        logger.debug("getting password:" + this.password);
         return this.password;
     }
-    /**
-     * Sets this.password directly without hashing.
-     * @param passwordHash hash of user's password
-     **/
-    private void setPassword(String passwordHash) {
-        logger.trace("setting password: " + passwordHash);
-        this.password = passwordHash;
-        logger.trace("password field is now: " + this.password);
+
+    private void setPassword(String pPassword) {
+        this.password = pPassword;
+
     }
     /**
      * Hashes the given string before setting it.
@@ -310,45 +264,27 @@ public class Account implements Serializable {
         this.setPassword(Account.hashText(pword));
         logger.trace("H password field is now: " + this.password);
     }
-    /**
-     * Gets this.enabled, which is required for login.
-     * @return boolean enabled
-     **/
+
     public Boolean getEnabled() {
         return enabled;
     }
-    /**
-     * Sets this.enabled, which is required for login.
-     * @param enable status of the account
-     **/
+
     public void setEnabled(Boolean enable) {
         this.enabled = enable;
     }
-    /**
-     * Gets this.Firstname, which is rarely ever used except for addressing people.
-     * @return String firstname
-     **/
+
     public String getFirstname() {
         return firstname;
     }
-    /**
-     * Sets this.Firstname, which is rarely ever used except for addressing people.
-     * @param fname first name of user
-     **/
+
     public void setFirstname(String fname) {
         this.firstname = fname;
     }
-    /**
-     * Gets this.Lastname, which is rarely ever used except for addressing people.
-     * @return lastname
-     **/
+
     public String getLastname() {
         return lastname;
     }
-    /**
-     * Sets this.Lastname, which is rarely ever used except for addressing people.
-     * @param lname last name of account
-     **/
+
     public void setLastname(String lname) {
         this.lastname = lname;
     }
@@ -394,10 +330,7 @@ public class Account implements Serializable {
         email = registerForm.getEmail();
         username = registerForm.getUsername();
     }
-    /**
-     * Overrides the default toString, which should tell you quite a bit about your account.
-     * @return String
-     **/
+
     @Override
     public String toString() {
         //FIXME: I need to update this. perhaps include roles

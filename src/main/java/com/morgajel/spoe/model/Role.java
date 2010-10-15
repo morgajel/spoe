@@ -54,16 +54,10 @@ public class Role implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "account_id", referencedColumnName = "account_id")
     )
 
-    /**
-     * Returns all of the accounts currently assigned to a user.
-     **/
     public Set<Account> getAccounts() {
         return this.accounts;
     }
-    /**
-     * Sets a list of accounts that use the role.
-     * @param pAccounts accounts to associate with the role
-     **/
+
     public void setAccounts(Set<Account> pAccounts) {
         this.accounts = pAccounts;
     }
@@ -91,43 +85,26 @@ public class Role implements Serializable {
         logger.info("added roll to " + account.getUsername() + ", check it out:" + accounts);
     }
 
-
-    /**
-     * Returns the roleId of the Role instance.
-     * @return Long
-     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "role_id")
     public Long getRoleId() {
         return roleId;
     }
-    /**
-     * Sets the roleId of the Role instance.
-     * @param pRoleId sets the roleId
-     **/
+
     public void setRoleId(Long pRoleId) {
         this.roleId = pRoleId;
     }
-    /**
-     * Returns the name of the Role instance.
-     * @return String
-     **/
+    
     @Column(name = "name")
     public String getName() {
         return name;
     }
-    /**
-     * Sets the name of the Role instance.
-     * @param pName Set the Name of the role
-     **/
+
     public void setName(String pName) {
         this.name = pName;
     }
-    /**
-     * Overrides the toString with pertinent information.
-     * @return String
-     **/
+
     @Override
     public String toString() {
         //TODO may want to include userlist here.
