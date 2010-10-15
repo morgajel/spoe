@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 
-
+/**
+ * Implementation of the snippetDao interface, used to save and load snippets from the datasource.
+ */
 @Repository("snippetDao")
 public class SnippetDaoImpl implements SnippetDao {
 
@@ -36,9 +38,14 @@ public class SnippetDaoImpl implements SnippetDao {
     public SessionFactory getSessionFactory() {
         return this.sessionFactory;
     }
+    /**
+     * Saves a given snippet to the datasource.
+     * @param snippet snippet to save
+     */
     @Override
     public void saveSnippet(Snippet snippet) {
         sessionFactory.getCurrentSession().saveOrUpdate(snippet);
+        logger.info("saved snippet" + snippet);
     }
     @Override
     public List<Snippet> listSnippets() {
@@ -46,7 +53,7 @@ public class SnippetDaoImpl implements SnippetDao {
     }
     @Override
     public Snippet loadByTitle(String title) {
-        List sniplist = sessionFactory.getCurrentSession().getNamedQuery("findSnippetByTitle").setString("title", title).list();
+        List<Snippet> sniplist = sessionFactory.getCurrentSession().getNamedQuery("findSnippetByTitle").setString("title", title).list();
         if (sniplist.size() > 0) {
             logger.info("Loaded snippet " + sniplist.get(0));
             return (Snippet) sniplist.get(0);
@@ -56,7 +63,7 @@ public class SnippetDaoImpl implements SnippetDao {
     }
     @Override
     public Snippet loadById(Long id) {
-        List sniplist = sessionFactory.getCurrentSession().getNamedQuery("findSnippetById").setLong("snippet_id", id).list();
+    List<Snippet> sniplist = sessionFactory.getCurrentSession().getNamedQuery("findSnippetById").setLong("snippet_id", id).list();
         if (sniplist.size() > 0) {
             logger.info("Loaded snippet " + sniplist.get(0));
             return (Snippet) sniplist.get(0);
@@ -68,5 +75,4 @@ public class SnippetDaoImpl implements SnippetDao {
     public List<Snippet> loadByAuthor(Account account) {
         return (List<Snippet>) sessionFactory.getCurrentSession().getNamedQuery("findSnippetByAuthor").setLong("account_id", account.getAccountId()).list();
     }
-
 }
