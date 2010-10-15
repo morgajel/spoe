@@ -82,7 +82,6 @@ public class AccountControllerTest {
         accountController = new AccountController();
         accountController.setAccountService(mockAccountService);
         accountController.setRoleService(mockRoleService);
-        accountController.setSnippetService(mockSnippetService);
         accountController.setMailSender(mockMailSender);
         accountController.setTemplateMessage(mockTemplateMessage);
         accountController.setVelocityEngine(mockVelocityEngine);
