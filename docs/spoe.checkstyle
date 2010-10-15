@@ -5,14 +5,14 @@
     This configuration file was written by the eclipse-cs plugin configuration editor
 -->
 <!--
-    Checkstyle-Configuration: SPoE Style Checks
-    Description: 
-Checkstyle configuration that checks the sun coding conventions.
+    Checkstyle-Configuration: spoe-checkstyle
+    Description: none
 -->
 <module name="Checker">
   <property name="severity" value="warning"/>
   <module name="TreeWalker">
     <module name="JavadocMethod">
+      <property name="allowMissingPropertyJavadoc" value="true"/>
       <property name="logLoadErrors" value="true"/>
       <property name="suppressLoadErrors" value="true"/>
     </module>

@@ -30,8 +30,8 @@ create table account (
 );
 
 create table snippet (
-        snippet_id          integer      not null auto_increment primary key,
-        title               varchar(255) not null unique, 
+        snippet_id          integer      not null unique auto_increment primary key,
+        title               varchar(255) not null, 
         account_id          integer      not null,
         CONSTRAINT FOREIGN KEY (account_id) REFERENCES account(account_id),
         last_modified_date  timestamp    not null default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
