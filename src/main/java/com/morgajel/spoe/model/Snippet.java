@@ -11,12 +11,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import org.apache.log4j.Logger;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.morgajel.spoe.web.EditSnippetForm;
 
 /**
  * Named Queries for retrieving Snippets.
@@ -49,13 +52,14 @@ import org.springframework.format.annotation.DateTimeFormat;
  * Snippet manager displays, edits and performs all other snippet-related tasks.
  **/
 @Entity
-@Table(name = "snippet")
+@Table(name = "snippet",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = "snippet_id") }
+    )
 public class Snippet implements Serializable {
 
-    
-    
     @ManyToOne
-    @JoinColumn (name="account_id", updatable = false, insertable = false)
+    @JoinColumn (name = "account_id", updatable = false, insertable = false)
     private Account author;
     /**
      * Returns the account associated as the author of the snippet.
@@ -75,7 +79,7 @@ public class Snippet implements Serializable {
     @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "snippet_id")
+    @Column(name = "snippet_id", unique = true, nullable = false)
     private Long snippetId;
     @NotNull
     @Column(name = "account_id")
@@ -93,12 +97,10 @@ public class Snippet implements Serializable {
     @Column(name = "content")
     private String content;
 
-
     private static final long serialVersionUID = -5461020313014420728L;
 
     private static transient Logger logger = Logger.getLogger(Snippet.class);
 
-    
     /**
      * Constructor for snippet.
      **/
@@ -106,9 +108,19 @@ public class Snippet implements Serializable {
         this.setLastModifiedDate(new Date());
         this.setCreationDate(new Date());
         this.content = "";
-
     }
-    
+    /**
+     * A constructor for snippet.
+     * @param pAuthor Account that created the snippet.
+     * @param editSnippetForm form object containing data.
+     **/
+    public Snippet(Account pAuthor, EditSnippetForm editSnippetForm) {
+        this.setLastModifiedDate(new Date());
+        this.setCreationDate(new Date());
+        this.content = editSnippetForm.getContent();
+        this.author = pAuthor;
+        this.title = editSnippetForm.getTitle();
+    }
     /**
      * Primary constructor for snippet.
      * @param pAuthor Account that created the snippet.
@@ -121,37 +133,22 @@ public class Snippet implements Serializable {
         this.author = pAuthor;
         this.title = pTitle;
     }
-    /**
-     * Returns the snippetId of the Snippet instance.
-     * @return Long
-     */
+
     public Long getSnippetId() {
         return snippetId;
     }
-    /**
-     * Returns the accountId of the Snippet instance.
-     * @return Long
-     */
+
     public Long getAccountId() {
         return this.accountId;
     }
 
-    /**
-     * Sets the snippetId of the Snippet instance.
-     * @param pSnippetId sets the snippetId
-     **/
     public void setSnippetId(Long pSnippetId) {
         this.snippetId = pSnippetId;
     }
-    /**
-     * Sets the accountId of the Snippet instance.
-     * @param pAccountId sets the snippetId
-     **/
-    public  void setAccountId( Long pAccountId) {
-        this.accountId=pAccountId;
+    public  void setAccountId(Long pAccountId) {
+        this.accountId = pAccountId;
     }
 
-    
     /**
      * Gets this.creationDate, the date when the snippet was created.
      * @return Date creationDate
@@ -187,47 +184,32 @@ public class Snippet implements Serializable {
         this.lastModifiedDate = (Date) pLastModifiedDate.clone();
     }
 
-    /**
-     * Returns the content of the Snippet instance.
-     * @return String
-     **/
     public String getContent() {
         return this.content;
     }
-    /**
-     * Sets the content of the Snippet instance.
-     * @param pContent Set the content of the snippet
-     **/
+
     public void setContent(String pContent) {
         this.content = pContent;
     }
 
-    /**
-     * Returns the title of the Snippet instance.
-     * @return String
-     **/
     public String getTitle() {
         return this.title;
     }
-    /**
-     * Sets the title of the Snippet instance.
-     * @param pTitle Set the title of the snippet
-     **/
+
     public void setTitle(String pTitle) {
         this.title = pTitle;
     }
-    /**
-     * Overrides the toString with pertinent information.
-     * @return String
-     **/
+
+    //TODO use logger.error(msg,ex);
     @Override
     public String toString() {
         //TODO may want to include userlist here.
         logger.debug("printing toString");
+
         return "Snippet "
                 + "[ snippetId=" + snippetId
                 + ", title=" + title
-                + ", author=" + author.getUsername()
+                + ", author=" + author
                 +  "]";
     }
 }

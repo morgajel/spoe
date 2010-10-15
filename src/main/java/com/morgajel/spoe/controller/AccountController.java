@@ -1,7 +1,6 @@
 package com.morgajel.spoe.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -43,8 +42,6 @@ public class AccountController  extends MultiActionController {
     private AccountService accountService;
     @Autowired
     private RoleService roleService;
-    @Autowired
-    private SnippetService snippetService;
 
     private static final String REGISTRATION_TEMPLATE = "/WEB-INF/templates/registrationEmail.vm";
     private static final String ACTIVATION_URL = "http://127.0.0.62:8080/account/activate/";
@@ -273,29 +270,16 @@ public class AccountController  extends MultiActionController {
         return mav;
     }
 
-    /**
-     * Returns the mailSender. Currently only used by Unit Tests, and might be
-     * replaced by reflection if I can.
-     * @return MailSender
-     */
     public MailSender getMailSender() {
         //TODO is this needed?
         return this.mailSender;
     }
 
-    /**
-     * returns templateMessage, may only be used by Unit testing.
-     * @return SimpleMailMessage
-     */
     public SimpleMailMessage getTemplateMessage() {
         //TODO might be able to remove it and replace with reflection.
         return this.templateMessage;
     }
 
-    /**
-     * returns velocityEngine, may only be for unit testing.
-     * @return VelocityEngine
-     */
     public VelocityEngine getVelocityEngine() {
         //TODO might be able to remove it and replace with reflection.
         return this.velocityEngine;
@@ -324,61 +308,30 @@ public class AccountController  extends MultiActionController {
         this.mailSender.send(msg);
     }
 
-    /**
-     * Sets the Account Service which is autowired.
-     * @param pAccountService set the account service for controlling DAOs
-     */
     public void setAccountService(AccountService pAccountService) {
         this.accountService = pAccountService;
     }
 
-    /**
-     * Sets the mailSender to send registration emails.
-     * @param pMailSender set the MailSender
-     */
     public void setMailSender(MailSender pMailSender) {
         this.mailSender = pMailSender;
     }
 
-    /**
-     * Sets the Role Service which is autowired.
-     * @param pRoleService set the RoleService
-     */
     public void setRoleService(RoleService pRoleService) {
         this.roleService = pRoleService;
     }
 
-    /**
-     * Sets the Role Service which is autowired.
-     * @param pTemplateMessage set the template message
-     */
     public void setTemplateMessage(SimpleMailMessage pTemplateMessage) {
         this.templateMessage = pTemplateMessage;
     }
 
-    /**
-     * Sets the Velocity Engine for sending templated emails.
-     * @param pVelocityEngine set the velocity Engine
-     */
     public void setVelocityEngine(VelocityEngine pVelocityEngine) {
         this.velocityEngine = pVelocityEngine;
     }
-    /**
-     * Sets the Snippet Service which is autowired.
-     * @param pSnippetService service to set
-     */
-    public void setSnippetService(SnippetService pSnippetService) {
-        this.snippetService = pSnippetService;
-    }
 
-
-    /**
-     * Returns the Activation URL.
-     * @return String
-     */
     public String getActivationUrl() {
         return ACTIVATION_URL;
     }
+
     /**
      * Returns the account for the current context.
      * @return Account
