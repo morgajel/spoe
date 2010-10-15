@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Default Account Service Implementation used for managing AccountDao.
  */
 @Service("accountService")
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+@Transactional(propagation = Propagation.SUPPORTS)
 public class AccountServiceImpl implements AccountService {
 
     @Autowired

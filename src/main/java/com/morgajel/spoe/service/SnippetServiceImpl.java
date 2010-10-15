@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Default Snippet Service Implementation used for managing SnippetDao.
  */
 @Service("snippetService")
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+@Transactional(propagation = Propagation.SUPPORTS)
 public class SnippetServiceImpl implements SnippetService {
 
     @Autowired

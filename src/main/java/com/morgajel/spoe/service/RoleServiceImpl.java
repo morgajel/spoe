@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Default Role Service Implementation used for managing RoleDao.
  */
 @Service("roleService")
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+@Transactional(propagation = Propagation.SUPPORTS)
 public class RoleServiceImpl implements RoleService {
 
     @Autowired
