@@ -50,10 +50,14 @@ jQuery(function() {
 
 <h1>Create a Snippet</h1>
 <div class="msg">${message}</div>
-<form:form modelAttribute="snippet" action="/snippet/save" method="post">
+<form:form modelAttribute="editSnippetForm" action="/snippet/save" method="post">
     <form:label for="title" path="title" cssErrorClass="error">Title:</form:label>
     <form:input path="title" cssClass='wym_title' size='40'  />
     <form:errors path="title" />
+
+    <form:hidden path="snippetId" />
+        <form:errors path="snippetId" />
+
 
     <form:textarea path="content" cssClass="wymeditor"/>
         <form:errors path="content" />

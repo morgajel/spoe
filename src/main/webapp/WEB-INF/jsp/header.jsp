@@ -73,8 +73,6 @@ function searchClear(searchbox){
         <sec:authorize access='isAuthenticated()'>
             <li><a href="/account">My Account</a>
                 <ul>
-                    <li><a href="/snippet/my">My Snippets</a></li>
-                    <li><a href="/review/my">My Reviews</a></li>
                     <li><a href="/account/edit">Edit Account</a></li>
                 </ul>
             </li>
