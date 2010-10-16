@@ -19,11 +19,11 @@ public interface SnippetService {
     List<Snippet> listSnippets();
 
     /**
-     * Return an snippet with a given title, or else null.
+     * Return snippets with a given title, or else null.
      * @param title snippet title to load
-     * @return Snippet
+     * @return List<Snippet>
      */
-    Snippet loadByTitle(String title);
+    List<Snippet> loadByTitle(String title);
 
     /**
      * Return an snippet with a given ID, or else null.

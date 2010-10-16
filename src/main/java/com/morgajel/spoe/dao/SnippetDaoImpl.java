@@ -52,18 +52,13 @@ public class SnippetDaoImpl implements SnippetDao {
         return (List<Snippet>) sessionFactory.getCurrentSession().createCriteria(Snippet.class).list();
     }
     @Override
-    public Snippet loadByTitle(String title) {
+    public List<Snippet> loadByTitle(String title) {
         List<Snippet> sniplist = sessionFactory.getCurrentSession().getNamedQuery("findSnippetByTitle").setString("title", title).list();
-        if (sniplist.size() > 0) {
-            logger.info("Loaded snippet " + sniplist.get(0));
-            return (Snippet) sniplist.get(0);
-        } else {
-            return null;
-        }
+            return sniplist;
     }
     @Override
     public Snippet loadById(Long id) {
-    List<Snippet> sniplist = sessionFactory.getCurrentSession().getNamedQuery("findSnippetById").setLong("snippet_id", id).list();
+        List<Snippet> sniplist = sessionFactory.getCurrentSession().getNamedQuery("findSnippetById").setLong("snippet_id", id).list();
         if (sniplist.size() > 0) {
             logger.info("Loaded snippet " + sniplist.get(0));
             return (Snippet) sniplist.get(0);

@@ -27,10 +27,11 @@ public class SnippetServiceImplTest {
     private SnippetServiceImpl snippetService;
     private final Long snippetId = 12345L;
     private String title = "sample title";
-
+    private List<Snippet> mockSnippetList;
     @Before
     public void setUp() throws Exception {
         snippetService = new SnippetServiceImpl();
+        mockSnippetList = mock(ArrayList.class);
         mockSnippetDao = mock(SnippetDao.class);
         mockSnippet = mock(Snippet.class);
         mockAccount = mock(Account.class);
@@ -52,19 +53,19 @@ public class SnippetServiceImplTest {
 
     @Test
     public void testListSnippets() {
-        List<Snippet> snippets = new ArrayList<Snippet>();
-        when(mockSnippetDao.listSnippets()).thenReturn(snippets);
-        assertEquals(snippets, snippetService.listSnippets());
+        
+        when(mockSnippetDao.listSnippets()).thenReturn(mockSnippetList);
+        assertEquals(mockSnippetList, snippetService.listSnippets());
     }
 
     @Test
     public void testLoadByTitle() {
-        when(mockSnippetDao.loadByTitle(title)).thenReturn(mockSnippet);
-        Snippet snippet = snippetService.loadByTitle(title);
-        assertEquals(snippet, mockSnippet);
+        when(mockSnippetDao.loadByTitle(title)).thenReturn(mockSnippetList);
+        List<Snippet> snippets = snippetService.loadByTitle(title);
+        assertEquals(mockSnippetList, snippets);
         when(mockSnippetDao.loadByTitle(title)).thenReturn(null);
-        snippet = snippetService.loadByTitle(title);
-        assertNull(snippet);
+        snippets = snippetService.loadByTitle(title);
+        assertNull(snippets);
     }
 
     @Test

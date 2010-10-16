@@ -2,8 +2,11 @@ package com.morgajel.spoe.model;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +17,7 @@ public class AccountTest {
     private Account account;
     private Date mockDate;
     private Role mockRole;
+    private Snippet mockSnippet;
     private String password = "12345MatchedLuggage";
     private String passwordHash = "2ddcee8b16fc4740c3d31db70d65b073c10b7c3f";
     private Long accountId = new Long("123123123");
@@ -25,6 +29,7 @@ public class AccountTest {
     public void setUp() throws Exception {
         mockDate = mock(Date.class);
         mockRole = mock(Role.class);
+        mockSnippet = mock(Snippet.class);
         account = new Account();
     }
 
@@ -32,7 +37,16 @@ public class AccountTest {
     public void tearDown() throws Exception {
         account = null;
     }
+    @Test
+    public void testAddSnippet() {
+        HashSet<Snippet> snippetSet= new HashSet<Snippet>();
+        account.setSnippets(snippetSet);
+        assertFalse(account.getSnippets().contains(mockSnippet));
+        assertEquals(snippetSet,account.getSnippets());
+        account.addSnippet(mockSnippet);
+        assertTrue(account.getSnippets().contains(mockSnippet));
 
+    }
 
     @Test
     public void testVerifyPassword() {

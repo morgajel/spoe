@@ -42,10 +42,10 @@ public class SnippetServiceImpl implements SnippetService {
     }
 
     @Override
-    public Snippet loadByTitle(String title) {
+    public List<Snippet> loadByTitle(String title) {
         logger.info("Loading snippet " + title);
-        Snippet snippet = snippetDao.loadByTitle(title);
-        return snippet;
+        List<Snippet> snippets = snippetDao.loadByTitle(title);
+        return snippets;
     }
 
     @Override

@@ -7,13 +7,18 @@ import java.util.Date;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.morgajel.spoe.web.EditSnippetForm;
+
 import static org.mockito.Mockito.*;
 
 public class SnippetTest {
     private Account mockAccount;
     private Snippet snippet;
     private Date mockDate;
-    private Long snippetId = new Long("123123123");
+    private EditSnippetForm mockEditSnippetForm;
+    private Long snippetId = 123123123L;
+    private Long accountId = 456456L;
     private String title = "One fake Article";
     private String content = "here's a snippet I want you to read.";
     private String username = "bobdole";
@@ -22,13 +27,39 @@ public class SnippetTest {
     public void setUp() throws Exception {
         mockAccount = mock(Account.class);
         mockDate = mock(Date.class);
-        snippet = new Snippet(mockAccount, title);
+        mockEditSnippetForm = mock(EditSnippetForm.class);
+        snippet = new Snippet();
     }
 
     @After
     public void tearDown() throws Exception {
         snippet = null;
         mockAccount = null;
+        mockEditSnippetForm=null;
+    }
+
+    @Test
+    public void testSnippetConstructor() {
+        Snippet newSnippet = new Snippet();
+        assertEquals("", newSnippet.getContent());
+    }
+
+    @Test
+    public void testSnippetConstructorForm() {
+        when(mockEditSnippetForm.getContent()).thenReturn(content);
+        when(mockEditSnippetForm.getTitle()).thenReturn(title);
+        when(mockEditSnippetForm.getSnippetId()).thenReturn(snippetId);
+        Snippet newSnippet = new Snippet(mockAccount, mockEditSnippetForm);
+        assertEquals(content, newSnippet.getContent());
+        assertEquals(mockAccount, newSnippet.getAuthor());
+    }
+
+    @Test
+    public void testSnippetConstructorTitle() {
+        Snippet newSnippet = new Snippet(mockAccount, title);
+        assertEquals("", newSnippet.getContent());
+        assertEquals(title, newSnippet.getTitle());
+        assertEquals(mockAccount, newSnippet.getAuthor());
     }
 
     @Test
@@ -43,13 +74,17 @@ public class SnippetTest {
         snippet.setSnippetId(snippetId);
         assertEquals(snippetId, snippet.getSnippetId());
     }
-
+    @Test
+    public void testGetAndSetAccountId() {
+        assertNull(snippet.getAccountId());
+        snippet.setAccountId(accountId);
+        assertEquals(accountId, snippet.getAccountId());
+    }
     @Test
     public void testGetAndSetTitle() {
-        String newtitle = "new title";
+        assertNull( snippet.getTitle());
+        snippet.setTitle(title);
         assertEquals(title, snippet.getTitle());
-        snippet.setTitle(newtitle);
-        assertEquals(newtitle, snippet.getTitle());
     }
 
     @Test
@@ -78,6 +113,7 @@ public class SnippetTest {
     public void testToString() {
         snippet.setTitle(title);
         snippet.setSnippetId(snippetId);
+        snippet.setAuthor(mockAccount);
         String toString = "Snippet "
                     + "[ snippetId=" + snippetId
                     + ", title=" + title
@@ -85,4 +121,6 @@ public class SnippetTest {
                     +  "]";
         assertEquals(toString, snippet.toString());
     }
+
 }
+

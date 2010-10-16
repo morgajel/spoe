@@ -23,11 +23,11 @@ public interface SnippetDao {
     List<Snippet> listSnippets();
 
     /**
-     * Return an snippet with a given title, or else null.
-     * @param title snippet title to load
-     * @return Snippet
+     * Return  snippets with a given title, or else null.
+     * @param title snippet title to use
+     * @return List<Snippet>
      */
-    Snippet loadByTitle(String title);
+    List<Snippet> loadByTitle(String title);
 
     /**
      * Return an snippet with a given ID, or else null.

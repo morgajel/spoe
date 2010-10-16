@@ -61,31 +61,41 @@ public class SnippetController extends MultiActionController {
                 snippet.setAccountId(account.getAccountId());
                 snippetService.saveSnippet(snippet);
                 logger.info("saved new snippet " + snippet);
+                mav.setViewName("snippet/editSnippet");
+                mav.addObject("message", "Snippet saved.");
             } else {
                 logger.info("snippetId found, verifying it's a real snippet " + editSnippetForm);
                 Snippet snippet = snippetService.loadById(editSnippetForm.getSnippetId());
-                if (snippet != null && snippet.getAuthor().getUsername().equals(account.getUsername())) {
-                    logger.info("look, '" + snippet.getSnippetId() + "' is a real snippet and owned by " + account.getUsername());
-                    snippet.setTitle(editSnippetForm.getTitle());
-                    snippet.setContent(editSnippetForm.getContent());
+                if (snippet != null) {
+                    if (snippet.getAuthor().getUsername().equals(account.getUsername())) {
+                        logger.info("look, '" + snippet.getSnippetId() + "' is a real snippet and owned by " + account.getUsername());
+                        snippet.setTitle(editSnippetForm.getTitle());
+                        snippet.setContent(editSnippetForm.getContent());
 
-                    logger.info("snippet " + snippet.getSnippetId() + "is about to be saved...");
-                    snippetService.saveSnippet(snippet);
-                    logger.info("saved existing snippet " + snippet.getSnippetId());
+                        logger.info("snippet " + snippet.getSnippetId() + "is about to be saved...");
+                        snippetService.saveSnippet(snippet);
+                        logger.info("saved existing snippet " + snippet.getSnippetId());
 
-                    Snippet newSnippet = snippetService.loadById(snippet.getSnippetId());
-                    editSnippetForm.loadSnippet(newSnippet);
-                    logger.info("refreshing editSnippetForm with " + editSnippetForm);
+                        Snippet newSnippet = snippetService.loadById(snippet.getSnippetId());
+                        editSnippetForm.loadSnippet(newSnippet);
+                        logger.info("refreshing editSnippetForm with " + editSnippetForm);
+                        mav.setViewName("snippet/editSnippet");
+                        mav.addObject("message", "Snippet saved.");
+                    } else {
+                        mav.setViewName("snippet/snippetFailure");
+                        mav.addObject("message", "I'm sorry, you're not the author of this snippet.");
+                    }
+                } else {
+                    mav.setViewName("snippet/snippetFailure");
+                    mav.addObject("message", "I'm sorry, that snippet wasn't found.");
                 }
             }
-            mav.setViewName("snippet/editSnippet");
-            mav.addObject("message", " snippet saved.");
 
         } catch (Exception ex) {
             // TODO catch actual errors and handle them
             // TODO tell the user wtf happened
             logger.error("damnit, something failed." + ex);
-            mav.setViewName("snippet/editSnippet");
+            mav.setViewName("snippet/snippetFailure");
             mav.addObject("message", "something failed" + ex);
         }
         mav.addObject("editSnippetForm", editSnippetForm);
@@ -126,7 +136,7 @@ public class SnippetController extends MultiActionController {
         } catch (Exception ex) {
             // TODO catch actual errors and handle them
             // TODO tell the user wtf happened
-            logger.error("damnit, something failed." + ex);
+            logger.error("damnit, something failed.", ex);
             mav.setViewName("snippet/snippetFailure");
             mav.addObject("message", "Something failed while trying to display " + snippetId);
         }
@@ -200,6 +210,18 @@ public class SnippetController extends MultiActionController {
 
     public void setAccountService(AccountService pAccountService) {
         this.accountService = pAccountService;
+    }
+
+    public AccountService getAccountService() {
+        return this.accountService;
+    }
+
+    public void setSnippetService(SnippetService pSnippetService) {
+        this.snippetService = pSnippetService;
+    }
+
+    public SnippetService getSnippetService() {
+        return this.snippetService;
     }
 
     /**
