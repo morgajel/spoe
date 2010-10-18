@@ -96,7 +96,7 @@ public class SnippetController extends MultiActionController {
             // TODO tell the user wtf happened
             logger.error("damnit, something failed." + ex);
             mav.setViewName("snippet/snippetFailure");
-            mav.addObject("message", "something failed" + ex);
+            mav.addObject("message", "something failed.");
         }
         mav.addObject("editSnippetForm", editSnippetForm);
         return mav;
@@ -116,7 +116,9 @@ public class SnippetController extends MultiActionController {
             Account account = getContextAccount();
             logger.info(snippet);
             if (snippet != null) {
+                logger.info("Snippet found");
                 if (account != null && snippet.getAuthor().getUsername().equals(account.getUsername())) {
+                    logger.info("Username matches " + snippet.getAuthor().getUsername());
                     mav.setViewName("snippet/editSnippet");
                     editSnippetForm.loadSnippet(snippet); //TODO change to importSnippet
                     mav.addObject("editSnippetForm", editSnippetForm);
@@ -138,7 +140,7 @@ public class SnippetController extends MultiActionController {
             // TODO tell the user wtf happened
             logger.error("damnit, something failed.", ex);
             mav.setViewName("snippet/snippetFailure");
-            mav.addObject("message", "Something failed while trying to display " + snippetId);
+            mav.addObject("message", "Something failed while trying to display " + snippetId + ".");
         }
         return mav;
     }
@@ -152,8 +154,8 @@ public class SnippetController extends MultiActionController {
     public ModelAndView displaySnippet(@PathVariable Long snippetId) {
         logger.debug("trying to display " + snippetId);
         ModelAndView mav = new ModelAndView();
-        Account account = getContextAccount();
         try {
+            Account account = getContextAccount();
             Snippet snippet = snippetService.loadById(snippetId);
             logger.info(snippet);
             if (snippet != null) {
@@ -165,17 +167,17 @@ public class SnippetController extends MultiActionController {
                 mav.setViewName("snippet/viewSnippet");
                 mav.addObject("snippet", snippet);
             } else {
-                logger.info("account doesn't exist");
                 String message = "I'm sorry, " + snippetId + " was not found.";
+                logger.error(message);
                 mav.setViewName("snippet/viewSnippet");
                 mav.addObject("message", message);
             }
         } catch (Exception ex) {
             // TODO catch actual errors and handle them
             // TODO tell the user wtf happened
-            logger.error("damnit, something failed." + ex);
+            logger.error("damnit, something failed.", ex);
             mav.setViewName("snippet/snippetFailure");
-            mav.addObject("message", "Something failed while trying to display " + snippetId);
+            mav.addObject("message", "Something failed while trying to display " + snippetId + ".");
         }
         return mav;
     }
