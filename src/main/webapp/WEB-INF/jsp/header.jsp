@@ -5,8 +5,10 @@
 <link rel="stylesheet" type="text/css" href="/css/layout.css" />
 <script type="text/javascript" src="/js/jquery-1.4.2.min.js"> </script>
 <script type="text/javascript" src="/js/jquery.dropmenu.js"></script>
+<script type="text/javascript" src="/js/jquery.tablesorter.min.js"></script>
 <script language="javascript" type="text/javascript">
     $(document).ready(function() {
+        $(".tablesorter").tablesorter( {sortList: [[0,0]]});
         $('#topmenu').dropmenu(
             {
                 effect          : "slide",       //  "slide", "fade", or "none"

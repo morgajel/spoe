@@ -55,5 +55,40 @@ height:100px;
 
 
 
+/*--------snippet list------------------*/
 
+table.tablesorter { 
+    border-collapse:collapse;
+    font-size: 12px;
+    border: 1px solid #000;
+    margin-left:10px;
+    width:500px;
+}
+table.tablesorter th { 
+    background:#0d5f19 url(/images/header_bkg.png) repeat-x scroll center left; 
+    color:#fff; 
+    text-align: left;
+    padding: 5px;
+}
+table.tablesorter td { 
+    background:#b5e8b0 url(/images/row_bkg.png) repeat-x scroll center left; 
+    padding: 5px;
+    border: 1px solid #000;
+}
 
+table.tablesorter td.id {
+    width:40px;
+    text-align:right;
+}
+
+table.tablesorter .header div {
+    background: url(/images/bg.png) no-repeat;
+    padding-left: 20px;
+    cursor:pointer;
+}
+table.tablesorter .headerSortUp  div{
+    background: url(/images/asc.png) no-repeat;
+}
+table.tablesorter .headerSortDown div{
+    background: url(/images/desc.png) no-repeat;
+}
