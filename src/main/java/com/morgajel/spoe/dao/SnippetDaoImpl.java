@@ -22,7 +22,7 @@ public class SnippetDaoImpl implements SnippetDao {
 
     @Autowired
     private SessionFactory sessionFactory;
-    private static transient Logger logger = Logger.getLogger(SnippetDaoImpl.class);
+    private static final transient Logger LOGGER = Logger.getLogger(SnippetDaoImpl.class);
 
     /**
      * Sets the Session Factory used to get the currentSession.
@@ -45,7 +45,7 @@ public class SnippetDaoImpl implements SnippetDao {
     @Override
     public void saveSnippet(Snippet snippet) {
         sessionFactory.getCurrentSession().saveOrUpdate(snippet);
-        logger.info("saved snippet" + snippet);
+        LOGGER.info("saved snippet" + snippet);
     }
     @Override
     public List<Snippet> listSnippets() {
@@ -60,7 +60,7 @@ public class SnippetDaoImpl implements SnippetDao {
     public Snippet loadById(Long id) {
         List<Snippet> sniplist = sessionFactory.getCurrentSession().getNamedQuery("findSnippetById").setLong("snippet_id", id).list();
         if (sniplist.size() > 0) {
-            logger.info("Loaded snippet " + sniplist.get(0));
+            LOGGER.info("Loaded snippet " + sniplist.get(0));
             return (Snippet) sniplist.get(0);
         } else {
             return null;

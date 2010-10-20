@@ -18,7 +18,7 @@ public class RoleDaoImpl implements RoleDao {
 
     @Autowired
     private SessionFactory sessionFactory;
-    private static transient Logger logger = Logger.getLogger(RoleDao.class);
+    private static final transient Logger LOGGER = Logger.getLogger(RoleDao.class);
 
     /**
      * Sets the Session Factory used to get the currentSession.
@@ -73,9 +73,9 @@ public class RoleDaoImpl implements RoleDao {
      */
     @Override
     public Role loadByName(String name) {
-        logger.debug("attempting to load role by " + name);
+        LOGGER.debug("attempting to load role by " + name);
         Role role = (Role) loadQueryByName("findRoleByName", name).list().get(0);
-        logger.debug("++++ loaded role " + role);
+        LOGGER.debug("++++ loaded role " + role);
         return role;
     }
 }

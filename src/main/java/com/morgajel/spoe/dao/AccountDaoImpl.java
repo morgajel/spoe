@@ -19,7 +19,7 @@ public class AccountDaoImpl implements AccountDao {
 
     @Autowired
     private SessionFactory sessionFactory;
-    private static transient Logger logger = Logger.getLogger(AccountDao.class);
+    private static final transient Logger LOGGER = Logger.getLogger(AccountDao.class);
 
     /**
      * Sets the Session Factory used to get the currentSession.
@@ -46,10 +46,10 @@ public class AccountDaoImpl implements AccountDao {
      */
     @Override
     public void saveAccount(Account account) {
-        logger.info("setting last modified date before saving for " + account.getUsername());
+        LOGGER.info("setting last modified date before saving for " + account.getUsername());
         account.setLastModifiedDate(new Date());
         sessionFactory.getCurrentSession().saveOrUpdate(account);
-        logger.info("account appears saved");
+        LOGGER.info("account appears saved");
     }
     /**
      * Returns a List of all accounts from the datasource with no qualifications.
@@ -57,7 +57,7 @@ public class AccountDaoImpl implements AccountDao {
      */
     @Override
     public List<Account> listAccounts() {
-        logger.debug("attempting to list accounts");
+        LOGGER.debug("attempting to list accounts");
         return (List<Account>) sessionFactory.getCurrentSession().createCriteria(Account.class).list();
     }
 
@@ -68,10 +68,10 @@ public class AccountDaoImpl implements AccountDao {
      */
     @Override
     public Account loadByUsername(String username) {
-        logger.debug("attempting to load user by " + username + " and password");
+        LOGGER.debug("attempting to load user by " + username + " and password");
         List<Account> acclist = loadQueryByUsername("findAccountByUsername", username).list();
         if (acclist.size() > 0) {
-            logger.info("Loaded account " + acclist.get(0));
+            LOGGER.info("Loaded account " + acclist.get(0));
             return (Account) acclist.get(0);
         } else {
             return null;
@@ -85,10 +85,10 @@ public class AccountDaoImpl implements AccountDao {
      */
     @Override
     public Account loadByUsernameAndPassword(String username, String password) {
-        logger.debug("attempting to load user by " + username + " and password");
+        LOGGER.debug("attempting to load user by " + username + " and password");
         List acclist = loadQueryByUsername("findAccountByUsernameAndPassword", username).setString("password", password).list();
         if (acclist.size() > 0) {
-            logger.info("Loaded account " + acclist.get(0));
+            LOGGER.info("Loaded account " + acclist.get(0));
             return (Account) acclist.get(0);
         } else {
             return null;
@@ -103,10 +103,10 @@ public class AccountDaoImpl implements AccountDao {
     @Override
     public Account loadByUsernameAndChecksum(String username, String checksum) {
         //This is a lot of text to return a simple account
-        logger.debug("attempting to load user by " + username + " and " + checksum);
+        LOGGER.debug("attempting to load user by " + username + " and " + checksum);
         List<Account> acclist = loadQueryByUsername("findAccountByUsernameAndChecksum", username).setString("checksum", checksum).list();
         if (acclist.size() > 0) {
-            logger.info("Loaded account " + acclist.get(0));
+            LOGGER.info("Loaded account " + acclist.get(0));
             return (Account) acclist.get(0);
         } else {
             return null;

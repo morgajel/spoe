@@ -21,7 +21,7 @@ public class SnippetServiceImpl implements SnippetService {
 
     @Autowired
     private SnippetDao snippetDao;
-    private static transient Logger logger = Logger.getLogger(SnippetServiceImpl.class);
+    private static final transient Logger LOGGER = Logger.getLogger(SnippetServiceImpl.class);
 
     public void setSnippetDao(SnippetDao pSnippetDao) {
         this.snippetDao = pSnippetDao;
@@ -43,21 +43,21 @@ public class SnippetServiceImpl implements SnippetService {
 
     @Override
     public List<Snippet> loadByTitle(String title) {
-        logger.info("Loading snippet " + title);
+        LOGGER.info("Loading snippet " + title);
         List<Snippet> snippets = snippetDao.loadByTitle(title);
         return snippets;
     }
 
     @Override
     public Snippet loadById(Long id) {
-        logger.info("Loading snippet " + id);
+        LOGGER.info("Loading snippet " + id);
         Snippet snippet = snippetDao.loadById(id);
         return snippet;
     }
 
     @Override
     public List<Snippet> loadByAuthor(Account account) {
-        logger.info("Loading snippets owned by  " + account.getUsername());
+        LOGGER.info("Loading snippets owned by  " + account.getUsername());
         List<Snippet> snippet = snippetDao.loadByAuthor(account);
         return snippet;
     }

@@ -129,13 +129,13 @@ public class Account implements Serializable {
      **/
     public void addSnippet(Snippet snippet) {
         snippets.add(snippet);
-        logger.info("added snippet to " + username + ", check it out:" + snippets);
+        LOGGER.info("added snippet to " + username + ", check it out:" + snippets);
     }
 
     public static final String ALGORITHM = "SHA1";
     public static final String PASSWDCHARSET = "!0123456789abcdefghijklmnopqrstuvwxyz";
     private static final long serialVersionUID = -6987219647522500285L;
-    private static transient Logger logger = Logger.getLogger(Account.class);
+    private static final transient Logger LOGGER = Logger.getLogger(Account.class);
 
     /**
      * Takes a given string and hashes it with ALGORITHM.
@@ -159,12 +159,12 @@ public class Account implements Serializable {
                             ).substring(1));
             }
         } catch (NoSuchAlgorithmException ex) {
-            logger.error("Couldn't find " + ALGORITHM + " to hash the password. ");
+            LOGGER.error("Couldn't find " + ALGORITHM + " to hash the password. ");
             hexStr.append(Account.generatePassword(MAXLENGTH));
             //This should never ever happen, but needs to be caught.
             //I'd rather have an unusable password than a blank password.
         }
-        logger.trace("Created hash " + hexStr.toString() + " from " + text);
+        LOGGER.trace("Created hash " + hexStr.toString() + " from " + text);
         return hexStr.toString();
     }
 
@@ -178,7 +178,7 @@ public class Account implements Serializable {
         //converting enabled to int rather than string representation so NamedQuery using mysql int works.
         Integer enable = this.enabled ? 1 : 0;
         String checksum = hashText(username + password + enable);
-        logger.info("create checksum: " + username + " + " + password + " + " + enable + " = " + checksum);
+        LOGGER.info("create checksum: " + username + " + " + password + " + " + enable + " = " + checksum);
         return checksum;
     }
 
@@ -202,8 +202,8 @@ public class Account implements Serializable {
      **/
     public Account() {
         this.enabled = false;
-        this.setLastModifiedDate(new Date());
-        this.setCreationDate(new Date());
+        lastModifiedDate = new Date();
+        creationDate = new Date();
         this.roles = new HashSet<Role>();
     }
 
@@ -224,7 +224,7 @@ public class Account implements Serializable {
      **/
     public void addRole(Role role) {
         roles.add(role);
-        logger.info("added roll to " + username + ", check it out:" + roles);
+        LOGGER.info("added roll to " + username + ", check it out:" + roles);
     }
 
     public void setAccountId(Long pAccountId) {
@@ -260,9 +260,9 @@ public class Account implements Serializable {
      * @param pword plaintext password
      **/
     public void setHashedPassword(String pword) {
-        logger.trace("H setting password: " + pword);
+        LOGGER.trace("H setting password: " + pword);
         this.setPassword(Account.hashText(pword));
-        logger.trace("H password field is now: " + this.password);
+        LOGGER.trace("H password field is now: " + this.password);
     }
 
     public Boolean getEnabled() {
@@ -355,10 +355,11 @@ public class Account implements Serializable {
      * @param length length of the password
      * @return String
      **/
-    public static String generatePassword(int length) {
+    public static String generatePassword(int pLength) {
         //TODO Do I still need this?
-        if (length < MINLENGTH || length > MAXLENGTH) {
-            length = MAXLENGTH;
+        int length=25;
+        if (pLength < MINLENGTH || pLength > MAXLENGTH) {
+            length = pLength;
         }
         Random rand = new Random(System.currentTimeMillis());
         StringBuffer sb = new StringBuffer();

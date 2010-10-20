@@ -45,7 +45,7 @@ public class AccountController  extends MultiActionController {
 
     private static final String REGISTRATION_TEMPLATE = "/WEB-INF/templates/registrationEmail.vm";
     private static final String ACTIVATION_URL = "http://127.0.0.62:8080/account/activate/";
-    private static transient Logger logger = Logger.getLogger(AccountController.class);
+    private static final transient Logger LOGGER = Logger.getLogger(AccountController.class);
 
     /**
      * Activate account by comparing a given username and checksum against a given account.
@@ -58,25 +58,25 @@ public class AccountController  extends MultiActionController {
     @RequestMapping(value = "/activate/{username}/{checksum}", method = RequestMethod.GET)
     public ModelAndView activateAccount(@PathVariable String username, @PathVariable String checksum, SetPasswordForm passform) {
         //NOTE I understand why I need to pass passform on the way out, but what/how/why am I passing it in? where is it coming from?
-        logger.trace("trying to activate " + username + " with checksum " + checksum);
+        LOGGER.trace("trying to activate " + username + " with checksum " + checksum);
         ModelAndView mav = new ModelAndView();
         try {
-            logger.trace("attempting to load account of " + username);
+            LOGGER.trace("attempting to load account of " + username);
 
             Account account = accountService.loadByUsernameAndChecksum(username, checksum);
-            logger.info(account);
+            LOGGER.info(account);
             if (account != null) {
                 String calculatedChecksum = account.activationChecksum();
-                logger.trace("compare given checksum " + checksum + " with calculated checksum " + calculatedChecksum);
+                LOGGER.trace("compare given checksum " + checksum + " with calculated checksum " + calculatedChecksum);
                 if (!account.getEnabled()) {
-                    logger.info("Holy shit it worked:");
+                    LOGGER.info("Holy shit it worked:");
                     passform.setChecksum(checksum);
                     passform.setUsername(username);
                     mav.setViewName("account/activationSuccess");
                     mav.addObject("message", "a simple message");
                     mav.addObject("passform", passform);
                 } else {
-                    logger.info("account already enabled");
+                    LOGGER.info("account already enabled");
                     String message = "I'm sorry, this account has already been enabled.";
                     mav.setViewName("account/activationFailure");
                     mav.addObject("message", message);
@@ -90,7 +90,7 @@ public class AccountController  extends MultiActionController {
         } catch (Exception ex) {
             // TODO catch actual errors and handle them
             // TODO tell the user wtf happened
-            logger.error("damnit, something failed." + ex);
+            LOGGER.error("damnit, something failed." + ex);
             mav.setViewName("account/activationFailure");
             mav.addObject("message", "<!--" + ex + "-->");
         }
@@ -103,17 +103,17 @@ public class AccountController  extends MultiActionController {
      */
     @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
     public ModelAndView displayUser(@PathVariable String username) {
-        logger.debug("trying to display " + username);
+        LOGGER.debug("trying to display " + username);
         ModelAndView mav = new ModelAndView();
         try {
             Account account = accountService.loadByUsername(username);
-            logger.info(account);
+            LOGGER.info(account);
             if (account != null && !username.equals("anonymousUser")) {
                 mav.addObject("message", username);
                 mav.setViewName("account/viewUser");
                 mav.addObject("account", account);
             } else {
-                logger.info("account doesn't exist");
+                LOGGER.info("account doesn't exist");
                 String message = "I'm sorry, " + username + " was not found.";
                 mav.setViewName("account/viewUser");
                 mav.addObject("message", message);
@@ -121,7 +121,7 @@ public class AccountController  extends MultiActionController {
         } catch (Exception ex) {
             // TODO catch actual errors and handle them
             // TODO tell the user wtf happened
-            logger.error("damnit, something failed." + ex);
+            LOGGER.error("damnit, something failed." + ex);
             mav.setViewName("account/activationFailure");
             mav.addObject("message", "Something failed while trying to display " + username);
         }
@@ -143,26 +143,26 @@ public class AccountController  extends MultiActionController {
                 Account account = new Account();
                 account.importRegistration(registrationForm);
                 account.setHashedPassword(Account.generatePassword(Account.MAXLENGTH));
-                logger.trace("password field set to '" + account.getPassword() + "', sending email...");
+                LOGGER.trace("password field set to '" + account.getPassword() + "', sending email...");
 
                 String url = ACTIVATION_URL + account.getUsername() + "/" + account.activationChecksum();
                 sendRegEmail(account, url);
-                logger.info("Email sent, adding account " + account.getUsername());
+                LOGGER.info("Email sent, adding account " + account.getUsername());
                 accountService.addAccount(account);
 
                 //FIXME this role addition should be done in the account service I think.
                 Role reviewerRole = roleService.loadByName("ROLE_REVIEWER");
-                logger.info("ready to add " + reviewerRole.getName() + " to account " + account);
+                LOGGER.info("ready to add " + reviewerRole.getName() + " to account " + account);
                 account.addRole(reviewerRole);
 
-                logger.info("created account " + account.getUsername());
+                LOGGER.info("created account " + account.getUsername());
                 accountService.saveAccount(account);
 
                 mav.setViewName("account/registrationSuccess");
                 mav.addObject("url", url);
                 mav.addObject("account", account);
             } else {
-                logger.error("Email addresses did not match.");
+                LOGGER.error("Email addresses did not match.");
                 mav.setViewName("account/registrationForm");
                 mav.addObject("message", "Sorry, your Email addresses didn't match.");
 
@@ -172,7 +172,7 @@ public class AccountController  extends MultiActionController {
         } catch (Exception ex) {
             // TODO catch actual errors and handle them
             // TODO tell the user wtf happened
-            logger.error("Message failed to send:" + ex);
+            LOGGER.error("Message failed to send:" + ex);
             mav.setViewName("account/registrationForm");
             mav.addObject("message", "There was an issue creating your account."
                     + "Please contact the administrator for assistance.");
@@ -187,7 +187,7 @@ public class AccountController  extends MultiActionController {
      */
     @RequestMapping("/register")
     public ModelAndView getRegistrationForm(RegistrationForm registrationForm) {
-        logger.info("getregistrationForm loaded");
+        LOGGER.info("getregistrationForm loaded");
         ModelAndView  mav = new ModelAndView();
         mav.addObject("registrationForm", registrationForm);
         mav.setViewName("account/registrationForm");
@@ -239,10 +239,10 @@ public class AccountController  extends MultiActionController {
             account.setEnabled(true);
             account.setHashedPassword(passform.getPassword());
             accountService.addAccount(account);
-            logger.info("set password, then display view." + passform);
+            LOGGER.info("set password, then display view." + passform);
             mav.setViewName("redirect:/");
         } else {
-            logger.info("Your passwords did not match, try again.");
+            LOGGER.info("Your passwords did not match, try again.");
             passform.setPassword("");
             passform.setConfirmPassword("");
             mav.setViewName("account/activationSuccess");
@@ -259,7 +259,7 @@ public class AccountController  extends MultiActionController {
      */
     @RequestMapping
     public ModelAndView defaultView() {
-        logger.info("showing the default view");
+        LOGGER.info("showing the default view");
         ModelAndView  mav = new ModelAndView();
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -291,7 +291,7 @@ public class AccountController  extends MultiActionController {
      * @param url URL to use for activation
      */
     public void sendRegEmail(Account account, String url) {
-        logger.info("trying to send email...");
+        LOGGER.info("trying to send email...");
 
         Map<String, String> model = new HashMap<String, String>();
         model.put("firstname", account.getFirstname());
@@ -300,10 +300,10 @@ public class AccountController  extends MultiActionController {
         SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
 
         msg.setTo(account.getEmail());
-        logger.info("sending message to " + account.getEmail());
+        LOGGER.info("sending message to " + account.getEmail());
 
         msg.setText(VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, REGISTRATION_TEMPLATE, model));
-        logger.info(msg.getText());
+        LOGGER.info(msg.getText());
 
         this.mailSender.send(msg);
     }

@@ -19,7 +19,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private AccountDao accountDao;
-    private static transient Logger logger = Logger.getLogger(AccountService.class);
+    private static final transient Logger LOGGER = Logger.getLogger(AccountService.class);
 
     /**
      * Set accountDao object for the datastore.
@@ -46,9 +46,9 @@ public class AccountServiceImpl implements AccountService {
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     public void addAccount(Account pAccount) {
         //TODO move role addition to here.
-        logger.debug("adding account " + pAccount.getUsername());
+        LOGGER.debug("adding account " + pAccount.getUsername());
         accountDao.saveAccount(pAccount);
-        logger.debug("added account " + pAccount.getUsername());
+        LOGGER.debug("added account " + pAccount.getUsername());
     }
     /**
      * Saves an account object to the datastore.
@@ -57,9 +57,9 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     public void saveAccount(Account pAccount) {
-        logger.debug("saving account " + pAccount.getUsername());
+        LOGGER.debug("saving account " + pAccount.getUsername());
         accountDao.saveAccount(pAccount);
-        logger.debug("saved account " + pAccount.getUsername());
+        LOGGER.debug("saved account " + pAccount.getUsername());
     }
     /**
      * List all accounts found in the datastore.
@@ -86,7 +86,7 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     public Account loadByUsernameAndChecksum(String username, String checksum) {
-        logger.debug("attempting to load user by " + username + " and " + checksum);
+        LOGGER.debug("attempting to load user by " + username + " and " + checksum);
         return accountDao.loadByUsernameAndChecksum(username, checksum);
     }
     /**

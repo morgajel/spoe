@@ -67,7 +67,7 @@ public class Role implements Serializable {
     @NotNull
     private String name;
     private static final long serialVersionUID = -2683827831742215212L;
-    private static transient Logger logger = Logger.getLogger(Role.class);
+    private static final transient Logger LOGGER = Logger.getLogger(Role.class);
 
     /**
      * Primary constructor for Role, sets an empty Set to accounts.
@@ -82,7 +82,7 @@ public class Role implements Serializable {
      */
     public void addAccount(Account account) {
         accounts.add(account);
-        logger.info("added roll to " + account.getUsername() + ", check it out:" + accounts);
+        LOGGER.info("added roll to " + account.getUsername() + ", check it out:" + accounts);
     }
 
     @Id
@@ -108,7 +108,7 @@ public class Role implements Serializable {
     @Override
     public String toString() {
         //TODO may want to include userlist here.
-        logger.debug("printing toString");
+        LOGGER.debug("printing toString");
         return "Role "
                 + "[ roleId=" + roleId
                 + ", name=" + name

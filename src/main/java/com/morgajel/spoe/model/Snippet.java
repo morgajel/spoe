@@ -99,14 +99,14 @@ public class Snippet implements Serializable {
 
     private static final long serialVersionUID = -5461020313014420728L;
 
-    private static transient Logger logger = Logger.getLogger(Snippet.class);
+    private static final transient Logger LOGGER = Logger.getLogger(Snippet.class);
 
     /**
      * Constructor for snippet.
      **/
     public Snippet() {
-        this.setLastModifiedDate(new Date());
-        this.setCreationDate(new Date());
+        lastModifiedDate = new Date();
+        creationDate = new Date();
         this.content = "";
     }
     /**
@@ -115,8 +115,8 @@ public class Snippet implements Serializable {
      * @param editSnippetForm form object containing data.
      **/
     public Snippet(Account pAuthor, EditSnippetForm editSnippetForm) {
-        this.setLastModifiedDate(new Date());
-        this.setCreationDate(new Date());
+        lastModifiedDate = new Date();
+        creationDate = new Date();
         this.content = editSnippetForm.getContent();
         this.author = pAuthor;
         this.title = editSnippetForm.getTitle();
@@ -127,8 +127,8 @@ public class Snippet implements Serializable {
      * @param pTitle Title of the snippet.
      **/
     public Snippet(Account pAuthor, String pTitle) {
-        this.setLastModifiedDate(new Date());
-        this.setCreationDate(new Date());
+        lastModifiedDate = new Date();
+        creationDate = new Date();
         this.content = "";
         this.author = pAuthor;
         this.title = pTitle;
@@ -200,11 +200,11 @@ public class Snippet implements Serializable {
         this.title = pTitle;
     }
 
-    //TODO use logger.error(msg,ex);
+    //TODO use LOGGER.error(msg,ex);
     @Override
     public String toString() {
         //TODO may want to include userlist here.
-        logger.debug("printing toString");
+        LOGGER.debug("printing toString");
 
         return "Snippet "
                 + "[ snippetId=" + snippetId

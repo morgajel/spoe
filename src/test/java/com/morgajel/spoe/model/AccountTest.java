@@ -20,7 +20,7 @@ public class AccountTest {
     private Snippet mockSnippet;
     private String password = "12345MatchedLuggage";
     private String passwordHash = "2ddcee8b16fc4740c3d31db70d65b073c10b7c3f";
-    private Long accountId = new Long("123123123");
+    private Long accountId = 123123123L;
     private String username = "bobDole";
     private String email = "foo@bar.com";
     private String firstname = "Bob";

@@ -13,7 +13,7 @@ import static org.mockito.Mockito.*;
 public class RoleTest {
     private Account mockAccount;
     private Role role;
-    private Long roleId = new Long("123123123");
+    private Long roleId = 123123123L;
     private String rolename = "ROLE_REVIEWER";
 
     @Before
