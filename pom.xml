@@ -6,7 +6,7 @@
   <artifactId>spoe</artifactId>
   <packaging>war</packaging>
   <version>0.0.1-SNAPSHOT</version>
-  <name>Second Pair of Eyes</name>
+  <name>Second Pair of Eyes is Watching U</name>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
