@@ -17,10 +17,10 @@ import static org.mockito.Mockito.*;
 public class EditAccountFormTest {
     private EditAccountForm editAccountForm;
     private Account mockAccount;
-    private final String firstname = "Jesse";
-    private final String lastname = "Morgan";
-    private final String email = "morgo2@example.com";
-    private final String password = "MatchedLuggage12345";
+    private static final String FIRSTNAME = "Jesse";
+    private static final String LASTNAME = "Morgan";
+    private static final String EMAIL = "morgo2@example.com";
+    private static final String PASSWORDS = "MatchedLuggage12345";
 
     @Before
     public void setUp() throws Exception {
@@ -33,49 +33,49 @@ public class EditAccountFormTest {
     }
     @Test
     public void testGetAndSetConfirmEmail() {
-        editAccountForm.setConfirmEmail(email);
-        assertEquals(email, editAccountForm.getConfirmEmail());
+        editAccountForm.setConfirmEmail(EMAIL);
+        assertEquals(EMAIL, editAccountForm.getConfirmEmail());
     }
     @Test
     public void testGetAndSetFirstname() {
-        editAccountForm.setFirstname(firstname);
-        assertEquals(firstname, editAccountForm.getFirstname());
+        editAccountForm.setFirstname(FIRSTNAME);
+        assertEquals(FIRSTNAME, editAccountForm.getFirstname());
     }
 
     @Test
     public void testGetAndSetLastname() {
-        editAccountForm.setLastname(lastname);
-        assertEquals(lastname, editAccountForm.getLastname());
+        editAccountForm.setLastname(LASTNAME);
+        assertEquals(LASTNAME, editAccountForm.getLastname());
     }
 
     @Test
     public void testGetAndSetEmail() {
-        editAccountForm.setEmail(email);
-        assertEquals(email, editAccountForm.getEmail());
+        editAccountForm.setEmail(EMAIL);
+        assertEquals(EMAIL, editAccountForm.getEmail());
     }
     @Test
     public void testGetAndSetOldPassword() {
-        editAccountForm.setOldPassword(password);
-        assertEquals(password, editAccountForm.getOldPassword());
+        editAccountForm.setOldPassword(PASSWORDS);
+        assertEquals(PASSWORDS, editAccountForm.getOldPassword());
     }
 
     @Test
     public void testGetAndSetPassword() {
-        editAccountForm.setPassword(password);
-        assertEquals(password, editAccountForm.getPassword());
+        editAccountForm.setPassword(PASSWORDS);
+        assertEquals(PASSWORDS, editAccountForm.getPassword());
     }
     @Test
     public void testCompareEmails() {
-        editAccountForm.setEmail(email);
-        editAccountForm.setConfirmEmail(email);
+        editAccountForm.setEmail(EMAIL);
+        editAccountForm.setConfirmEmail(EMAIL);
         assertTrue(editAccountForm.compareEmails());
         editAccountForm.setConfirmEmail("bad@email.com");
         assertFalse(editAccountForm.compareEmails());
     }
     @Test
     public void testCompareNewPasswords() {
-        editAccountForm.setPassword(password);
-        editAccountForm.setConfirmPassword(password);
+        editAccountForm.setPassword(PASSWORDS);
+        editAccountForm.setConfirmPassword(PASSWORDS);
         assertTrue(editAccountForm.compareNewPasswords());
         editAccountForm.setConfirmPassword("off password");
         assertFalse(editAccountForm.compareNewPasswords());
@@ -84,10 +84,10 @@ public class EditAccountFormTest {
 
     @Test
     public void testLoadAccount() {
-        when(mockAccount.getFirstname()).thenReturn(firstname);
-        when(mockAccount.getLastname()).thenReturn(lastname);
-        when(mockAccount.getPassword()).thenReturn(password);
-        when(mockAccount.getEmail()).thenReturn(email);
+        when(mockAccount.getFirstname()).thenReturn(FIRSTNAME);
+        when(mockAccount.getLastname()).thenReturn(LASTNAME);
+        when(mockAccount.getPassword()).thenReturn(PASSWORDS);
+        when(mockAccount.getEmail()).thenReturn(EMAIL);
 
         editAccountForm.setEmail("original@email.com");
         editAccountForm.setConfirmEmail("originalConfirm@email.com");
@@ -97,8 +97,8 @@ public class EditAccountFormTest {
 
         editAccountForm.loadAccount(mockAccount);
 
-        assertEquals(email, editAccountForm.getEmail());
-        assertEquals(email, editAccountForm.getConfirmEmail());
+        assertEquals(EMAIL, editAccountForm.getEmail());
+        assertEquals(EMAIL, editAccountForm.getConfirmEmail());
         assertEquals("", editAccountForm.getOldPassword());
         assertEquals(editAccountForm.getPasswordHolder(), editAccountForm.getPassword());
         assertEquals(editAccountForm.getPasswordHolder(), editAccountForm.getConfirmPassword());

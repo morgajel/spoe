@@ -18,10 +18,10 @@ public class AccountServiceImplTest {
     private AccountDao mockAccountDao;
     private Account mockAccount;
     private AccountServiceImpl accountService;
-    private final String username = "morgo2";
+    private static final String USERNAME = "morgo2";
 //    private final String passfield="255edd2793e5286d4441ea6bfba734b59e915864";
-    private final String tempHash = "df9dd14cbdb3b00f8a54b66f489241e8aeb903ff";
-    private final String checksum = "279d8d8a18b94782ef606fbbadd6c011b1692ad0"; //morgo2+temphash+0
+    private static final String TEMPHASH = "df9dd14cbdb3b00f8a54b66f489241e8aeb903ff";
+    private static final String CHECKSUM = "279d8d8a18b94782ef606fbbadd6c011b1692ad0"; //morgo2+temphash+0
     @Before
     public void setUp() throws Exception {
         accountService = new AccountServiceImpl();
@@ -51,18 +51,18 @@ public class AccountServiceImplTest {
     @Test
     public void testFindAccountByUsername() {
         Account results = new Account();
-        when(mockAccountDao.loadByUsername(username)).thenReturn(results);
-        assertEquals(accountService.loadByUsername(username), results);
-        when(mockAccountDao.loadByUsername(username)).thenReturn(null);
-        assertNull(accountService.loadByUsername(username));
+        when(mockAccountDao.loadByUsername(USERNAME)).thenReturn(results);
+        assertEquals(accountService.loadByUsername(USERNAME), results);
+        when(mockAccountDao.loadByUsername(USERNAME)).thenReturn(null);
+        assertNull(accountService.loadByUsername(USERNAME));
     }
 
     @Test
     public void testServiceLogin() {
-        when(mockAccountDao.loadByUsernameAndPassword(username, tempHash)).thenReturn(mockAccount);
-        assertTrue(accountService.login(username, tempHash));
-        when(mockAccountDao.loadByUsernameAndPassword(username, tempHash)).thenReturn(null);
-        assertFalse(accountService.login(username, tempHash));
+        when(mockAccountDao.loadByUsernameAndPassword(USERNAME, TEMPHASH)).thenReturn(mockAccount);
+        assertTrue(accountService.login(USERNAME, TEMPHASH));
+        when(mockAccountDao.loadByUsernameAndPassword(USERNAME, TEMPHASH)).thenReturn(null);
+        assertFalse(accountService.login(USERNAME, TEMPHASH));
    }
     @Test
     public void testListAccounts() {
@@ -79,8 +79,8 @@ public class AccountServiceImplTest {
     }
     @Test
     public void testLoadByUsernameAndChecksum() {
-        when(mockAccountDao.loadByUsernameAndChecksum(username, checksum)).thenReturn(mockAccount);
-        Account account = accountService.loadByUsernameAndChecksum(username, checksum);
+        when(mockAccountDao.loadByUsernameAndChecksum(USERNAME, CHECKSUM)).thenReturn(mockAccount);
+        Account account = accountService.loadByUsernameAndChecksum(USERNAME, CHECKSUM);
         assertEquals(mockAccount, account);
     }
 }

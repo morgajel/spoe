@@ -19,11 +19,11 @@ import com.morgajel.spoe.service.RoleService;
 
 public class RegistrationFormTest {
     private RegistrationForm registrationForm;
-    private final String username = "morgo2";
-    private final String firstname = "Jesse";
-    private final String lastname = "Morgan";
-    private final String email = "morgo2@example.com";
-    private final String password = "MatchedLuggage12345";
+    private static final String USERNAME = "morgo2";
+    private static final String FIRSTNAME = "Jesse";
+    private static final String LASTNAME = "Morgan";
+    private static final String EMAIL = "morgo2@example.com";
+    private static final String PASSWORD = "MatchedLuggage12345";
     @Before
     public void setUp() throws Exception {
         registrationForm = new RegistrationForm();
@@ -36,29 +36,29 @@ public class RegistrationFormTest {
 
     @Test
     public void testGetAndSetUsername() {
-        registrationForm.setUsername(username);
-        assertEquals(username, registrationForm.getUsername());
+        registrationForm.setUsername(USERNAME);
+        assertEquals(USERNAME, registrationForm.getUsername());
     }
     @Test
     public void testGetAndSetConfirmEmail() {
-        registrationForm.setConfirmEmail(email);
-        assertEquals(email, registrationForm.getConfirmEmail());
+        registrationForm.setConfirmEmail(EMAIL);
+        assertEquals(EMAIL, registrationForm.getConfirmEmail());
     }
     @Test
     public void testGetAndSetFirstname() {
-        registrationForm.setFirstname(firstname);
-        assertEquals(firstname, registrationForm.getFirstname());
+        registrationForm.setFirstname(FIRSTNAME);
+        assertEquals(FIRSTNAME, registrationForm.getFirstname());
     }
 
     @Test
     public void testGetAndSetLastname() {
-        registrationForm.setLastname(lastname);
-        assertEquals(lastname, registrationForm.getLastname());
+        registrationForm.setLastname(LASTNAME);
+        assertEquals(LASTNAME, registrationForm.getLastname());
     }
 
     @Test
     public void testGetAndSetEmail() {
-        registrationForm.setEmail(email);
-        assertEquals(email, registrationForm.getEmail());
+        registrationForm.setEmail(EMAIL);
+        assertEquals(EMAIL, registrationForm.getEmail());
     }
 }

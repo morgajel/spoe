@@ -37,7 +37,6 @@ public class AccountControllerTest {
     private SecurityContext mockContext;
     private Role mockRole;
     private AccountService mockAccountService;
-    private SnippetService mockSnippetService;
     private EditAccountForm mockEditAccountForm;
     private RegistrationForm mockRegistrationForm;
     private RoleService mockRoleService;
@@ -45,16 +44,14 @@ public class AccountControllerTest {
     private SetPasswordForm mockPassForm;
     private SimpleMailMessage mockTemplateMessage;
     private VelocityEngine mockVelocityEngine;
-    private List<Account> accountList;
-    private List<Snippet> snippetList;
-    private final String username = "morgo2";
-    private final String firstname = "Jesse";
-    private final String lastname = "Morgan";
-    private final String email = "morgo2@example.com";
-    private final String passfield = "255edd2793e5286d4441ea6bfba734b59e915864";
-    private final String password = "MatchedLuggage12345";
+    private static final String username = "morgo2";
+    private static final String firstname = "Jesse";
+    private static final String lastname = "Morgan";
+    private static final String email = "morgo2@example.com";
+    private static final String passfield = "255edd2793e5286d4441ea6bfba734b59e915864";
+    private static final String password = "MatchedLuggage12345";
     //private final String tempHash="df9dd14cbdb3b00f8a54b66f489241e8aeb903ff";
-    private final String checksum = "279d8d8a18b94782ef606fbbadd6c011b1692ad0"; //morgo2+temphash+0
+    private static final String checksum = "279d8d8a18b94782ef606fbbadd6c011b1692ad0"; //morgo2+temphash+0
 
     /**
      * Create the intial mockups and classes that are used with each run.
@@ -63,7 +60,6 @@ public class AccountControllerTest {
     @Before
     public void setUp() throws Exception {
         mockAccountService = mock(AccountService.class);
-        mockSnippetService = mock(SnippetService.class);
         mockRoleService = mock(RoleService.class);
         mockAccount = mock(Account.class);
         mockContext = mock(SecurityContext.class, RETURNS_DEEP_STUBS);
@@ -93,7 +89,6 @@ public class AccountControllerTest {
     @After
     public void tearDown() throws Exception {
         mockAccountService = null;
-        mockSnippetService = null;
         mockAccount = null;
         mockRole = null;
         mockMailSender = null;
@@ -116,7 +111,6 @@ public class AccountControllerTest {
         when(mockAccount.getEnabled()).thenReturn(false);
         when(mockAccountService.loadByUsername(username)).thenReturn(mockAccount);
         when(mockAccountService.loadByUsernameAndChecksum(username, checksum)).thenReturn(mockAccount);
-        when(mockSnippetService.loadByAuthor(mockAccount)).thenReturn(snippetList);
         ModelAndView results = accountController.activateAccount(username, checksum, new SetPasswordForm());
         assertEquals("account/activationSuccess", results.getViewName());
     }

@@ -23,10 +23,10 @@ public class AccountDaoImplTest {
     private AccountDaoImpl accountDao;
     private SessionFactory mockSessionFactory;
     private Account mockAccount;
-    private final String username = "morgo2";
+    private static final String USERNAME = "morgo2";
     //private final String passfield = "255edd2793e5286d4441ea6bfba734b59e915864";
-    private final String tempHash = "df9dd14cbdb3b00f8a54b66f489241e8aeb903ff";
-    private final String checksum = "279d8d8a18b94782ef606fbbadd6c011b1692ad0"; //morgo2+temphash+0
+    private static final String TEMPHASH = "df9dd14cbdb3b00f8a54b66f489241e8aeb903ff";
+    private static final String CHECKSUM = "279d8d8a18b94782ef606fbbadd6c011b1692ad0"; //morgo2+temphash+0
     /**
      * Setup is run before each set of tests.
      * @throws Exception Thrown on setup.
@@ -77,8 +77,8 @@ public class AccountDaoImplTest {
         List<Account> acclist = new ArrayList<Account>();
         acclist.add(mockAccount);
         when(mockSessionFactory.getCurrentSession().getNamedQuery("findAccountByUsername")
-                .setString("username", username).list()).thenReturn(acclist);
-        Account account = accountDao.loadByUsername(username);
+                .setString("username", USERNAME).list()).thenReturn(acclist);
+        Account account = accountDao.loadByUsername(USERNAME);
         assertEquals(mockAccount, account);
     }
     /**
@@ -88,8 +88,8 @@ public class AccountDaoImplTest {
     public void testLoadByUsernameFail() {
         List<Account> acclist = new ArrayList<Account>();
         when(mockSessionFactory.getCurrentSession().getNamedQuery("findAccountByUsername")
-                .setString("username", username).list()).thenReturn(acclist);
-        Account account = accountDao.loadByUsername(username);
+                .setString("username", USERNAME).list()).thenReturn(acclist);
+        Account account = accountDao.loadByUsername(USERNAME);
         assertEquals(null, account);
     }
     /**
@@ -100,8 +100,8 @@ public class AccountDaoImplTest {
         List<Account> acclist = new ArrayList<Account>();
         acclist.add(mockAccount);
         when(mockSessionFactory.getCurrentSession().getNamedQuery("findAccountByUsernameAndPassword")
-                .setString("username", username).setString("password", tempHash).list()).thenReturn(acclist);
-        Account account = accountDao.loadByUsernameAndPassword(username, tempHash);
+                .setString("username", USERNAME).setString("password", TEMPHASH).list()).thenReturn(acclist);
+        Account account = accountDao.loadByUsernameAndPassword(USERNAME, TEMPHASH);
         assertEquals(mockAccount, account);
     }
     /**
@@ -111,8 +111,8 @@ public class AccountDaoImplTest {
     public void testLoadByUsernameAndPasswordFail() {
         List<Account> acclist = new ArrayList<Account>();
         when(mockSessionFactory.getCurrentSession().getNamedQuery("findAccountByUsernameAndPassword")
-                .setString("username", username).setString("password", tempHash).list()).thenReturn(acclist);
-        Account account = accountDao.loadByUsernameAndPassword(username, tempHash);
+                .setString("username", USERNAME).setString("password", TEMPHASH).list()).thenReturn(acclist);
+        Account account = accountDao.loadByUsernameAndPassword(USERNAME, TEMPHASH);
         assertEquals(null, account);
     }
     /**
@@ -122,8 +122,8 @@ public class AccountDaoImplTest {
     public void testLoadByUsernameAndChecksumSuccess() {
         List<Account> acclist = new ArrayList<Account>();
         acclist.add(mockAccount);
-        when(mockSessionFactory.getCurrentSession().getNamedQuery("findAccountByUsernameAndChecksum").setString("username", username).setString("checksum", checksum).list()).thenReturn(acclist);
-        Account account = accountDao.loadByUsernameAndChecksum(username, checksum);
+        when(mockSessionFactory.getCurrentSession().getNamedQuery("findAccountByUsernameAndChecksum").setString("username", USERNAME).setString("checksum", CHECKSUM).list()).thenReturn(acclist);
+        Account account = accountDao.loadByUsernameAndChecksum(USERNAME, CHECKSUM);
         assertEquals(mockAccount, account);
     }
     /**
@@ -132,8 +132,8 @@ public class AccountDaoImplTest {
     @Test
     public void testLoadByUsernameAndChecksumFail() {
         List<Account> acclist = new ArrayList<Account>();
-        when(mockSessionFactory.getCurrentSession().getNamedQuery("findAccountByUsernameAndChecksum").setString("username", username).setString("checksum", checksum).list()).thenReturn(acclist);
-        Account account = accountDao.loadByUsernameAndChecksum(username, checksum);
+        when(mockSessionFactory.getCurrentSession().getNamedQuery("findAccountByUsernameAndChecksum").setString("username", USERNAME).setString("checksum", CHECKSUM).list()).thenReturn(acclist);
+        Account account = accountDao.loadByUsernameAndChecksum(USERNAME, CHECKSUM);
         assertEquals(null, account);
     }
 }

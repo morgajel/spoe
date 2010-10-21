@@ -123,7 +123,7 @@ public class SnippetController extends MultiActionController {
                     editSnippetForm.loadSnippet(snippet); //TODO change to importSnippet
                     mav.addObject("editSnippetForm", editSnippetForm);
                 } else {
-                    LOGGER.info(account.getUsername() + " isn't the author " + snippet.getAuthor().getUsername());
+                    LOGGER.info(SecurityContextHolder.getContext().getAuthentication().getName() + " isn't the author " + snippet.getAuthor().getUsername());
                     String message = "I'm sorry, Only the author can edit a snippet.";
                     mav.setViewName("snippet/viewSnippet");
                     mav.addObject("snippet", snippet);

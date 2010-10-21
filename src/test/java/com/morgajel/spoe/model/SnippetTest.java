@@ -21,7 +21,6 @@ public class SnippetTest {
     private Long accountId = 456456L;
     private String title = "One fake Article";
     private String content = "here's a snippet I want you to read.";
-    private String username = "bobdole";
 
     @Before
     public void setUp() throws Exception {
