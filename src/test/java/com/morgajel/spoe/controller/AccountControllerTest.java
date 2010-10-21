@@ -163,10 +163,10 @@ public class AccountControllerTest {
     @Test
     public void testActivateAccountThrowException() {
         //Test throw exception caught
-        stub(mockAccountService.loadByUsernameAndChecksum(username, checksum)).toThrow(new RuntimeException());
+        stub(mockAccountService.loadByUsernameAndChecksum(username, checksum)).toThrow(new IndexOutOfBoundsException());
         ModelAndView results = accountController.activateAccount(username, checksum, new SetPasswordForm());
         assertEquals("account/activationFailure", results.getViewName());
-        assertEquals("<!--java.lang.RuntimeException-->", results.getModel().get("message"));
+        assertEquals("<!--java.lang.IndexOutOfBoundsException-->", results.getModel().get("message"));
     }
     /**
      * Test the Registration Mail Sender to ensure the gears spin.
@@ -276,7 +276,7 @@ public class AccountControllerTest {
      */
     @Test
     public void testCreateAccountException() {
-        stub(mockAccount.getUsername()).toThrow(new RuntimeException());
+        stub(mockAccount.getUsername()).toThrow(new IndexOutOfBoundsException());
         ModelAndView result = accountController.createAccount(mockRegistrationForm, null);
         assertEquals("account/registrationForm", result.getViewName());
         assertEquals("There was an issue creating your account."
@@ -403,7 +403,7 @@ public class AccountControllerTest {
         when(mockAccount.getFirstname()).thenReturn(firstname);
         when(mockAccount.getLastname()).thenReturn(lastname);
         when(mockAccount.getEmail()).thenReturn(email);
-        stub(mockAccountService.loadByUsername(username)).toThrow(new RuntimeException());
+        stub(mockAccountService.loadByUsername(username)).toThrow(new IndexOutOfBoundsException());
 
         ModelAndView mav = accountController.displayUser(username);
 

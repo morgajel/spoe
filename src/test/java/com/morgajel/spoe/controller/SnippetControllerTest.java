@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.springframework.mail.MailSender;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 import static org.mockito.Mockito.*;
 
@@ -164,7 +163,7 @@ public class SnippetControllerTest {
         when(mockEditSnippetForm.getContent()).thenReturn(content);
         when(mockEditSnippetForm.getTitle()).thenReturn(title);
         when(mockEditSnippetForm.getSnippetId()).thenReturn(snippetId);
-        stub(mockContext.getAuthentication()).toThrow(new RuntimeException());
+        stub(mockContext.getAuthentication()).toThrow(new IndexOutOfBoundsException());
         when(mockAccount.getAccountId()).thenReturn(accountId);
         when(mockSnippet.getAuthor()).thenReturn(mockAccount);
         when(mockAccount.getUsername()).thenReturn(username);
@@ -193,7 +192,7 @@ public class SnippetControllerTest {
 
         verify(mockEditSnippetForm, times(1)).loadSnippet((Snippet) anyObject());
         assertEquals("snippet/editSnippet", mav.getViewName());
-        assertNull( mav.getModel().get("message"));
+        assertNull(mav.getModel().get("message"));
     }
 
     @Test
@@ -239,7 +238,7 @@ public class SnippetControllerTest {
         when(mockEditSnippetForm.getContent()).thenReturn(content);
         when(mockEditSnippetForm.getTitle()).thenReturn(title);
         when(mockEditSnippetForm.getSnippetId()).thenReturn(snippetId);
-        stub(mockContext.getAuthentication()).toThrow(new RuntimeException());
+        stub(mockContext.getAuthentication()).toThrow(new IndexOutOfBoundsException());
 
         ModelAndView mav = snippetController.editSnippet(snippetId, mockEditSnippetForm);
 
@@ -250,7 +249,7 @@ public class SnippetControllerTest {
     @Test
     public void testGetAndSetSnippetService() {
         snippetController.setSnippetService(mockSnippetService);
-        assertEquals(mockSnippetService,snippetController.getSnippetService());
+        assertEquals(mockSnippetService, snippetController.getSnippetService());
     }
 
     @Test
@@ -264,6 +263,7 @@ public class SnippetControllerTest {
         assertEquals("<!-- nothing important-->", mav.getModel().get("message"));
         assertNull(mav.getModel().get("editlink"));
     }
+
     @Test
     public void testDisplaySnippetIsOwner() {
         when(mockContext.getAuthentication().getName()).thenReturn(username);
@@ -277,7 +277,7 @@ public class SnippetControllerTest {
         assertEquals("snippet/viewSnippet", mav.getViewName());
         assertEquals(mockSnippet, mav.getModel().get("snippet"));
         assertEquals("<!-- nothing important-->", mav.getModel().get("message"));
-        assertEquals("<div style='float:right;'><a href='/snippet/edit/" + snippetId + "'>[edit]</a></div>",mav.getModel().get("editlink"));
+        assertEquals("<div style='float:right;'><a href='/snippet/edit/" + snippetId + "'>[edit]</a></div>", mav.getModel().get("editlink"));
     }
     @Test
     public void testDisplaySnippetNotFound() {
@@ -291,7 +291,7 @@ public class SnippetControllerTest {
     }
     @Test
     public void testDisplaySnippetException() {
-        stub(mockContext.getAuthentication()).toThrow(new RuntimeException());
+        stub(mockContext.getAuthentication()).toThrow(new IndexOutOfBoundsException());
 
         ModelAndView mav = snippetController.displaySnippet(snippetId);
 
@@ -302,14 +302,14 @@ public class SnippetControllerTest {
 
     @Test
     public void testCreateSnippetForm() {
-        ModelAndView mav= snippetController.createSnippetForm();
+        ModelAndView mav = snippetController.createSnippetForm();
         assertEquals("snippet/editSnippet", mav.getViewName());
         assertEquals(EditSnippetForm.class, mav.getModel().get("editSnippetForm").getClass());
     }
 
     @Test
     public void testDefaultView() {
-        ModelAndView mav= snippetController.defaultView();
+        ModelAndView mav = snippetController.defaultView();
         assertEquals("snippet/view", mav.getViewName());
         assertEquals("show the default view for snippets", mav.getModel().get("message"));
     }

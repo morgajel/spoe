@@ -358,7 +358,7 @@ public class Account implements Serializable {
     public static String generatePassword(int pLength) {
         //TODO Do I still need this?
         int length=25;
-        if (pLength < MINLENGTH || pLength > MAXLENGTH) {
+        if (pLength > MINLENGTH && pLength < MAXLENGTH) {
             length = pLength;
         }
         Random rand = new Random(System.currentTimeMillis());
