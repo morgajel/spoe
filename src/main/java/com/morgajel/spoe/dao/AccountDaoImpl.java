@@ -112,4 +112,22 @@ public class AccountDaoImpl implements AccountDao {
             return null;
         }
     }
+    /**
+     * returns an account matching a given username or email. Will return null if none is found.
+     *  @param username username of account to load
+     *  @param email email of account to load
+     *  @return Account
+     */
+    @Override
+    public Account loadByUsernameOrEmail(String username, String email) {
+        //This is a lot of text to return a simple account
+        LOGGER.debug("attempting to load user by " + username + " or " + email);
+        List<Account> acclist = loadQueryByUsername("findAccountByUsernameOrEmail", username).setString("email", email).list();
+        if (acclist.size() > 0) {
+            LOGGER.info("Loaded account " + acclist.get(0));
+            return (Account) acclist.get(0);
+        } else {
+            return null;
+        }
+    }
 }

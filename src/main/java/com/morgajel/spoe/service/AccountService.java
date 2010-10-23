@@ -32,6 +32,13 @@ public interface AccountService {
      */
     Account loadByUsernameAndChecksum(String username, String checksum);
     /**
+     * Returns an account object if the Username or email match. username is given precedence.
+     * @param username username to search for
+     * @param email email to search for
+     * @return Account
+     */
+    Account loadByUsernameOrEmail(String username, String email);
+    /**
      * Saves details of an account to the datastore.
      * @param account account to save
      */

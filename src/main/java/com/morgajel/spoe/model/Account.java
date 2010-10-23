@@ -62,6 +62,14 @@ import com.morgajel.spoe.web.RegistrationForm;
     @NamedQuery(
             name = "findAccountByUsernameAndChecksum",
             query = "from Account acc where acc.username = :username and sha1(concat(acc.username,acc.password,acc.enabled)) = :checksum"
+    ),
+    /**
+     * Returns an account matching a given username or email.
+     */
+    @NamedQuery(
+            name = "findAccountByUsernameOrEmail",
+            query = "from Account acc where acc.username = :username or acc.email = :email"
+            //FIXME  need to limit to one or the other somehow...
     )
 })
 

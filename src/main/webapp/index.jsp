@@ -4,7 +4,9 @@
 		<%@ include file="/WEB-INF/jsp/header.jsp"%>
 
 
-Welcome to SPoE!
+<p>Welcome to SPoE!</p> 
+<p>SPoE exists to give authors a place to post snippets and 
+samples of their material and get feedback from other users.</p>
 
     <div id='junkplaceholder'style="height:300px;">
 

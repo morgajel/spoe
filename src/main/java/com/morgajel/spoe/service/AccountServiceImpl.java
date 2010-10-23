@@ -90,6 +90,17 @@ public class AccountServiceImpl implements AccountService {
         return accountDao.loadByUsernameAndChecksum(username, checksum);
     }
     /**
+     * Load account matching a given username or email. Will return null if none is found.
+     * @param username username to search for
+     * @param email email to search for
+     * @return Account
+     */
+    @Override
+    public Account loadByUsernameOrEmail(String username, String email) {
+        LOGGER.debug("attempting to load user by " + username + " or " + email);
+        return accountDao.loadByUsernameOrEmail(username, email);
+    }
+    /**
      * Load account matching a given username and password. Will return null if none is found.
      * @param username username to search for
      * @param password password to match against

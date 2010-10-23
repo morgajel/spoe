@@ -19,8 +19,5 @@
     </bean>
     
     <!-- this is a template message that we can pre-load with default state -->
-    <bean id="templateRegistrationMessage" class="org.springframework.mail.SimpleMailMessage" >
-    	<property name="from" value="SPoE Registration &lt;registration@morgajel.com&gt;"/>
-        <property name="subject" value="Activate your account"/>
-    </bean>
+    <bean id="templateEmailMessage" class="org.springframework.mail.SimpleMailMessage" />
 </beans>

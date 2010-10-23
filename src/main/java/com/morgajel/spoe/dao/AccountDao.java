@@ -41,4 +41,11 @@ public interface AccountDao {
      * @return Account
      */
     Account loadByUsernameAndChecksum(String username, String checksum);
+    /**
+     * Return an account with a given username or email, or else null.
+     * @param username username of the account to load
+     * @param email email of the account to load
+     * @return Account
+     */
+    Account loadByUsernameOrEmail(String username, String email);
 }

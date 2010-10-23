@@ -24,8 +24,8 @@ import com.morgajel.spoe.model.Role;
 
 import com.morgajel.spoe.service.AccountService;
 import com.morgajel.spoe.service.RoleService;
-import com.morgajel.spoe.service.SnippetService;
 import com.morgajel.spoe.web.EditAccountForm;
+import com.morgajel.spoe.web.ForgotPasswordForm;
 import com.morgajel.spoe.web.RegistrationForm;
 import com.morgajel.spoe.web.SetPasswordForm;
 
@@ -37,16 +37,111 @@ public class AccountController  extends MultiActionController {
 
     private VelocityEngine velocityEngine;
     private MailSender mailSender;
+    private String baseUrl;
     private SimpleMailMessage templateMessage;
     @Autowired
     private AccountService accountService;
     @Autowired
     private RoleService roleService;
 
-    private static final String REGISTRATION_TEMPLATE = "registrationEmail.vm";
-    private static final String ACTIVATION_URL = "http://127.0.0.62:8080/account/activate/";
-    private static final transient Logger LOGGER = Logger.getLogger(AccountController.class);
 
+    private static final String REGISTRATION_EMAIL_TEMPLATE = "registrationEmail.vm";
+    private static final String RESET_PASSWORD_TEMPLATE = "resetPasswordEmail.vm";
+    private static final transient Logger LOGGER = Logger.getLogger(AccountController.class);
+/**
+ * Reset account by comparing a given username and checksum against a given account.
+ * Account must be enabled for this to work. Maps /reset/{username}/{checksum}
+ * @return ModelAndView mav
+ * @param username username name of user to activate
+ * @param checksum hash of username, random password hash and enabled status
+ * @param passform the password form you'll send to change the password.
+ */
+@RequestMapping(value = "/reset/{username}/{checksum}", method = RequestMethod.GET)
+public ModelAndView resetPassword(@PathVariable String username, @PathVariable String checksum, SetPasswordForm passform) {
+    LOGGER.trace("trying to reset " + username + " with checksum " + checksum);
+    ModelAndView mav = new ModelAndView();
+    try {
+        LOGGER.trace("attempting to load account of " + username);
+        Account account = accountService.loadByUsernameAndChecksum(username, checksum);
+        LOGGER.info(account);
+        if (account != null) {
+            String calculatedChecksum = account.activationChecksum();
+            LOGGER.trace("compare given checksum " + checksum + " with calculated checksum " + calculatedChecksum);
+            if (account.getEnabled()) {
+                LOGGER.info("Holy shit it worked:");
+                passform.setChecksum(checksum);
+                passform.setUsername(username);
+                mav.setViewName("account/activationSuccess");
+                mav.addObject("message", "Please enter a new password");
+                mav.addObject("passform", passform);
+            } else {
+                LOGGER.info("account is disabled");
+                String message = "I'm sorry, this account has been disabled; please contact the administrator.";
+                mav.setViewName("account/activationFailure");
+                mav.addObject("message", message);
+            }
+        } else {
+            String message = "I'm sorry, that account doesn't exist or the url was incomplete.";
+            mav.setViewName("account/activationFailure");
+            mav.addObject("message", message);
+        }
+    } catch (Exception ex) {
+        // TODO catch actual errors and handle them
+        // TODO tell the user wtf happened
+        LOGGER.error("damnit, something failed.", ex);
+        mav.setViewName("account/activationFailure");
+        mav.addObject("message", "<!-- something horrible happened -->");
+    }
+    return mav;
+}
+
+    /**
+     * Provide a user with a form for submitting a username or email address to request a password reset.
+     * @param forgotPasswordForm form containing user info
+     * @return ModelAndView mav
+     */
+    @RequestMapping(value = "/forgotPassword.submit", method = RequestMethod.POST)
+    public ModelAndView forgotPasswordForm(ForgotPasswordForm forgotPasswordForm) {
+        ModelAndView mav = new ModelAndView();
+        LOGGER.info("someone forgot their password...");
+
+        //send email with auth/pwreset info
+        try {
+            Account account = accountService.loadByUsernameOrEmail(forgotPasswordForm.getUsername(), forgotPasswordForm.getEmail());
+            LOGGER.info("checking to see if " + account + " exists");
+            if (account != null) {
+                LOGGER.info("account found, sending email...");
+                String url = baseUrl + "/reset/" + account.getUsername() + "/" + account.activationChecksum();
+                sendResetPasswordEmail(account, url);
+                LOGGER.info("email sent.");
+                mav.addObject("message", "Password Request sent; check your email");
+            } else {
+                LOGGER.info("That user wasn't found, neither username " + forgotPasswordForm.getUsername() + " or email " + forgotPasswordForm.getEmail());
+                mav.addObject("message", "I'm sorry, I couldn't find your username or email address.");
+                mav.addObject("forgotPasswordForm", forgotPasswordForm);
+            }
+        } catch (Exception ex) {
+            //Do something Witty.
+            LOGGER.info("d'oh, exception!");
+            mav.addObject("message", "Oooh, something bad happened...");
+        }
+        LOGGER.info("sent password.");
+
+        mav.setViewName("account/forgotPasswordForm");
+        return mav;
+    }
+    /**
+     * Provide a user with a form for submitting a username or email address to request a password reset.
+     * @return ModelAndView mav
+     */
+    @RequestMapping(value = "/forgotPassword", method = RequestMethod.GET)
+    public ModelAndView forgotPasswordForm() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("account/forgotPasswordForm");
+        mav.addObject("forgotPasswordForm", new ForgotPasswordForm());
+        LOGGER.info("showing forgot password form.");
+        return mav;
+    }
     /**
      * Activate account by comparing a given username and checksum against a given account.
      * Account must be disabled for this to work. Maps /activate/{username}/{checksum}
@@ -144,8 +239,7 @@ public class AccountController  extends MultiActionController {
                 account.importRegistration(registrationForm);
                 account.setHashedPassword(Account.generatePassword(Account.MAXLENGTH));
                 LOGGER.trace("password field set to '" + account.getPassword() + "', sending email...");
-
-                String url = ACTIVATION_URL + account.getUsername() + "/" + account.activationChecksum();
+                String url = baseUrl + "/activate/" + account.getUsername() + "/" + account.activationChecksum();
                 sendRegEmail(account, url);
                 LOGGER.info("Email sent, adding account " + account.getUsername());
                 accountService.addAccount(account);
@@ -284,7 +378,30 @@ public class AccountController  extends MultiActionController {
         //TODO might be able to remove it and replace with reflection.
         return this.velocityEngine;
     }
+    /**
+     * Sends Reset Password email to user which includes an activation link.
+     * @param account user account to send an email
+     * @param url URL to use for activation
+     */
+    public void sendResetPasswordEmail(Account account, String url) {
+        LOGGER.info("trying to send email...");
 
+        Map<String, String> model = new HashMap<String, String>();
+        model.put("firstname", account.getFirstname());
+        model.put("url", url);
+
+        SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
+        //FIXME BOO, use property file! 
+        msg.setFrom("SPoE Password Reset <resetPassword@morgajel.com>");
+        msg.setSubject("Need to Reset your Password?");
+        msg.setTo(account.getEmail());
+        LOGGER.info("sending message to " + account.getEmail());
+
+        msg.setText(VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, RESET_PASSWORD_TEMPLATE, model));
+        LOGGER.info(msg.getText());
+
+        this.mailSender.send(msg);
+    }
     /**
      * Sends Registration email to user which includes an activation link.
      * @param account user account to send an email
@@ -298,11 +415,13 @@ public class AccountController  extends MultiActionController {
         model.put("url", url);
 
         SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
-
+        //FIXME BOO, use property file!
+        msg.setFrom("SPoE Registration <registration@morgajel.com>");
+        msg.setSubject("Activate your account");
         msg.setTo(account.getEmail());
         LOGGER.info("sending message to " + account.getEmail());
 
-        msg.setText(VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, REGISTRATION_TEMPLATE, model));
+        msg.setText(VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, REGISTRATION_EMAIL_TEMPLATE, model));
         LOGGER.info(msg.getText());
 
         this.mailSender.send(msg);
@@ -328,10 +447,12 @@ public class AccountController  extends MultiActionController {
         this.velocityEngine = pVelocityEngine;
     }
 
-    public String getActivationUrl() {
-        return ACTIVATION_URL;
+    public String getBaseUrl() {
+        return baseUrl;
     }
-
+    public void setBaseUrl(String pBaseUrl) {
+        this.baseUrl = pBaseUrl;
+    }
     /**
      * Returns the account for the current context.
      * @return Account
