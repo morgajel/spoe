@@ -12,12 +12,7 @@
 	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/MySQL_DataSource" />
 
 	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
-	    <property name="velocityProperties">
-	        <props>
-	            <prop key="resource.loader">class</prop>
-	            <prop key="class.resource.loader.class">org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader</prop>
-	        </props>
-	    </property>
+        <property name="resourceLoaderPath" value="/WEB-INF/templates/"/>        
 	</bean>
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="host" value="localhost"/>

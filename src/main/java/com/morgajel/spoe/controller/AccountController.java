@@ -43,7 +43,7 @@ public class AccountController  extends MultiActionController {
     @Autowired
     private RoleService roleService;
 
-    private static final String REGISTRATION_TEMPLATE = "/WEB-INF/templates/registrationEmail.vm";
+    private static final String REGISTRATION_TEMPLATE = "registrationEmail.vm";
     private static final String ACTIVATION_URL = "http://127.0.0.62:8080/account/activate/";
     private static final transient Logger LOGGER = Logger.getLogger(AccountController.class);
 
