@@ -246,7 +246,7 @@ public class AccountControllerTest {
         verify(mockRoleService).loadByName("ROLE_REVIEWER");
 
         verify(mockAccountService).saveAccount((Account) anyObject());
-        assertEquals(accountController.getActivationUrl() + username + "/" + account.activationChecksum(),
+        assertEquals(accountController.getBaseUrl() + "/activate/" + username + "/" + account.activationChecksum(),
                     result.getModel().get("url"));
         assertEquals("account/registrationSuccess", result.getViewName());
     }
