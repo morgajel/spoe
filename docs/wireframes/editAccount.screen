@@ -3,58 +3,103 @@
   <widgets xsi:type="model:Master" x="16" y="8" measuredWidth="793" measuredHeight="529" dimmed="true">
     <screen href="master.screen#/"/>
   </widgets>
-  <widgets xsi:type="model:HLine" x="16" y="96" width="793" measuredWidth="793" measuredHeight="6" foreground="#666666"/>
-  <widgets xsi:type="model:Group" x="50" y="152" width="535" height="289" text="Edit Account" measuredWidth="535" measuredHeight="289" background="#93c47d" alpha="64"/>
-  <widgets xsi:type="model:Group" x="611" y="152" width="169" height="110" text="Actions" measuredWidth="169" measuredHeight="110" background="#b6d7a8" alpha="64"/>
-  <widgets xsi:type="model:Text" x="621" y="176" width="149" height="72" text="- [Edit My Account]&#xA;" measuredWidth="149" measuredHeight="72">
+  <widgets xsi:type="model:Group" x="50" y="152" width="404" height="143" text="Personal Information" measuredWidth="404" measuredHeight="143" background="#93c47d" alpha="64"/>
+  <widgets xsi:type="model:Group" x="50" y="298" width="404" height="169" text="Contact Info" measuredWidth="404" measuredHeight="169" background="#93c47d" alpha="64"/>
+  <widgets xsi:type="model:TextField" x="248" y="176" width="124" measuredWidth="124" measuredHeight="23">
     <font/>
   </widgets>
-  <widgets xsi:type="model:TextField" x="208" y="176" width="124" measuredWidth="124" measuredHeight="23">
+  <widgets xsi:type="model:Button" x="323" y="264" text="save" measuredWidth="49" measuredHeight="25">
     <font/>
   </widgets>
-  <widgets xsi:type="model:Button" x="208" y="406" text="save" measuredWidth="49" measuredHeight="25">
+  <widgets xsi:type="model:Label" x="146" y="176" width="95" text="First Name" measuredWidth="95" measuredHeight="23" textAlignment="Right">
     <font/>
   </widgets>
-  <widgets xsi:type="model:Label" x="107" y="176" width="95" text="First Name" measuredWidth="95" measuredHeight="23" textAlignment="Right">
+  <widgets xsi:type="model:TextField" x="248" y="206" width="124" measuredWidth="124" measuredHeight="23">
     <font/>
   </widgets>
-  <widgets xsi:type="model:TextField" x="208" y="208" width="124" measuredWidth="124" measuredHeight="23">
+  <widgets xsi:type="model:Label" x="130" y="206" width="111" text="Last Name" measuredWidth="111" measuredHeight="23" textAlignment="Right">
     <font/>
   </widgets>
-  <widgets xsi:type="model:Label" x="91" y="208" width="111" text="Last Name" measuredWidth="111" measuredHeight="23" textAlignment="Right">
-    <font/>
-  </widgets>
-  <widgets xsi:type="model:TextField" x="208" y="240" width="124" measuredWidth="124" measuredHeight="23">
-    <font/>
-  </widgets>
-  <widgets xsi:type="model:Label" x="66" y="240" width="136" text="Email Address" measuredWidth="136" measuredHeight="23" textAlignment="Right">
-    <font/>
-  </widgets>
-  <widgets xsi:type="model:TextField" x="208" y="272" width="124" measuredWidth="124" measuredHeight="23">
-    <font/>
-  </widgets>
-  <widgets xsi:type="model:Label" x="52" y="272" width="150" text="Confirm Email Address" measuredWidth="150" measuredHeight="23" textAlignment="Right">
-    <font/>
-  </widgets>
-  <widgets xsi:type="model:TextField" x="208" y="304" width="124" measuredWidth="124" measuredHeight="23">
-    <font/>
-  </widgets>
-  <widgets xsi:type="model:Label" x="90" y="304" width="112" text="Password" measuredWidth="112" measuredHeight="23" textAlignment="Right">
-    <font/>
-  </widgets>
-  <widgets xsi:type="model:TextField" x="208" y="336" width="124" measuredWidth="124" measuredHeight="23">
-    <font/>
-  </widgets>
-  <widgets xsi:type="model:Label" x="63" y="336" width="139" text="Confirm Password" measuredWidth="139" measuredHeight="23" textAlignment="Right">
-    <font/>
-  </widgets>
-  <widgets xsi:type="model:Master" x="478" y="17" measuredWidth="312" measuredHeight="115">
+  <widgets xsi:type="model:Master" x="361" y="14" measuredWidth="444" measuredHeight="119">
     <screen href="Logged_in.screen#/"/>
   </widgets>
+  <widgets xsi:type="model:Group" x="480" y="151" width="287" height="144" text="Change Password" measuredWidth="287" measuredHeight="144" background="#93c47d" alpha="64"/>
+  <widgets xsi:type="model:TextField" x="633" y="204" width="124" measuredWidth="124" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="515" y="204" width="112" text="New Password" measuredWidth="112" measuredHeight="23" textAlignment="Right">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TextField" x="633" y="232" width="124" measuredWidth="124" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="488" y="232" width="139" text="Confirm Password" measuredWidth="139" measuredHeight="23" textAlignment="Right">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TextField" x="633" y="176" width="124" measuredWidth="124" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="504" y="176" width="123" text="Current Password" measuredWidth="123" measuredHeight="23" textAlignment="Right">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Button" x="685" y="263" text="Change" measuredWidth="68" measuredHeight="25">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TextField" x="248" y="316" width="124" measuredWidth="124" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="105" y="316" width="135" text="Email Address" measuredWidth="135" measuredHeight="23" textAlignment="Right">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TextField" x="248" y="346" width="124" measuredWidth="124" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="91" y="346" width="149" text="Confirm Email Address" measuredWidth="149" measuredHeight="23" textAlignment="Right">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="100" y="234" width="141" text="Writing Experience" measuredWidth="141" measuredHeight="23" textAlignment="Right">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Combo" x="251" y="234" width="121" text="Unsure" measuredWidth="121" measuredHeight="23"/>
+  <widgets xsi:type="model:Button" x="323" y="434" text="save" measuredWidth="49" measuredHeight="25">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TextField" x="248" y="376" width="124" measuredWidth="124" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="56" y="376" width="89" text="Preferred IM" measuredWidth="89" measuredHeight="23" textAlignment="Right">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Combo" x="144" y="376" width="96" text="AIM" measuredWidth="96" measuredHeight="23"/>
+  <widgets xsi:type="model:TextField" x="248" y="406" width="124" measuredWidth="124" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="56" y="406" width="89" text="Secondary IM" measuredWidth="89" measuredHeight="23" textAlignment="Right">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Combo" x="144" y="406" width="96" text="Gtalk" measuredWidth="96" measuredHeight="23"/>
+  <widgets xsi:type="model:Checkbox" x="380" y="316" text="Public" measuredWidth="58" measuredHeight="23"/>
+  <widgets xsi:type="model:Checkbox" x="380" y="376" text="Public" measuredWidth="58" measuredHeight="23"/>
+  <widgets xsi:type="model:Checkbox" x="380" y="406" text="Public" measuredWidth="58" measuredHeight="23"/>
+  <widgets xsi:type="model:Group" x="480" y="298" width="287" height="169" text="Preferences" measuredWidth="287" measuredHeight="169" background="#93c47d" alpha="64"/>
+  <widgets xsi:type="model:List" x="494" y="347" height="110" text="Fantasy&#xA;Fiction&#xA;History&#xA;Horror&#xA;Politics&#xA;Romance&#xA;Urban Fantasy&#xA;" measuredWidth="100" measuredHeight="110">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:List" x="639" y="349" height="110" text="Science Fiction&#xA;Self Help&#xA;Travel" measuredWidth="103" measuredHeight="110">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:VScrollbar" x="593" y="347" height="110" measuredWidth="17" measuredHeight="110"/>
+  <widgets xsi:type="model:SearchField" x="492" y="320" width="116" text="Available" measuredWidth="116" measuredHeight="24"/>
+  <widgets xsi:type="model:SearchField" x="640" y="322" width="116" text="Preferred" measuredWidth="116" measuredHeight="24"/>
+  <widgets xsi:type="model:VScrollbar" x="741" y="349" height="110" measuredWidth="17" measuredHeight="110"/>
+  <widgets xsi:type="model:Button" x="614" y="374" width="21" height="18" text=">" measuredWidth="21" measuredHeight="18">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Button" x="614" y="398" width="21" height="18" text="&lt;" measuredWidth="21" measuredHeight="18">
+    <font/>
+  </widgets>
   <hRuler>
-    <guides position="60"/>
-    <guides position="415"/>
-    <guides position="201"/>
+    <guides position="-12"/>
   </hRuler>
   <vRuler/>
   <font/>

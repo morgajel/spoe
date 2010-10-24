@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
-  <widgets xsi:type="model:WidgetGroup" x="606" y="19" measuredWidth="176" measuredHeight="76">
-    <widgets xsi:type="model:TextField" x="68" width="108" measuredWidth="108" measuredHeight="23">
-      <font/>
-    </widgets>
-    <widgets xsi:type="model:TextField" x="68" y="25" width="108" measuredWidth="108" measuredHeight="23">
-      <font/>
-    </widgets>
-    <widgets xsi:type="model:Button" y="54" width="69" height="21" text="login" measuredWidth="69" measuredHeight="21">
-      <font/>
-    </widgets>
-    <widgets xsi:type="model:Link" x="115" y="53" text="Register" measuredWidth="54" measuredHeight="23">
-      <font/>
-    </widgets>
-    <widgets xsi:type="model:Label" text="Username" measuredWidth="69" measuredHeight="23">
-      <font/>
-    </widgets>
-    <widgets xsi:type="model:Label" x="5" y="24" text="Password" measuredWidth="64" measuredHeight="23">
-      <font/>
-    </widgets>
-    <widgets xsi:type="model:Label" x="88" y="53" text="or" measuredWidth="18" measuredHeight="23">
-      <font/>
-    </widgets>
+  <widgets xsi:type="model:TextField" x="368" y="7" width="109" measuredWidth="109" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TextField" x="368" y="32" width="109" measuredWidth="109" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Button" x="301" y="59" width="58" height="16" text="login" measuredWidth="58" measuredHeight="16">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Link" x="305" y="77" text="Register" measuredWidth="54" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="301" y="7" width="68" text="Username" measuredWidth="68" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="305" y="31" text="Password" measuredWidth="64" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="364" y="77" text="or" measuredWidth="18" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Checkbox" x="369" y="55" text="Remember Me" measuredWidth="109" measuredHeight="23"/>
+  <widgets xsi:type="model:Link" x="386" y="77" text="Forgot Password" measuredWidth="107" measuredHeight="23">
+    <font/>
   </widgets>
   <hRuler/>
   <vRuler/>

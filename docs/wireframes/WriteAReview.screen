@@ -3,6 +3,9 @@
   <widgets xsi:type="model:Master" x="24" y="11" measuredWidth="793" measuredHeight="529" dimmed="true">
     <screen href="master.screen#/"/>
   </widgets>
+  <widgets xsi:type="model:ButtonBar" x="96" y="109" text="Reviews" measuredWidth="70" measuredHeight="27" selection="0">
+    <font/>
+  </widgets>
   <hRuler/>
   <vRuler/>
   <font/>

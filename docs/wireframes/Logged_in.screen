@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
-  <widgets xsi:type="model:Text" x="599" y="18" width="191" text="Greetings, [Jesse].  [Not You?]" measuredWidth="191" measuredHeight="15">
+  <widgets xsi:type="model:Text" x="599" y="12" width="191" text="Greetings, [Jesse].  [Not You?]" measuredWidth="191" measuredHeight="15">
     <font/>
   </widgets>
-  <widgets xsi:type="model:Tabs" x="478" y="106" text="My Account" measuredWidth="93" measuredHeight="27" selection="0"/>
+  <widgets xsi:type="model:ButtonBar" x="346" y="104" text="My Account" measuredWidth="93" measuredHeight="27" selection="0">
+    <font/>
+  </widgets>
   <hRuler/>
   <vRuler/>
   <font/>

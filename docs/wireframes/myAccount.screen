@@ -3,7 +3,6 @@
   <widgets xsi:type="model:Master" x="16" y="7" measuredWidth="793" measuredHeight="529" dimmed="true">
     <screen href="master.screen#/"/>
   </widgets>
-  <widgets xsi:type="model:HLine" x="16" y="96" width="793" measuredWidth="793" measuredHeight="6" foreground="#666666"/>
   <widgets xsi:type="model:Group" x="50" y="238" width="535" height="99" text="My Snippets" measuredWidth="535" measuredHeight="99" background="#93c47d" alpha="64"/>
   <widgets xsi:type="model:Group" x="50" y="152" width="535" height="81" text="My Reviews" measuredWidth="535" measuredHeight="81" background="#93c47d" alpha="64"/>
   <widgets xsi:type="model:Group" x="611" y="152" width="169" height="110" text="Actions" measuredWidth="169" measuredHeight="110" background="#b6d7a8" alpha="64"/>
@@ -21,7 +20,7 @@
   <widgets xsi:type="model:Text" x="60" y="367" width="477" text="- [review] of [Sinblade]  by [Dennis Harper]&#xA;- [review] of [Sinblade]  by [Eileen Kants]&#xA;- [review] of [The Autobiography of Ziggy Swift] by [James Fuller]&#xA;- [Leafwing] - [reviews]&#xA;&#xA;[more...]" measuredWidth="477" measuredHeight="90">
     <font/>
   </widgets>
-  <widgets xsi:type="model:Master" x="480" y="15" measuredWidth="312" measuredHeight="115">
+  <widgets xsi:type="model:Master" x="360" y="13" measuredWidth="444" measuredHeight="119">
     <screen href="Logged_in.screen#/"/>
   </widgets>
   <hRuler>

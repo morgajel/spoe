@@ -2,20 +2,23 @@
 <model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
   <widgets xsi:type="model:Panel" x="16" y="8" width="793" height="529" measuredWidth="793" measuredHeight="529" background="#eeeeee" foreground="#cccccc"/>
   <widgets xsi:type="model:Placeholder" x="40" y="18" width="153" height="74" text="SPoE Icon" measuredWidth="153" measuredHeight="74"/>
-  <widgets xsi:type="model:Label" x="294" y="44" text="Second Pair of Eyes" measuredWidth="181" measuredHeight="27">
-    <font size="12" bold="true"/>
+  <widgets xsi:type="model:Label" x="202" y="29" text="Second Pair of Eyes" measuredWidth="288" measuredHeight="43">
+    <font size="22" bold="false"/>
   </widgets>
-  <widgets xsi:type="model:HLine" x="16" y="96" width="793" measuredWidth="793" measuredHeight="6" foreground="#666666"/>
-  <widgets xsi:type="model:ButtonBar" x="32" y="480" text="Home, Review A Snippet, Submit A Snippet" measuredWidth="310" measuredHeight="27" selection="" background="#d9ead3">
+  <widgets xsi:type="model:HLine" x="16" y="100" width="793" measuredWidth="793" measuredHeight="6" foreground="#666666"/>
+  <widgets xsi:type="model:SearchField" x="564" y="106" width="170" text="Quick Search" measuredWidth="170" measuredHeight="24"/>
+  <widgets xsi:type="model:Label" x="612" y="480" text="SPoE (C) 2010 morgajel.net" measuredWidth="178" measuredHeight="23">
     <font/>
   </widgets>
-  <widgets xsi:type="model:ButtonBar" x="341" y="480" width="449" text="                                                       ,SPoE (C) 2010 morgajel.net" measuredWidth="449" measuredHeight="27" selection="" background="#d9ead3">
+  <widgets xsi:type="model:Panel" x="32" y="132" width="758" height="349" measuredWidth="758" measuredHeight="349"/>
+  <widgets xsi:type="model:ButtonBar" x="32" y="106" text="Home,Reviews,Snippets,Advanced Search" measuredWidth="330" measuredHeight="27" selection="">
     <font/>
   </widgets>
-  <widgets xsi:type="model:SearchField" x="597" y="104" width="193" text="Quick Search" measuredWidth="193" measuredHeight="24"/>
-  <widgets xsi:type="model:TabbedPane" x="32" y="104" width="758" height="377" text="Home, Review A Snippet, Submit A Snippet, Advanced Search" measuredWidth="758" measuredHeight="377" selection="4" background="#cccccc"/>
+  <widgets xsi:type="model:Button" x="737" y="106" width="51" height="23" text="Search" measuredWidth="51" measuredHeight="23">
+    <font/>
+  </widgets>
   <hRuler>
-    <guides position="60"/>
+    <guides position="-25"/>
   </hRuler>
   <vRuler/>
   <font/>
