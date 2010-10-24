@@ -14,12 +14,13 @@
             <td><input type='password' name='j_password' style="width:100px;" /></td>
         </tr>
         <tr>
-            <td colspan='2'><input type='checkbox'
-                name='_spring_security_remember_me' /> <label
-                for='_spring_security_remember_me'>Remember me</label></td>
+            <td colspan='2'>
+                <input name="submit" type="submit" value='Log In' /> 
+                <input type='checkbox' name='_spring_security_remember_me' />
+                <label for='_spring_security_remember_me'>Remember me</label></td>
         </tr>
         <tr>
-            <td colspan='2' > <input name="submit" type="submit" value='Log In' /> or <a href="/account/register">Register</a></td>
+            <td colspan='2'><a href="/account/register">Register</a> or <a href="/account/forgotPassword">Forgot Password</a></td>
         </tr>
     </table>
     </form>

@@ -43,6 +43,18 @@ body {
 #loginbox{
 float:right;
 height:100px;
+margin-right:10px;
+}
+#loginbox a{
+    color:blue;
+    weight:bold;
+    text-decoration:none;
+    font-size: 12px;
+}
+#loginbox a:hover{
+    color:#999999;
+    text-decoration:underline;
+
 }
 
 #search_box{
