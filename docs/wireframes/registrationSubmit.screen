@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Master" y="1" measuredWidth="793" measuredHeight="529" dimmed="true">
+    <screen href="master.screen#/"/>
+  </widgets>
+  <widgets xsi:type="model:Master" x="560" y="1" measuredWidth="192" measuredHeight="93" dimmed="true">
+    <screen href="loginbox.screen#/"/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="24" y="135" text="Registration is now complete. Please check your email to activate your account. " measuredWidth="509" measuredHeight="23">
+    <font/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font/>
+</model:Screen>

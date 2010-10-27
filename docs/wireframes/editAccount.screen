@@ -81,7 +81,7 @@
   <widgets xsi:type="model:Checkbox" x="380" y="316" text="Public" measuredWidth="58" measuredHeight="23"/>
   <widgets xsi:type="model:Checkbox" x="380" y="376" text="Public" measuredWidth="58" measuredHeight="23"/>
   <widgets xsi:type="model:Checkbox" x="380" y="406" text="Public" measuredWidth="58" measuredHeight="23"/>
-  <widgets xsi:type="model:Group" x="480" y="298" width="287" height="169" text="Preferences" measuredWidth="287" measuredHeight="169" background="#93c47d" alpha="64"/>
+  <widgets xsi:type="model:Group" x="480" y="298" width="287" height="169" text="Preferred Tags" measuredWidth="287" measuredHeight="169" background="#93c47d" alpha="64"/>
   <widgets xsi:type="model:List" x="494" y="347" height="110" text="Fantasy&#xA;Fiction&#xA;History&#xA;Horror&#xA;Politics&#xA;Romance&#xA;Urban Fantasy&#xA;" measuredWidth="100" measuredHeight="110">
     <font/>
   </widgets>
