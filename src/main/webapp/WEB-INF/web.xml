@@ -8,8 +8,7 @@
 
 	<context-param>
 		<param-name>log4jConfigLocation</param-name>
-		<param-value>file:${log4j.configuration}</param-value>
-        
+		<param-value>file:${catalina.base}/conf/log4j.properties</param-value>
 	</context-param>
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
