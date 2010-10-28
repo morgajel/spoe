@@ -122,7 +122,7 @@ public ModelAndView resetPassword(@PathVariable String username, @PathVariable S
             }
         } catch (Exception ex) {
             //Do something Witty.
-            LOGGER.info("d'oh, exception!");
+            LOGGER.info("d'oh, exception!", ex);
             mav.addObject("message", "Oooh, something bad happened...");
         }
         LOGGER.info("sent password.");
@@ -185,9 +185,9 @@ public ModelAndView resetPassword(@PathVariable String username, @PathVariable S
         } catch (Exception ex) {
             // TODO catch actual errors and handle them
             // TODO tell the user wtf happened
-            LOGGER.error("damnit, something failed." + ex);
+            LOGGER.error("damnit, something failed.", ex);
+            mav.addObject("message", "<!-- something bad -->");
             mav.setViewName("account/activationFailure");
-            mav.addObject("message", "<!--" + ex + "-->");
         }
         return mav;
     }
@@ -216,9 +216,9 @@ public ModelAndView resetPassword(@PathVariable String username, @PathVariable S
         } catch (Exception ex) {
             // TODO catch actual errors and handle them
             // TODO tell the user wtf happened
-            LOGGER.error("damnit, something failed." + ex);
-            mav.setViewName("account/activationFailure");
+            LOGGER.error("Something failed while trying to display " + username, ex);
             mav.addObject("message", "Something failed while trying to display " + username);
+            mav.setViewName("account/activationFailure");
         }
         return mav;
     }
@@ -266,10 +266,10 @@ public ModelAndView resetPassword(@PathVariable String username, @PathVariable S
         } catch (Exception ex) {
             // TODO catch actual errors and handle them
             // TODO tell the user wtf happened
-            LOGGER.error("Message failed to send:" + ex);
-            mav.setViewName("account/registrationForm");
+            LOGGER.error("Message failed to send:", ex);
             mav.addObject("message", "There was an issue creating your account."
                     + "Please contact the administrator for assistance.");
+            mav.setViewName("account/registrationForm");
         }
         return mav;
     }
@@ -333,9 +333,12 @@ public ModelAndView resetPassword(@PathVariable String username, @PathVariable S
             account.setEnabled(true);
             account.setHashedPassword(passform.getPassword());
             accountService.addAccount(account);
-            LOGGER.info("set password, then display view." + passform);
+            LOGGER.info("set password, then display view: " + passform);
+
+            mav.addObject("message", "Your account has been created!");
             mav.setViewName("redirect:/");
         } else {
+            //FIXME unrelated to this code; cache static js files
             LOGGER.info("Your passwords did not match, try again.");
             passform.setPassword("");
             passform.setConfirmPassword("");
@@ -391,7 +394,7 @@ public ModelAndView resetPassword(@PathVariable String username, @PathVariable S
         model.put("url", url);
 
         SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
-        //FIXME BOO, use property file! 
+        //FIXME BOO, use property file!
         msg.setFrom("SPoE Password Reset <resetPassword@morgajel.com>");
         msg.setSubject("Need to Reset your Password?");
         msg.setTo(account.getEmail());

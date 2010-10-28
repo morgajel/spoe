@@ -94,7 +94,7 @@ public class SnippetController extends MultiActionController {
         } catch (Exception ex) {
             // TODO catch actual errors and handle them
             // TODO tell the user wtf happened
-            LOGGER.error("damnit, something failed." + ex);
+            LOGGER.error("damnit, something failed.", ex);
             mav.setViewName("snippet/snippetFailure");
             mav.addObject("message", "something failed.");
         }
@@ -138,9 +138,9 @@ public class SnippetController extends MultiActionController {
         } catch (Exception ex) {
             // TODO catch actual errors and handle them
             // TODO tell the user wtf happened
-            LOGGER.error("damnit, something failed.", ex);
-            mav.setViewName("snippet/snippetFailure");
+            LOGGER.error("Something failed while trying to display " + snippetId + ".", ex);
             mav.addObject("message", "Something failed while trying to display " + snippetId + ".");
+            mav.setViewName("snippet/snippetFailure");
         }
         return mav;
     }
@@ -175,7 +175,7 @@ public class SnippetController extends MultiActionController {
         } catch (Exception ex) {
             // TODO catch actual errors and handle them
             // TODO tell the user wtf happened
-            LOGGER.error("damnit, something failed.", ex);
+            LOGGER.error("Something failed while trying to display " + snippetId + ".", ex);
             mav.setViewName("snippet/snippetFailure");
             mav.addObject("message", "Something failed while trying to display " + snippetId + ".");
         }

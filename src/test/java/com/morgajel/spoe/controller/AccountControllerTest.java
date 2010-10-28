@@ -160,7 +160,7 @@ public class AccountControllerTest {
         stub(mockAccountService.loadByUsernameAndChecksum(username, checksum)).toThrow(new IndexOutOfBoundsException());
         ModelAndView results = accountController.activateAccount(username, checksum, new SetPasswordForm());
         assertEquals("account/activationFailure", results.getViewName());
-        assertEquals("<!--java.lang.IndexOutOfBoundsException-->", results.getModel().get("message"));
+        assertEquals("<!-- something bad -->", results.getModel().get("message"));
     }
     /**
      * Test the Registration Mail Sender to ensure the gears spin.

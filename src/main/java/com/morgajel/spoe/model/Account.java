@@ -20,7 +20,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import org.apache.log4j.Logger;
 import org.hibernate.annotations.NamedQueries;
@@ -365,7 +364,7 @@ public class Account implements Serializable {
      **/
     public static String generatePassword(int pLength) {
         //TODO Do I still need this?
-        int length=25;
+        int length = 25;
         if (pLength > MINLENGTH && pLength < MAXLENGTH) {
             length = pLength;
         }
