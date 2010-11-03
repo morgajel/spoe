@@ -9,48 +9,34 @@
 <html>
         <%@ include file="/WEB-INF/jsp/header.jsp"%>
 
-
 ${message}
 
-<form:form modelAttribute="eaForm" action="/account/edit.submit" method="post">
-	<table>
-		<tr>
-			<td><form:label for="email" path="email" cssErrorClass="error">Change Email Address:</form:label></td>
-			<td><form:input path="email" /></td>
-			<td><form:errors path="email" /></td>
-		</tr>
-		<tr>
-			<td><form:label for="confirmEmail" path="confirmEmail" cssErrorClass="error">Confirm Email Address:</form:label></td>
-			<td><form:input path="confirmEmail" /></td>
-			<td><form:errors path="confirmEmail" /></td>
-		</tr>
 
-		<tr>
-			<td><form:label for="firstname" path="firstname" cssErrorClass="error">First Name:</form:label></td>
-			<td><form:input path="firstname" /></td>
-			<td><form:errors path="firstname" /></td>
-		</tr>
-
-		<tr>
-			<td><form:label for="lastname" path="lastname" cssErrorClass="error">Last Name:</form:label></td>
-			<td><form:input path="lastname" /></td>
-			<td><form:errors path="lastname" /></td>
-		</tr>
-		<tr>
-			<td><form:label for="password" path="password" cssErrorClass="error">Change Password:</form:label></td>
-			<td><form:password path="password" /></td>
-			<td><form:errors path="password" /></td>
-		</tr>
-		<tr>
-		<td><form:label for="confirmPassword" path="confirmPassword" cssErrorClass="error">Confirm Password:</form:label></td>
-			<td><form:password path="confirmPassword" /></td>
-			<td><form:errors path="confirmPassword" /></td>
-		</tr>
-		<tr>
-			<td colspan="3" align="center"><input type="submit"	value="register" /></td>
-		</tr>
-	</table>
-	</form:form>
+<div class="editAccountSection">
+    <form:form modelAttribute="passwordChangeForm" action="/account/edit.submit" method="post">
+        <h2>Password Change</h2>
+        <table>
+            <tr>
+                <td><form:label for="currentPassword" path="currentPassword" cssErrorClass="error">Current Password:</form:label></td>
+                <td><form:password path="currentPassword" /></td>
+                <td><form:errors path="currentPassword" /></td>
+            </tr>
+            <tr>
+                <td><form:label for="newPassword" path="newPassword" cssErrorClass="error">New Password:</form:label></td>
+                <td><form:password path="newPassword" /></td>
+                <td><form:errors path="newPassword" /></td>
+            </tr>
+            <tr>
+                <td><form:label for="confirmPassword" path="confirmPassword" cssErrorClass="error">Confirm Password:</form:label></td>
+                <td><form:password path="confirmPassword" /></td>
+                <td><form:errors path="confirmPassword" /></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit"	value="Update" /></td>
+            </tr>
+    	</table>
+    </form:form>
+</div>
 
 <%@ include file="/WEB-INF/jsp/footer.jsp"%>
     </body>

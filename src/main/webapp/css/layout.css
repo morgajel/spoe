@@ -104,3 +104,20 @@ table.tablesorter .headerSortUp  div{
 table.tablesorter .headerSortDown div{
     background: url(/images/desc.png) no-repeat;
 }
+
+
+
+.editAccountSection {
+    width:375px;
+    border:1px solid black;
+    margin-top:10px;
+    margin-left:10px;
+    padding-left:10px;
+}
+.editAccountSection td{
+    text-align:right;
+}
+.editAccountSection h2{
+    margin-top:5px;
+    font-size:20px;
+}

@@ -10,6 +10,8 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -117,6 +119,34 @@ public class Account implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id")
     )
     private Set<Role> roles;
+
+    //FIXME these should not be hardcoded
+    @Column(name = "primary_im_name")
+    private String primaryIMName;
+
+    @Column(name = "primary_im_id")
+    private String primaryIM;
+
+    @Column(name = "secondary_im_name")
+    private String secondaryIMName;
+
+    @Column(name = "secondary_im_id")
+    private String secondaryIM;
+
+    /**
+     * Defines basic types of experience.
+     * FIXME this needs to pull from the db tables.
+     */
+    public enum Experience { None, Novice, Intermediate, Advanced, Expert
+
+    }
+
+    @Column(name = "writing_exp_id")
+    @Enumerated(EnumType.ORDINAL)
+    private Experience writingExperience;
+    @Column(name = "reviewing_exp_id")
+    @Enumerated(EnumType.ORDINAL)
+    private Experience reviewingExperience;
 
     @OneToMany (fetch = FetchType.EAGER)
     @JoinColumn (name = "account_id")
@@ -327,6 +357,54 @@ public class Account implements Serializable {
         //FIXME should be lastModifiedDate
         this.lastModifiedDate = (Date) pLastModifiedDate.clone();
     }
+    public Experience getWritingExperience() {
+        return writingExperience;
+    }
+
+    public void setWritingExperience(Experience pWritingExperience) {
+        this.writingExperience = pWritingExperience;
+    }
+
+    public Experience getReviewingExperience() {
+        return reviewingExperience;
+    }
+
+    public void setReviewingExperience(Experience pReviewingExperience) {
+        this.reviewingExperience = pReviewingExperience;
+    }
+
+    public String getPrimaryIMName() {
+        return primaryIMName;
+    }
+
+    public void setPrimaryIMName(String pPrimaryIMName) {
+        this.primaryIMName = pPrimaryIMName;
+    }
+
+    public String getPrimaryIM() {
+        return primaryIM;
+    }
+
+    public void setPrimaryIM(String pPrimaryIM) {
+        this.primaryIM = pPrimaryIM;
+    }
+
+    public String getSecondaryIMName() {
+        return secondaryIMName;
+    }
+
+    public void setSecondaryIMName(String pSecondaryIMName) {
+        this.secondaryIMName = pSecondaryIMName;
+    }
+
+    public String getSecondaryIM() {
+        return secondaryIM;
+    }
+
+    public void setSecondaryIM(String pSecondaryIM) {
+        this.secondaryIM = pSecondaryIM;
+    }
+
     /**
      * Import registration form to populate data.
      * @param registerForm registration form containing Account info
@@ -359,21 +437,21 @@ public class Account implements Serializable {
     public static final int MINLENGTH = 6;
     /**
      * Generates a temporary password length characters long using PASSWDCHARSET.
-     * @param length length of the password
+     * @param pLength length of the password
      * @return String
      **/
     public static String generatePassword(int pLength) {
         //TODO Do I still need this?
-        int length = 25;
+        int length = MAXLENGTH;
         if (pLength > MINLENGTH && pLength < MAXLENGTH) {
             length = pLength;
         }
         Random rand = new Random(System.currentTimeMillis());
-        StringBuffer sb = new StringBuffer();
+        StringBuffer password = new StringBuffer();
         for (int i = 0; i < length; i++) {
             int pos = rand.nextInt(PASSWDCHARSET.length());
-            sb.append(PASSWDCHARSET.charAt(pos));
+            password.append(PASSWDCHARSET.charAt(pos));
         }
-        return sb.toString();
+        return password.toString();
     }
 }

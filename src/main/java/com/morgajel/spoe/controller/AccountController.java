@@ -24,8 +24,9 @@ import com.morgajel.spoe.model.Role;
 
 import com.morgajel.spoe.service.AccountService;
 import com.morgajel.spoe.service.RoleService;
-import com.morgajel.spoe.web.EditAccountForm;
 import com.morgajel.spoe.web.ForgotPasswordForm;
+import com.morgajel.spoe.web.PasswordChangeForm;
+import com.morgajel.spoe.web.PersonalInformationForm;
 import com.morgajel.spoe.web.RegistrationForm;
 import com.morgajel.spoe.web.SetPasswordForm;
 
@@ -289,31 +290,40 @@ public ModelAndView resetPassword(@PathVariable String username, @PathVariable S
     }
     /**
      * Displays the form for Editing your account.
-     * @param eaForm edit account form
+     * @param personalInformationForm personal Information Form
+     * @param passwordChangeForm password change Form
      * @return ModelAndView mav
      */
     @RequestMapping(value = "/edit")
-    public ModelAndView editAccountForm(EditAccountForm eaForm) {
+    public ModelAndView editAccountForm(PersonalInformationForm personalInformationForm, PasswordChangeForm passwordChangeForm) {
         ModelAndView  mav = new ModelAndView();
         Account account = getContextAccount();
-        eaForm.loadAccount(account);
-        mav.addObject("eaForm", eaForm);
+        personalInformationForm.loadAccount(account);
+        mav.addObject("personalInformationForm", personalInformationForm);
+        mav.addObject("passwordChangeForm", passwordChangeForm);
         mav.setViewName("account/editAccountForm");
         return mav;
     }
     /**
      * Saves changes when editing your account.
-     * @param eaForm edit account form
+     * @param pcf Password Change Form
      * @return ModelAndView mav
      */
     @RequestMapping(value = "/edit.submit")
-    public ModelAndView saveEditAccountForm(EditAccountForm eaForm) {
+    public ModelAndView savePasswordChangeForm(PasswordChangeForm pcf) {
         ModelAndView  mav = new ModelAndView();
         Account account = getContextAccount();
-        eaForm.loadAccount(account);
-        //TODO Do stuff here.
-        mav.addObject("eaForm", eaForm);
-        mav.addObject("message", "your form has been submitted, but this is currently unimplemented...");
+        if (account.verifyPassword(pcf.getCurrentPassword())) {
+            if (pcf.compareNewPasswords()) {
+                account.setHashedPassword(pcf.getNewPassword());
+                accountService.saveAccount(account);
+                mav.addObject("message", "Password updated.");
+            } else {
+                mav.addObject("message", "Sorry, your confirmation password didn't match.");
+            }
+        } else {
+            mav.addObject("message", "That isn't you're current password.");
+        }
         mav.setViewName("account/editAccountForm");
         return mav;
     }

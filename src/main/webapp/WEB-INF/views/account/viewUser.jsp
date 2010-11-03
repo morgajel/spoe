@@ -10,9 +10,11 @@
 
 Info about ${account.username}.
 <table>
-<tr><td> ${account.firstname} ${account.lastname} </td></tr>
-<tr><td> ${account.email} </td></tr>
-<tr><td> ${account.creationDate} </td></tr>
+<tr><th>Name:</th><td> ${account.firstname} ${account.lastname} </td></tr>
+<tr><th>Email:</th><td> ${account.email} </td></tr>
+<tr><th>Member Since:</th><td> ${account.creationDate} </td></tr>
+<tr><th>Writing Experience:</th><td> ${account.writingExperience} </td></tr>
+<tr><th>Reviewing Experience:</th><td> ${account.reviewingExperience} </td></tr>
 </table>
 
 
