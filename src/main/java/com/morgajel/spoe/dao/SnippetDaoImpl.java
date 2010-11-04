@@ -4,11 +4,8 @@ import org.apache.log4j.Logger;
 import java.util.List;
 
 import com.morgajel.spoe.model.Account;
-import com.morgajel.spoe.model.Role;
 import com.morgajel.spoe.model.Snippet;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

@@ -1,7 +1,5 @@
 package com.morgajel.spoe.web;
 
-import java.util.Collection;
-
 import com.morgajel.spoe.model.Account;
 import com.morgajel.spoe.model.Account.Experience;
 
@@ -50,7 +48,7 @@ public class PreferredTagForm {
     public static Experience[] getExperienceList() {
         return Experience.values();
     }
-    
+
     /**
      * This is used to display basic account information in the PersonalInformationForm field.
      * @param account Account you wish to load

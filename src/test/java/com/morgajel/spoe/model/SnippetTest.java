@@ -34,7 +34,7 @@ public class SnippetTest {
     public void tearDown() throws Exception {
         snippet = null;
         mockAccount = null;
-        mockEditSnippetForm=null;
+        mockEditSnippetForm = null;
     }
 
     @Test

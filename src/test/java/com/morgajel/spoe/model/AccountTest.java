@@ -2,10 +2,8 @@ package com.morgajel.spoe.model;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -25,6 +23,7 @@ public class AccountTest {
     private String email = "foo@bar.com";
     private String firstname = "Bob";
     private String lastname = "Dole";
+    
     @Before
     public void setUp() throws Exception {
         mockDate = mock(Date.class);
@@ -39,10 +38,10 @@ public class AccountTest {
     }
     @Test
     public void testAddSnippet() {
-        HashSet<Snippet> snippetSet= new HashSet<Snippet>();
+        HashSet<Snippet> snippetSet = new HashSet<Snippet>();
         account.setSnippets(snippetSet);
         assertFalse(account.getSnippets().contains(mockSnippet));
-        assertEquals(snippetSet,account.getSnippets());
+        assertEquals(snippetSet, account.getSnippets());
         account.addSnippet(mockSnippet);
         assertTrue(account.getSnippets().contains(mockSnippet));
 
