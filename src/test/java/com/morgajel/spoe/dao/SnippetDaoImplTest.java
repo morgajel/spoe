@@ -3,7 +3,6 @@ package com.morgajel.spoe.dao;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
@@ -20,8 +19,8 @@ public class SnippetDaoImplTest {
     private Snippet mockSnippet;
     private Account mockAccount;
     private String title = "simple title";
-    private Long snippetId=123123L;
-    private Long accountId=345345L;
+    private Long snippetId = 123123L;
+    private Long accountId = 345345L;
     private SessionFactory mockSessionFactory;
     private SnippetDaoImpl snippetDaoImpl;
     private List<Snippet> mockSnippetList;
