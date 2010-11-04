@@ -11,9 +11,29 @@
 
 ${message}
 
+<div class="editAccountSection">
+    <form:form modelAttribute="personalInformationForm" action="/account/personalInformation.submit" method="post">
+        <h2>Personal Information</h2>
+        <table>
+            <tr>
+                <td><form:label for="firstname" path="firstname" cssErrorClass="error">First Name:</form:label></td>
+                <td><form:input path="firstname" /></td>
+                <td><form:errors path="firstname" /></td>
+            </tr>
+            <tr>
+                <td><form:label for="lastname" path="lastname" cssErrorClass="error">Last Name:</form:label></td>
+                <td><form:input path="lastname" /></td>
+                <td><form:errors path="lastname" /></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" value="Update" /></td>
+            </tr>
+        </table>
+    </form:form>
+</div>
 
 <div class="editAccountSection">
-    <form:form modelAttribute="passwordChangeForm" action="/account/edit.submit" method="post">
+    <form:form modelAttribute="passwordChangeForm" action="/account/passwordChange.submit" method="post">
         <h2>Password Change</h2>
         <table>
             <tr>

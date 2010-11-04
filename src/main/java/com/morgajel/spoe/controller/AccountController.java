@@ -46,8 +46,8 @@ public class AccountController  extends MultiActionController {
     private RoleService roleService;
 
 
-    private static final String REGISTRATION_EMAIL_TEMPLATE = "registrationEmail.vm";
-    private static final String RESET_PASSWORD_TEMPLATE = "resetPasswordEmail.vm";
+    private static final String REG_EMAIL_TMPL = "registrationEmail.vm";
+    private static final String RESET_PWRD_TMPL = "resetPasswordEmail.vm";
     private static final transient Logger LOGGER = Logger.getLogger(AccountController.class);
 /**
  * Reset account by comparing a given username and checksum against a given account.
@@ -291,12 +291,13 @@ public ModelAndView resetPassword(@PathVariable String username, @PathVariable S
     /**
      * Displays the form for Editing your account.
      * @param personalInformationForm personal Information Form
-     * @param passwordChangeForm password change Form
      * @return ModelAndView mav
      */
     @RequestMapping(value = "/edit")
-    public ModelAndView editAccountForm(PersonalInformationForm personalInformationForm, PasswordChangeForm passwordChangeForm) {
+    public ModelAndView editAccountForm() {
         ModelAndView  mav = new ModelAndView();
+        PersonalInformationForm personalInformationForm = new PersonalInformationForm(); 
+        PasswordChangeForm passwordChangeForm = new PasswordChangeForm();
         Account account = getContextAccount();
         personalInformationForm.loadAccount(account);
         mav.addObject("personalInformationForm", personalInformationForm);
@@ -306,24 +307,62 @@ public ModelAndView resetPassword(@PathVariable String username, @PathVariable S
     }
     /**
      * Saves changes when editing your account.
-     * @param pcf Password Change Form
+     * @param personalInformationForm Personal Information Form
      * @return ModelAndView mav
      */
-    @RequestMapping(value = "/edit.submit")
-    public ModelAndView savePasswordChangeForm(PasswordChangeForm pcf) {
+    @RequestMapping(value = "/personalInformation.submit", method = RequestMethod.POST)
+    public ModelAndView savePersonalInformationForm(PersonalInformationForm personalInformationForm) {
         ModelAndView  mav = new ModelAndView();
         Account account = getContextAccount();
-        if (account.verifyPassword(pcf.getCurrentPassword())) {
-            if (pcf.compareNewPasswords()) {
-                account.setHashedPassword(pcf.getNewPassword());
-                accountService.saveAccount(account);
-                mav.addObject("message", "Password updated.");
+        LOGGER.info("loaded account " + null);
+        PasswordChangeForm passwordChangeForm = new PasswordChangeForm();
+        if (account != null) {
+            account.setLastname(personalInformationForm.getLastname());
+            LOGGER.info("set last name to  " + account.getLastname());
+            account.setFirstname(personalInformationForm.getFirstname());
+            LOGGER.info("set first name to  " + account.getFirstname());
+            accountService.saveAccount(account);
+            LOGGER.info("saved account " + account);
+            mav.addObject("message", "Personal Information Updated.");
+        } else {
+            LOGGER.error(SecurityContextHolder.getContext().getAuthentication().getName()
+                    + ": is the name found in the context, but no account was found.");
+            mav.addObject("message", "Odd, your account wasn't found.. are you logged in?");
+        }
+        mav.addObject("personalInformationForm", personalInformationForm);
+        mav.addObject("passwordChangeForm", passwordChangeForm);
+        mav.setViewName("account/editAccountForm");
+        return mav;
+    }
+
+    /**
+     * Saves changes when editing your account.
+     * @param passwordChangeForm Password Change Form
+     * @return ModelAndView mav
+     */
+    @RequestMapping(value = "/passwordChange.submit", method = RequestMethod.POST)
+    public ModelAndView savePasswordChangeForm(PasswordChangeForm passwordChangeForm) {
+        ModelAndView  mav = new ModelAndView();
+        Account account = getContextAccount();
+        PersonalInformationForm personalInformationForm = new PersonalInformationForm();
+        if (account != null) {
+            personalInformationForm.loadAccount(account);
+            if (account.verifyPassword(passwordChangeForm.getCurrentPassword())) {
+                if (passwordChangeForm.compareNewPasswords()) {
+                    account.setHashedPassword(passwordChangeForm.getNewPassword());
+                    accountService.saveAccount(account);
+                    mav.addObject("message", "Password updated.");
+                } else {
+                    mav.addObject("message", "Sorry, your confirmation password didn't match.");
+                }
             } else {
-                mav.addObject("message", "Sorry, your confirmation password didn't match.");
+                mav.addObject("message", "That isn't you're current password.");
             }
         } else {
-            mav.addObject("message", "That isn't you're current password.");
+            mav.addObject("message", "Odd, your account wasn't found, so I couldn't update..");
         }
+        mav.addObject("passwordChangeForm", new PasswordChangeForm());
+        mav.addObject("personalInformationForm", personalInformationForm);
         mav.setViewName("account/editAccountForm");
         return mav;
     }
@@ -410,7 +449,7 @@ public ModelAndView resetPassword(@PathVariable String username, @PathVariable S
         msg.setTo(account.getEmail());
         LOGGER.info("sending message to " + account.getEmail());
 
-        msg.setText(VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, RESET_PASSWORD_TEMPLATE, model));
+        msg.setText(VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, RESET_PWRD_TMPL, model));
         LOGGER.info(msg.getText());
 
         this.mailSender.send(msg);
@@ -434,7 +473,7 @@ public ModelAndView resetPassword(@PathVariable String username, @PathVariable S
         msg.setTo(account.getEmail());
         LOGGER.info("sending message to " + account.getEmail());
 
-        msg.setText(VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, REGISTRATION_EMAIL_TEMPLATE, model));
+        msg.setText(VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, REG_EMAIL_TMPL, model));
         LOGGER.info(msg.getText());
 
         this.mailSender.send(msg);
@@ -443,15 +482,18 @@ public ModelAndView resetPassword(@PathVariable String username, @PathVariable S
     public void setAccountService(AccountService pAccountService) {
         this.accountService = pAccountService;
     }
-
+    public AccountService getAccountService() {
+        return this.accountService;
+    }
     public void setMailSender(MailSender pMailSender) {
         this.mailSender = pMailSender;
     }
-
     public void setRoleService(RoleService pRoleService) {
         this.roleService = pRoleService;
     }
-
+    public RoleService getRoleService() {
+        return this.roleService;
+    }
     public void setTemplateMessage(SimpleMailMessage pTemplateMessage) {
         this.templateMessage = pTemplateMessage;
     }
