@@ -24,7 +24,7 @@ ${message}
         <display:column title="Title"  sortable="true">
             <a href="/snippet/id/${snippet.snippetId}">${snippet.title}</a>
         </display:column>
-        <display:column property="lastModifiedDate" title="Last Modified" format="{0,date,yyyy/dd/mm hh:mm:ss a}"   sortable="true"/>
+        <display:column property="lastModifiedDate" title="Last Modified" format="{0,date,yyyy/MM/dd hh:mm:ss a}"   sortable="true"  defaultorder="descending"/>
         <sec:authorize access='isAuthenticated()'>
             <display:column title="Editable" >
                 <a href="/snippet/edit/${snippet.snippetId}">[edit]</a>
