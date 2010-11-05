@@ -215,7 +215,7 @@ public class AccountControllerTest {
         when(mockAccountService.loadByUsername(USERNAME)).thenReturn(mockAccount);
         ModelAndView mav = accountController.defaultView();
         assertEquals("account/view", mav.getViewName());
-        assertEquals("show the default view for " + USERNAME, mav.getModel().get("message"));
+        assertEquals("", mav.getModel().get("message"));
     }
     /**
      * Test to make sure the Registration form is displayed.

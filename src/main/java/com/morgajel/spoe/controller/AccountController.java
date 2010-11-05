@@ -411,7 +411,7 @@ public ModelAndView resetPassword(@PathVariable String username, @PathVariable S
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Account account = accountService.loadByUsername(username);
         mav.setViewName("account/view");
-        mav.addObject("message", "show the default view for " + username);
+        mav.addObject("message", "");
         mav.addObject("account", account);
         return mav;
     }

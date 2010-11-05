@@ -8,7 +8,6 @@
 <script type="text/javascript" src="/js/jquery.tablesorter.min.js"></script>
 <script language="javascript" type="text/javascript">
     $(document).ready(function() {
-        $(".tablesorter").tablesorter( {sortList: [[0,0]]});
         $('#topmenu').dropmenu(
             {
                 effect          : "slide",       //  "slide", "fade", or "none"

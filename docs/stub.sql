@@ -79,6 +79,23 @@ create table snippet (
 insert into snippet(title,account_id,content ) values('Text test1',1,'first block of text');
 insert into snippet(title,account_id,content ) values('Text test2',2,'second block of text');
 insert into snippet(title,account_id,content ) values('Text test3',1,'third block of text');
+insert into snippet(title,account_id,content ) values('Text test4',1,'block of text');
+insert into snippet(title,account_id,content ) values('Text test5',1,'5 block of text');
+insert into snippet(title,account_id,content ) values('Text test6',1,'6 block of text');
+insert into snippet(title,account_id,content ) values('Text test7',2,'7 block of text');
+insert into snippet(title,account_id,content ) values('Text test8',2,'8 block of text');
+insert into snippet(title,account_id,content ) values('Text test9',1,'9 block of text');
+insert into snippet(title,account_id,content ) values('Text test10',1,'10 block of text');
+insert into snippet(title,account_id,content ) values('Text test11',1,'11 block of text');
+insert into snippet(title,account_id,content ) values('Text test12',1,'12 block of text');
+insert into snippet(title,account_id,content ) values('Text test13',1,'13 block of text');
+insert into snippet(title,account_id,content ) values('Text test14',1,'14 block of text');
+insert into snippet(title,account_id,content ) values('Text test15',1,'15 block of text');
+insert into snippet(title,account_id,content ) values('Text test16',1,'16 block of text');
+insert into snippet(title,account_id,content ) values('Text test17',1,'17 block of text');
+insert into snippet(title,account_id,content ) values('Text test18',1,'18 block of text');
+insert into snippet(title,account_id,content ) values('Text test19',1,'19 block of text');
+insert into snippet(title,account_id,content ) values('Text test20',1,'20 block of text');
 
 
 
@@ -93,7 +110,7 @@ insert into account(username,password,firstname,lastname,enabled,email,creation_
 insert into account(username,password,firstname,lastname,enabled,email,creation_date,last_modified_date) values('zswift',  sha('hello'),'Ziggy', 'Swift', true,  'ziggy@example.com',now(),now());
 insert into account(username,password,firstname,lastname,enabled,email,creation_date,last_modified_date) values('myjaxon', sha('hello'),'Jackie','Morgan',true,  'myjax@example.com',now(),now());
 insert into account(username,password,firstname,lastname,enabled,email,creation_date,last_modified_date) values('grunn',   sha('hello'),'Grunn', 'yager', true,  'grunn@example.com',now(),now());
--- morgajel the administrator --
+-- jmorgan the administrator --
 insert into account_role(account_id,role_id) values('1','1'); 
 insert into account_role(account_id,role_id) values('1','2'); 
 insert into account_role(account_id,role_id) values('1','3');

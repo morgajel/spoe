@@ -69,42 +69,44 @@ margin-right:10px;
 
 /*--------snippet list------------------*/
 
-table.tablesorter { 
+.snippetList {
+    border: 1px solid #000;
+    width:450px;
+    background:#37882e; 
+    padding: 5px;
+    margin-left:5px;
+}
+.snippetlist .pagebanner { font-size: 10px; padding-left:25px;}
+.snippetlist .pagelinks { font-size: 10px;}
+
+.snippetlist h2 {
+    margin-top:3px;
+    margin-bottom:5px;
+    font-size:20px;
+}
+
+.snippetList table{ 
     border-collapse:collapse;
     font-size: 12px;
     border: 1px solid #000;
-    margin-left:10px;
-    width:500px;
+    width:450px;
 }
-table.tablesorter th { 
+.snippetList table th { 
     background:#0d5f19 url(/images/header_bkg.png) repeat-x scroll center left; 
     color:#fff; 
     text-align: left;
     padding: 5px;
 }
-table.tablesorter td { 
+.snippetList table td { 
     background:#b5e8b0 url(/images/row_bkg.png) repeat-x scroll center left; 
     padding: 5px;
     border: 1px solid #000;
 }
 
-table.tablesorter td.id {
+.snippetList table td.id {
     width:40px;
     text-align:right;
 }
-
-table.tablesorter .header div {
-    background: url(/images/bg.png) no-repeat;
-    padding-left: 20px;
-    cursor:pointer;
-}
-table.tablesorter .headerSortUp  div{
-    background: url(/images/asc.png) no-repeat;
-}
-table.tablesorter .headerSortDown div{
-    background: url(/images/desc.png) no-repeat;
-}
-
 
 
 .editAccountSection {

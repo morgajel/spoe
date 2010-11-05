@@ -272,6 +272,13 @@
     	<version>2.1</version>
     	<scope>provided</scope>
     </dependency>
+    <dependency>
+    	<groupId>displaytag</groupId>
+    	<artifactId>displaytag</artifactId>
+    	<version>1.2</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
   </dependencies>
   <pluginRepositories>
     <pluginRepository>
@@ -425,6 +432,11 @@
         </configuration>
       </plugin>
     </plugins>
+    <testResources>
+      <testResource>
+        <directory>src/main/webapp/WEB-INF</directory>
+      </testResource>
+    </testResources>
   </build>
   <reporting>
     <plugins>
