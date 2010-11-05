@@ -19,7 +19,7 @@ ${message}
 <br/>
 <div class="snippetList">
 <h2>Recent Snippets</h2>
-    <display:table name="${account.snippets}" id="snippet" pagesize="5" keepStatus="true" requestURI="/account"> 
+    <display:table name="${account.snippets}" id="snippet" pagesize="5" keepStatus="true" requestURI="/account" defaultsort="1" sort="list"> 
         <display:column property="snippetId" title="ID" class='id'  format="{0,number,0}" sortable="true" />
         <display:column title="Title"  sortable="true">
             <a href="/snippet/id/${snippet.snippetId}">${snippet.title}</a>
