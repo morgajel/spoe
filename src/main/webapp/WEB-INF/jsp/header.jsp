@@ -45,9 +45,9 @@ function searchClear(searchbox){
 
 
 <div id="menubox">
-                <form method="get" action="/search"  id='searchform' >
-                    <input type="text" value="quick search" id="search_box" onclick='searchClear(this);'/>
-                    <input type="submit" value="Search" id="search_button"  />
+                <form method="GET" action="/search/"  id='searchform' >
+                    <input type="text" name="q" value="quick search" id="search_box" onclick='searchClear(this);'/>
+                    <input type="submit" value="Search" id="search_button" />
                 </form>
                 
     <ul id="topmenu" class="dropmenu">

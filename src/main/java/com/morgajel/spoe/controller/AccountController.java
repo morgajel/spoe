@@ -34,7 +34,7 @@ import com.morgajel.spoe.web.SetPasswordForm;
  * Controls all account interactions from changing passwords, registering and activating accounts, etc.
  */
 @Controller
-public class AccountController  extends MultiActionController {
+public class AccountController extends MultiActionController {
 
     private VelocityEngine velocityEngine;
     private MailSender mailSender;

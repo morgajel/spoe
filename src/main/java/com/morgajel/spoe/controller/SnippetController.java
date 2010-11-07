@@ -19,7 +19,7 @@ import com.morgajel.spoe.service.SnippetService;
 import com.morgajel.spoe.web.EditSnippetForm;
 
 /**
- * Controls all account interactions from changing passwords, registering and activating accounts, etc.
+ * Controls all snippet interactions, etc.
  */
 @Controller
 public class SnippetController extends MultiActionController {
@@ -178,6 +178,34 @@ public class SnippetController extends MultiActionController {
             LOGGER.error("Something failed while trying to display " + snippetId + ".", ex);
             mav.setViewName("snippet/snippetFailure");
             mav.addObject("message", "Something failed while trying to display " + snippetId + ".");
+        }
+        return mav;
+    }
+
+    /**
+     * This will display the user's snippets
+     * @return ModelAndView mav
+     */
+    @RequestMapping("/my")
+    public ModelAndView showMySnippets() {
+        LOGGER.info("showing user snippets");
+        ModelAndView mav = new ModelAndView();
+        try {
+            Account account = getContextAccount();
+            if (account  != null) {
+                mav.addObject("account", account);
+                mav.setViewName("snippet/mySnippets");
+            } else {
+                String message = "Odd, I couldn't find your account.";
+                LOGGER.error(message);
+                mav.addObject("message", message);
+                mav.setViewName("snippet/snippetFailure");
+            }
+        } catch (Exception ex) {
+            String message = "Something failed while trying to display user snippets.";
+            logger.error(message, ex);
+            mav.addObject("message", message);
+            mav.setViewName("snippet/snippetFailure");
         }
         return mav;
     }

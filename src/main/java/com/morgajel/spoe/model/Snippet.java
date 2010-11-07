@@ -17,6 +17,14 @@ import javax.validation.constraints.NotNull;
 import org.apache.log4j.Logger;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
+import org.hibernate.search.annotations.DateBridge;
+import org.hibernate.search.annotations.DocumentId;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.search.annotations.Resolution;
+import org.hibernate.search.annotations.Store;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.morgajel.spoe.web.EditSnippetForm;
@@ -52,6 +60,7 @@ import com.morgajel.spoe.web.EditSnippetForm;
  * Snippet manager displays, edits and performs all other snippet-related tasks.
  **/
 @Entity
+@Indexed
 @Table(name = "snippet",
     uniqueConstraints = {
         @UniqueConstraint(columnNames = "snippet_id") }
@@ -60,6 +69,7 @@ public class Snippet implements Serializable {
 
     @ManyToOne
     @JoinColumn (name = "account_id", updatable = false, insertable = false)
+    @IndexedEmbedded
     private Account author;
     /**
      * Returns the account associated as the author of the snippet.
@@ -80,21 +90,28 @@ public class Snippet implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "snippet_id", unique = true, nullable = false)
+    @DocumentId
     private Long snippetId;
     @NotNull
     @Column(name = "account_id")
     private Long accountId;
     @NotNull
     @Column(name = "title")
+    @Field(index = Index.TOKENIZED, store = Store.YES)
     private String title;
     @DateTimeFormat
     @Column(name = "last_modified_date")
+    @Field(index = Index.UN_TOKENIZED, store = Store.NO)
+    @DateBridge(resolution = Resolution.MINUTE)
     private Date lastModifiedDate;
     @DateTimeFormat
     @Column(name = "creation_date")
+    @Field(index = Index.UN_TOKENIZED, store = Store.NO)
+    @DateBridge(resolution = Resolution.MINUTE)
     private Date creationDate;
     @NotNull
     @Column(name = "content")
+    @Field(index = Index.TOKENIZED, store = Store.YES)
     private String content;
 
     private static final long serialVersionUID = -5461020313014420728L;

@@ -26,13 +26,18 @@
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>dispatcher</servlet-name>
-		<url-pattern>/account/*</url-pattern>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/account/*</url-pattern>
 	</servlet-mapping>
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/snippet/*</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/search/*</url-pattern>
+    </servlet-mapping>
+
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
