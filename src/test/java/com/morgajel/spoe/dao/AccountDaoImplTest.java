@@ -24,6 +24,7 @@ public class AccountDaoImplTest {
     private SessionFactory mockSessionFactory;
     private Account mockAccount;
     private static final String USERNAME = "morgo2";
+    private static final String EMAIL = "morgo@example.com";
     //private final String passfield = "255edd2793e5286d4441ea6bfba734b59e915864";
     private static final String TEMPHASH = "df9dd14cbdb3b00f8a54b66f489241e8aeb903ff";
     private static final String CHECKSUM = "279d8d8a18b94782ef606fbbadd6c011b1692ad0"; //morgo2+temphash+0
@@ -134,6 +135,27 @@ public class AccountDaoImplTest {
         List<Account> acclist = new ArrayList<Account>();
         when(mockSessionFactory.getCurrentSession().getNamedQuery("findAccountByUsernameAndChecksum").setString("username", USERNAME).setString("checksum", CHECKSUM).list()).thenReturn(acclist);
         Account account = accountDao.loadByUsernameAndChecksum(USERNAME, CHECKSUM);
+        assertEquals(null, account);
+    }
+    /**
+     * LoadByUsernameOrEmail to ensure success when an account is found.
+     */
+    @Test
+    public void testLoadByUsernameOrEmailSuccess() {
+        List<Account> acclist = new ArrayList<Account>();
+        acclist.add(mockAccount);
+        when(mockSessionFactory.getCurrentSession().getNamedQuery("findAccountByUsernameOrEmail").setString("username", USERNAME).setString("email", EMAIL).list()).thenReturn(acclist);
+        Account account = accountDao.loadByUsernameOrEmail(USERNAME, EMAIL);
+        assertEquals(mockAccount, account);
+    }
+    /**
+     * Test LoadByUsernameOrEmail to ensure failure when an account is not found.
+     */
+    @Test
+    public void testLoadByUsernameOrEmailFail() {
+        List<Account> acclist = new ArrayList<Account>();
+        when(mockSessionFactory.getCurrentSession().getNamedQuery("findAccountByUsernameOrEmail").setString("username", USERNAME).setString("email", EMAIL).list()).thenReturn(acclist);
+        Account account = accountDao.loadByUsernameOrEmail(USERNAME, EMAIL);
         assertEquals(null, account);
     }
 }

@@ -16,14 +16,14 @@ public class AccountTest {
     private Date mockDate;
     private Role mockRole;
     private Snippet mockSnippet;
-    private String password = "12345MatchedLuggage";
-    private String passwordHash = "2ddcee8b16fc4740c3d31db70d65b073c10b7c3f";
-    private Long accountId = 123123123L;
-    private String username = "bobDole";
-    private String email = "foo@bar.com";
-    private String firstname = "Bob";
-    private String lastname = "Dole";
-    
+    private static final String PASSWORD = "12345MatchedLuggage";
+    private static final String PASSWORDHASH = "2ddcee8b16fc4740c3d31db70d65b073c10b7c3f";
+    private static final Long ACCOUNTID = 123123123L;
+    private static final String USERNAME = "bobDole";
+    private static final String EMAIL = "foo@bar.com";
+    private static final String FIRSTNAME = "Bob";
+    private static final String LASTNAME = "Dole";
+
     @Before
     public void setUp() throws Exception {
         mockDate = mock(Date.class);
@@ -36,6 +36,7 @@ public class AccountTest {
     public void tearDown() throws Exception {
         account = null;
     }
+
     @Test
     public void testAddSnippet() {
         HashSet<Snippet> snippetSet = new HashSet<Snippet>();
@@ -44,13 +45,12 @@ public class AccountTest {
         assertEquals(snippetSet, account.getSnippets());
         account.addSnippet(mockSnippet);
         assertTrue(account.getSnippets().contains(mockSnippet));
-
     }
 
     @Test
     public void testVerifyPassword() {
-        account.setHashedPassword(password);
-        assertTrue(account.verifyPassword(password));
+        account.setHashedPassword(PASSWORD);
+        assertTrue(account.verifyPassword(PASSWORD));
         assertFalse(account.verifyPassword("not it"));
     }
 
@@ -63,32 +63,32 @@ public class AccountTest {
     @Test
     public void testGetAndSetAccountId() {
         assertNull(account.getAccountId());
-        account.setAccountId(accountId);
-        assertEquals(accountId, account.getAccountId());
+        account.setAccountId(ACCOUNTID);
+        assertEquals(ACCOUNTID, account.getAccountId());
     }
 
     @Test
     public void testGetAndSetEmail() {
         //TODO, make sure non-email addresses don't validate
         assertNull(account.getEmail());
-        account.setEmail(email);
-        assertEquals(email, account.getEmail());
+        account.setEmail(EMAIL);
+        assertEquals(EMAIL, account.getEmail());
         //TODO this should error if you pass it a non-email address.
     }
 
     @Test
     public void testGetAndSetUsername() {
         assertNull(account.getUsername());
-        account.setUsername(username);
-        assertEquals(username, account.getUsername());
+        account.setUsername(USERNAME);
+        assertEquals(USERNAME, account.getUsername());
         //TODO this should error if you pass it a non-alphanumeric username
     }
 
     @Test
     public void testGetAndSetPassword() {
         assertNull(account.getPassword());
-        account.setHashedPassword(password);
-        assertEquals(Account.hashText(password), account.getPassword());
+        account.setHashedPassword(PASSWORD);
+        assertEquals(Account.hashText(PASSWORD), account.getPassword());
     }
 
     @Test
@@ -103,15 +103,15 @@ public class AccountTest {
     @Test
     public void testGetAndSetFirstname() {
         assertNull(account.getFirstname());
-        account.setFirstname(firstname);
-        assertEquals(firstname, account.getFirstname());
+        account.setFirstname(FIRSTNAME);
+        assertEquals(FIRSTNAME, account.getFirstname());
     }
 
     @Test
     public void testGetAndSetLastname() {
         assertNull(account.getLastname());
-        account.setLastname(lastname);
-        assertEquals(lastname, account.getLastname());
+        account.setLastname(LASTNAME);
+        assertEquals(LASTNAME, account.getLastname());
     }
 
     @Test
@@ -136,11 +136,47 @@ public class AccountTest {
         account.setRoles(mockRoles);
         assertEquals(mockRoles, account.getRoles());
     }
+    @Test
+    public void testGetAndSetWritingExperience() {
+        assertNull(account.getWritingExperience());
+        account.setWritingExperience(Account.Experience.Advanced);
+        assertEquals(Account.Experience.Advanced, account.getWritingExperience());
+    }
+    @Test
+    public void testGetAndSetReviewingExperience() {
+        assertNull(account.getReviewingExperience());
+        account.setReviewingExperience(Account.Experience.Advanced);
+        assertEquals(Account.Experience.Advanced, account.getReviewingExperience());
+    }
+    @Test
+    public void testGetAndSetPrimaryIMName() {
+        assertNull(account.getPrimaryIMName());
+        account.setPrimaryIMName(USERNAME);
+        assertEquals(USERNAME, account.getPrimaryIMName());
+    }
+    @Test
+    public void testGetAndSetSecondaryIMName() {
+        assertNull(account.getSecondaryIMName());
+        account.setSecondaryIMName(USERNAME);
+        assertEquals(USERNAME, account.getSecondaryIMName());
+    }
+    @Test
+    public void testGetAndSetPrimaryIM() {
+        assertNull(account.getPrimaryIM());
+        account.setPrimaryIM(Account.IMProtocol.AIM);
+        assertEquals(Account.IMProtocol.AIM, account.getPrimaryIM());
+    }
+    @Test
+    public void testGetAndSetSecondaryIM() {
+        assertNull(account.getSecondaryIM());
+        account.setSecondaryIM(Account.IMProtocol.AIM);
+        assertEquals(Account.IMProtocol.AIM, account.getSecondaryIM());
+    }
 
     @Test
     public void testHashText() {
-        String hash = Account.hashText(password);
-        assertEquals(passwordHash, hash);
+        String hash = Account.hashText(PASSWORD);
+        assertEquals(PASSWORDHASH, hash);
         //HULK SMASH, no way to test a missing algorithm
     }
 
@@ -173,8 +209,8 @@ public class AccountTest {
 
     @Test
     public void testActivationChecksum() {
-        account.setHashedPassword(password);
-        account.setUsername(username);
+        account.setHashedPassword(PASSWORD);
+        account.setUsername(USERNAME);
         account.setEnabled(true);
         assertEquals("511fc691aae67b6af1f5a2e033db5cf474813ea2", account.activationChecksum());
         account.setEnabled(false);
@@ -184,26 +220,26 @@ public class AccountTest {
 
     @Test
     public void testToString() {
-        account.setAccountId(accountId);
+        account.setAccountId(ACCOUNTID);
         Date creationDate = new Date();
         account.setCreationDate(creationDate);
         Date lastModifiedDate = new Date();
         account.setLastModifiedDate(lastModifiedDate);
-        account.setEmail(email);
+        account.setEmail(EMAIL);
         boolean enabled = true;
         account.setEnabled(enabled);
-        account.setFirstname(firstname);
-        account.setLastname(lastname);
-        account.setHashedPassword(password);
-        account.setUsername(username);
+        account.setFirstname(FIRSTNAME);
+        account.setLastname(LASTNAME);
+        account.setHashedPassword(PASSWORD);
+        account.setUsername(USERNAME);
         String toString = "Account "
-        + "[ accountId=" + accountId
-        + ", username=" + username
-        + ", email=" + email
-        + ", password="    + Account.hashText(password)
+        + "[ accountId=" + ACCOUNTID
+        + ", username=" + USERNAME
+        + ", email=" + EMAIL
+        + ", password="    + Account.hashText(PASSWORD)
         + ", enabled=" + enabled
-        + ", firstname=" + firstname
-        + ", lastname=" + lastname
+        + ", firstname=" + FIRSTNAME
+        + ", lastname=" + LASTNAME
         + ", lastModifiedDate=" +    lastModifiedDate
         + ", creationDate=" + creationDate
         + ", PASSWDCHARSET=" + Account.PASSWDCHARSET

@@ -38,7 +38,7 @@ public class SearchController extends MultiActionController {
      * @return ModelAndView mav
      */
     @RequestMapping(value = "/")
-    public ModelAndView editSnippet(@RequestParam("q") String searchQuery) {
+    public ModelAndView quickSearch(@RequestParam("q") String searchQuery) {
         LOGGER.info("Searching for " + searchQuery);
         ModelAndView mav = new ModelAndView();
         try {

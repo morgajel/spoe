@@ -125,21 +125,24 @@ public class Account implements Serializable {
     private String primaryIMName;
 
     @Column(name = "primary_im_id")
-    private String primaryIM;
+    private IMProtocol primaryIM;
 
     @Column(name = "secondary_im_name")
     private String secondaryIMName;
 
     @Column(name = "secondary_im_id")
-    private String secondaryIM;
+    private IMProtocol secondaryIM;
 
     /**
      * Defines basic types of experience.
      * FIXME this needs to pull from the db tables.
      */
-    public enum Experience { None, Novice, Intermediate, Advanced, Expert
-
-    }
+    public enum Experience { None, Novice, Intermediate, Advanced, Expert }
+    /**
+     * Defines basic types of IM.
+     * FIXME this needs to pull from the db tables.
+     */
+    public enum IMProtocol { none, AIM, ICQ, GTalk, Jabber, Yahoo }
 
     @Column(name = "writing_exp_id")
     @Enumerated(EnumType.ORDINAL)
@@ -381,11 +384,11 @@ public class Account implements Serializable {
         this.primaryIMName = pPrimaryIMName;
     }
 
-    public String getPrimaryIM() {
+    public IMProtocol getPrimaryIM() {
         return primaryIM;
     }
 
-    public void setPrimaryIM(String pPrimaryIM) {
+    public void setPrimaryIM(IMProtocol pPrimaryIM) {
         this.primaryIM = pPrimaryIM;
     }
 
@@ -397,11 +400,11 @@ public class Account implements Serializable {
         this.secondaryIMName = pSecondaryIMName;
     }
 
-    public String getSecondaryIM() {
+    public IMProtocol getSecondaryIM() {
         return secondaryIM;
     }
 
-    public void setSecondaryIM(String pSecondaryIM) {
+    public void setSecondaryIM(IMProtocol pSecondaryIM) {
         this.secondaryIM = pSecondaryIM;
     }
 

@@ -19,6 +19,7 @@ public class AccountServiceImplTest {
     private Account mockAccount;
     private AccountServiceImpl accountService;
     private static final String USERNAME = "morgo2";
+    private static final String EMAIL = "morgo@example.com";
 //    private final String passfield="255edd2793e5286d4441ea6bfba734b59e915864";
     private static final String TEMPHASH = "df9dd14cbdb3b00f8a54b66f489241e8aeb903ff";
     private static final String CHECKSUM = "279d8d8a18b94782ef606fbbadd6c011b1692ad0"; //morgo2+temphash+0
@@ -81,6 +82,12 @@ public class AccountServiceImplTest {
     public void testLoadByUsernameAndChecksum() {
         when(mockAccountDao.loadByUsernameAndChecksum(USERNAME, CHECKSUM)).thenReturn(mockAccount);
         Account account = accountService.loadByUsernameAndChecksum(USERNAME, CHECKSUM);
+        assertEquals(mockAccount, account);
+    }
+    @Test
+    public void testLoadByUsernameOrEmail() {
+        when(mockAccountDao.loadByUsernameOrEmail(USERNAME, EMAIL)).thenReturn(mockAccount);
+        Account account = accountService.loadByUsernameOrEmail(USERNAME, EMAIL);
         assertEquals(mockAccount, account);
     }
 }
