@@ -27,8 +27,6 @@ public class SearchController extends MultiActionController {
     private AccountService accountService;
     @Autowired
     private SnippetService snippetService;
-    @Autowired
-    private SessionFactory sessionFactory;
 
     private static final transient Logger LOGGER = Logger.getLogger(SnippetController.class);
 
