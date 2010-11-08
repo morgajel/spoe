@@ -183,7 +183,7 @@ public class SnippetController extends MultiActionController {
     }
 
     /**
-     * This will display the user's snippets
+     * This will display the user's snippets.
      * @return ModelAndView mav
      */
     @RequestMapping("/my")

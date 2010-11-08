@@ -2,7 +2,6 @@ package com.morgajel.spoe.controller;
 
 
 import org.apache.log4j.Logger;
-import org.hibernate.SessionFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,7 +12,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 import com.morgajel.spoe.model.Account;
-import com.morgajel.spoe.model.Snippet;
 import com.morgajel.spoe.service.AccountService;
 import com.morgajel.spoe.service.SnippetService;
 
@@ -36,7 +34,7 @@ public class SearchController extends MultiActionController {
      * @return ModelAndView mav
      */
     @RequestMapping(value = "/")
-    public ModelAndView quickSearch(@RequestParam("q") String searchQuery) {
+    public ModelAndView quickSearch(@RequestParam("q") final String searchQuery) {
         LOGGER.info("Searching for " + searchQuery);
         ModelAndView mav = new ModelAndView();
         try {
