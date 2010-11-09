@@ -40,7 +40,6 @@ public class SearchController extends MultiActionController {
         try {
             //FIXME need to sanitize user input
             //TODO search for stuff
-
             //mav.addObject("results", results);
             mav.addObject("message", "Results for '" + searchQuery + "'");
 
