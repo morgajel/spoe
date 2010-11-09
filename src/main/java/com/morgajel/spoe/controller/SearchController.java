@@ -53,21 +53,6 @@ public class SearchController extends MultiActionController {
         return mav;
     }
 
-    /**
-     * This is the default view for snippet, a catch-all for most any one-offs.
-     * Will show the generic snippet page.
-     * @return ModelAndView mav
-     */
-    @RequestMapping
-    public ModelAndView defaultView() {
-        LOGGER.info("showing the default view");
-        ModelAndView  mav = new ModelAndView();
-        mav.setViewName("snippet/view");
-        mav.addObject("message", "show the default view for snippets");
-
-        return mav;
-    }
-
     public void setAccountService(AccountService pAccountService) {
         this.accountService = pAccountService;
     }
