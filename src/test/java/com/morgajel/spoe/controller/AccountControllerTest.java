@@ -411,9 +411,31 @@ public class AccountControllerTest {
         when(mockPasswordChangeForm.compareNewPasswords()).thenReturn(true);
         ModelAndView results = accountController.savePasswordChangeForm(mockPasswordChangeForm);
         assertEquals("account/editAccountForm", results.getViewName());
-        //TODO need to test the rest of the code...
     }
-
+    @Test
+    public void testSavePasswordChangeFormFailConfirm() {
+        SecurityContextHolder.setContext(mockContext);
+        when(mockContext.getAuthentication().getName()).thenReturn(USERNAME);
+        when(mockAccountService.loadByUsername(USERNAME)).thenReturn(mockAccount);
+        when(mockAccount.verifyPassword(PASSWORD)).thenReturn(true);
+        when(mockPasswordChangeForm.getCurrentPassword()).thenReturn(PASSWORD);
+        when(mockPasswordChangeForm.getNewPassword()).thenReturn(PASSWORD);
+        when(mockPasswordChangeForm.getConfirmPassword()).thenReturn("badPass");
+        when(mockPasswordChangeForm.compareNewPasswords()).thenReturn(false);
+        ModelAndView results = accountController.savePasswordChangeForm(mockPasswordChangeForm);
+        assertEquals("account/editAccountForm", results.getViewName());
+        assertEquals("Sorry, your confirmation password didn't match.", results.getModel().get("message"));
+    }
+    @Test
+    public void testSavePasswordChangeFormNotCurrentPass() {
+        SecurityContextHolder.setContext(mockContext);
+        when(mockContext.getAuthentication().getName()).thenReturn(USERNAME);
+        when(mockAccountService.loadByUsername(USERNAME)).thenReturn(mockAccount);
+        when(mockAccount.verifyPassword(PASSWORD)).thenReturn(false);
+        ModelAndView results = accountController.savePasswordChangeForm(mockPasswordChangeForm);
+        assertEquals("account/editAccountForm", results.getViewName());
+        assertEquals("That isn't you're current password.", results.getModel().get("message"));
+    }
     /**
      * Test DisplayUser finding a user.
      */
