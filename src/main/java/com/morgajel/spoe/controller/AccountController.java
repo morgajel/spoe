@@ -292,13 +292,12 @@ public ModelAndView resetPassword(@PathVariable String username, @PathVariable S
     }
     /**
      * Displays the form for Editing your account.
-     * @param personalInformationForm personal Information Form
      * @return ModelAndView mav
      */
     @RequestMapping(value = "/edit")
     public ModelAndView editAccountForm() {
         ModelAndView  mav = new ModelAndView();
-        PersonalInformationForm personalInformationForm = new PersonalInformationForm(); 
+        PersonalInformationForm personalInformationForm = new PersonalInformationForm();
         PasswordChangeForm passwordChangeForm = new PasswordChangeForm();
         Account account = getContextAccount();
         personalInformationForm.loadAccount(account);
@@ -316,7 +315,7 @@ public ModelAndView resetPassword(@PathVariable String username, @PathVariable S
     public ModelAndView savePersonalInformationForm(@Valid PersonalInformationForm personalInformationForm) {
         ModelAndView  mav = new ModelAndView();
         Account account = getContextAccount();
-        LOGGER.info("loaded account " + null);
+        LOGGER.info("loaded account " + account);
         PasswordChangeForm passwordChangeForm = new PasswordChangeForm();
         if (account != null) {
             account.setLastname(personalInformationForm.getLastname());

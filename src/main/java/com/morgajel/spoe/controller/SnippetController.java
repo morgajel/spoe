@@ -110,7 +110,7 @@ public class SnippetController extends MultiActionController {
      * @return ModelAndView mav
      */
     @RequestMapping(value = "/edit/{snippetId}", method = RequestMethod.GET)
-    public ModelAndView editSnippet(@PathVariable Long snippetId,@Valid EditSnippetForm editSnippetForm) {
+    public ModelAndView editSnippet(@PathVariable Long snippetId, @Valid EditSnippetForm editSnippetForm) {
         LOGGER.debug("trying to edit " + snippetId);
         ModelAndView mav = new ModelAndView();
         try {

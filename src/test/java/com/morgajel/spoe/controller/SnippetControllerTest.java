@@ -178,6 +178,34 @@ public class SnippetControllerTest {
     }
 
     @Test
+    public void testMySnippets() {
+        //TODO how does this test bad jsp loops and such
+        when(mockContext.getAuthentication().getName()).thenReturn(username);
+        when(mockAccountService.loadByUsername(username)).thenReturn(mockAccount);
+        ModelAndView mav = snippetController.showMySnippets();
+        assertEquals(mockAccount, mav.getModel().get("account"));
+        assertEquals("snippet/mySnippets", mav.getViewName());
+    }
+
+    @Test
+    public void testMySnippetsNoAccount() {
+        //TODO how does this test bad jsp loops and such
+        when(mockAccountService.loadByUsername(username)).thenReturn(null);
+        ModelAndView mav = snippetController.showMySnippets();
+        assertEquals("Odd, I couldn't find your account.", mav.getModel().get("message"));
+        assertEquals("snippet/snippetFailure", mav.getViewName());
+    }
+
+    @Test
+    public void testMySnippetsException() {
+        //TODO how does this test bad jsp loops and such
+        stub(mockContext.getAuthentication()).toThrow(new IndexOutOfBoundsException());
+        ModelAndView mav = snippetController.showMySnippets();
+        assertEquals("Something failed while trying to display user snippets.", mav.getModel().get("message"));
+        assertEquals("snippet/snippetFailure", mav.getViewName());
+    }
+
+    @Test
     public void testEditSnippet() {
         when(mockEditSnippetForm.getContent()).thenReturn(content);
         when(mockEditSnippetForm.getTitle()).thenReturn(title);

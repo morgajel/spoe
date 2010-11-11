@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.apache.velocity.app.VelocityEngine;
 import org.junit.After;
 import org.junit.Before;
@@ -19,7 +21,9 @@ import com.morgajel.spoe.model.Role;
 import com.morgajel.spoe.model.Snippet;
 import com.morgajel.spoe.service.AccountService;
 import com.morgajel.spoe.service.RoleService;
+import com.morgajel.spoe.web.ForgotPasswordForm;
 import com.morgajel.spoe.web.PasswordChangeForm;
+import com.morgajel.spoe.web.PersonalInformationForm;
 import com.morgajel.spoe.web.RegistrationForm;
 import com.morgajel.spoe.web.SetPasswordForm;
 import static org.mockito.Mockito.*;
@@ -43,6 +47,7 @@ public class AccountControllerTest {
     private SetPasswordForm mockPassForm;
     private SimpleMailMessage mockTemplateMessage;
     private VelocityEngine mockVelocityEngine;
+    private PersonalInformationForm mockPersonalInformationForm;
     private static final String USERNAME = "morgo2";
     private static final String FIRSTNAME = "Jesse";
     private static final String LASTNAME = "Morgan";
@@ -51,7 +56,7 @@ public class AccountControllerTest {
     private static final String PASSWORD = "MatchedLuggage12345";
     //private final String tempHash="df9dd14cbdb3b00f8a54b66f489241e8aeb903ff";
     private static final String CHECKSUM = "279d8d8a18b94782ef606fbbadd6c011b1692ad0"; //morgo2+temphash+0
-
+    private static final String BASEURL = "http://example.com/";
     /**
      * Create the intial mockups and classes that are used with each run.
      * @throws Exception generic exception
@@ -70,6 +75,7 @@ public class AccountControllerTest {
         mockPasswordChangeForm = mock(PasswordChangeForm.class);
         mockTemplateMessage = mock(SimpleMailMessage.class);
         mockVelocityEngine = mock(VelocityEngine.class);
+        mockPersonalInformationForm = mock(PersonalInformationForm.class);
         List<Account> accountList = new ArrayList();
         accountList.add(mockAccount);
         List<Snippet> snippetList = new ArrayList();
@@ -292,6 +298,79 @@ public class AccountControllerTest {
         verify(mockAccount).setHashedPassword(PASSFIELD);
         assertEquals("redirect:/", result.getViewName());
     }
+
+    @Test
+    public void testGetAndSetBaseUrl() {
+            assertNull(accountController.getBaseUrl());
+            accountController.setBaseUrl(BASEURL);
+            assertEquals(BASEURL, accountController.getBaseUrl());
+    }
+    @Test
+    public void testGetAndSetAccountService() {
+        assertEquals(mockAccountService, accountController.getAccountService());
+        accountController.setAccountService(null);
+        assertNull(accountController.getAccountService());
+    }
+    @Test
+    public void testGetAndSetRoleService() {
+        assertEquals(mockRoleService, accountController.getRoleService());
+        accountController.setRoleService(null);
+        assertNull(accountController.getRoleService());
+    }
+
+    @Test
+    public void testForgetPasswordForm() {
+       ModelAndView mav = accountController.forgotPasswordForm();
+       assertEquals("account/forgotPasswordForm", mav.getViewName());
+       assertEquals(ForgotPasswordForm.class, mav.getModel().get("forgotPasswordForm").getClass());
+    }
+
+    @Test
+    public void testEditAccountForm() {
+        SecurityContextHolder.setContext(mockContext);
+        when(mockContext.getAuthentication().getName()).thenReturn(USERNAME);
+        when(mockAccountService.loadByUsername(USERNAME)).thenReturn(mockAccount);
+        when(mockAccount.getFirstname()).thenReturn(FIRSTNAME);
+        when(mockAccount.getLastname()).thenReturn(LASTNAME);
+
+        ModelAndView mav = accountController.editAccountForm();
+        assertEquals("account/editAccountForm", mav.getViewName());
+        assertEquals(PersonalInformationForm.class, mav.getModel().get("personalInformationForm").getClass());
+        assertEquals(PasswordChangeForm.class, mav.getModel().get("passwordChangeForm").getClass());
+        PersonalInformationForm pif = (PersonalInformationForm) mav.getModel().get("personalInformationForm");
+        assertEquals(FIRSTNAME, pif.getFirstname());
+        assertEquals(LASTNAME, pif.getLastname());
+    }
+
+    @Test
+    public void testSavePersonalInformationForm() {
+        SecurityContextHolder.setContext(mockContext);
+        when(mockContext.getAuthentication().getName()).thenReturn(USERNAME);
+        when(mockAccountService.loadByUsername(USERNAME)).thenReturn(mockAccount);
+        when(mockPersonalInformationForm.getFirstname()).thenReturn(FIRSTNAME);
+        when(mockPersonalInformationForm.getLastname()).thenReturn(LASTNAME);
+
+        ModelAndView mav = accountController.savePersonalInformationForm(mockPersonalInformationForm);
+
+        assertEquals("Personal Information Updated.", mav.getModel().get("message"));
+        assertEquals(mockPersonalInformationForm, mav.getModel().get("personalInformationForm"));
+        assertEquals(PasswordChangeForm.class, mav.getModel().get("passwordChangeForm").getClass());
+        assertEquals("account/editAccountForm", mav.getViewName());
+    }
+
+    @Test
+    public void testSavePersonalInformationFormNoAccount() {
+        SecurityContextHolder.setContext(mockContext);
+        when(mockContext.getAuthentication().getName()).thenReturn(USERNAME);
+        when(mockAccountService.loadByUsername(USERNAME)).thenReturn(null);
+
+        ModelAndView mav = accountController.savePersonalInformationForm(mockPersonalInformationForm);
+
+        assertEquals("Odd, your account wasn't found.. are you logged in?", mav.getModel().get("message"));
+        assertEquals(mockPersonalInformationForm, mav.getModel().get("personalInformationForm"));
+        assertEquals(PasswordChangeForm.class, mav.getModel().get("passwordChangeForm").getClass());
+        assertEquals("account/editAccountForm", mav.getViewName());
+    }
     /**
      * Test SetPassword when failing.
      */
@@ -321,7 +400,7 @@ public class AccountControllerTest {
      * Test displaying the PasswordChangeForm to make sure it returns properly.
      */
     @Test
-    public void testEditAccountForm() {
+    public void testSavePasswordChangeForm() {
         SecurityContextHolder.setContext(mockContext);
         when(mockContext.getAuthentication().getName()).thenReturn(USERNAME);
         when(mockAccountService.loadByUsername(USERNAME)).thenReturn(mockAccount);

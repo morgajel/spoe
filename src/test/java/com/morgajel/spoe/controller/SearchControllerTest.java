@@ -26,6 +26,7 @@ import com.morgajel.spoe.service.SnippetService;
 public class SearchControllerTest {
 
     private AccountService mockAccountService;
+    private SnippetService mockSnippetService;
     private SecurityContext mockContext;
     private Account mockAccount;
     private static final String USERNAME = "bobdole";
@@ -34,6 +35,7 @@ public class SearchControllerTest {
     @Before
     public void setUp() throws Exception {
         mockAccountService = mock(AccountService.class);
+        mockSnippetService = mock(SnippetService.class);
         mockAccount = mock(Account.class);
         mockContext = mock(SecurityContext.class, RETURNS_DEEP_STUBS);
         searchController = new SearchController();
@@ -59,7 +61,12 @@ public class SearchControllerTest {
         searchController.setAccountService(mockAccountService);
         assertEquals(mockAccountService, searchController.getAccountService());
     }
-
+    @Test
+    public void testGetAndSetSnippetService() {
+        searchController.setSnippetService(mockSnippetService);
+        assertEquals(mockSnippetService, searchController.getSnippetService());
+    }
+    
     @Test
     public void testGetContextAccount() {
         when(mockContext.getAuthentication().getName()).thenReturn(USERNAME);
