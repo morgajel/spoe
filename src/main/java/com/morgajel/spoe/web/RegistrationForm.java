@@ -1,4 +1,9 @@
 package com.morgajel.spoe.web;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+
 /**
  * Registration Form is used during account creation.
  * @author jmorgan
@@ -6,10 +11,15 @@ package com.morgajel.spoe.web;
  */
 public class RegistrationForm {
 //TODO need documentation and tests
+    @Length(min = 4, max = 15)
     private String username;
+    @Email
     private String email;
+    @Email
     private String confirmEmail;
+    @NotEmpty
     private String firstname;
+    @NotEmpty
     private String lastname;
     /**
      * Returns the username.

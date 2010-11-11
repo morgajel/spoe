@@ -244,6 +244,12 @@ public class Account implements Serializable {
         this.enabled = false;
         lastModifiedDate = new Date();
         creationDate = new Date();
+        primaryIM = IMProtocol.none;
+        primaryIMName = "";
+        secondaryIM = IMProtocol.none;
+        secondaryIMName = "";
+        reviewingExperience = Experience.None;
+        writingExperience = Experience.None;
         this.roles = new HashSet<Role>();
     }
 

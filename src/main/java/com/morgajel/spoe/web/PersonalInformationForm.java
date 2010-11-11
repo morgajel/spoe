@@ -1,6 +1,10 @@
 package com.morgajel.spoe.web;
 
 
+import javax.validation.Valid;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.morgajel.spoe.model.Account;
 import com.morgajel.spoe.model.Account.Experience;
 
@@ -10,9 +14,13 @@ import com.morgajel.spoe.model.Account.Experience;
  */
 public class PersonalInformationForm {
     //
+    @NotEmpty
     private String firstname;
+    @NotEmpty
     private String lastname;
+    @Valid
     private Experience writingExperience;
+    @Valid
     private Experience reviewingExperience;
 
     public String getFirstname() {

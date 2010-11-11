@@ -1,6 +1,8 @@
 package com.morgajel.spoe.controller;
 
 
+import javax.validation.Valid;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
@@ -49,7 +51,7 @@ public class SnippetController extends MultiActionController {
      * @return ModelAndView mav
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ModelAndView saveSnippet(EditSnippetForm editSnippetForm) {
+    public ModelAndView saveSnippet(@Valid EditSnippetForm editSnippetForm) {
         ModelAndView mav = new ModelAndView();
         try {
             LOGGER.debug("trying to save " + editSnippetForm);
@@ -108,7 +110,7 @@ public class SnippetController extends MultiActionController {
      * @return ModelAndView mav
      */
     @RequestMapping(value = "/edit/{snippetId}", method = RequestMethod.GET)
-    public ModelAndView editSnippet(@PathVariable Long snippetId, EditSnippetForm editSnippetForm) {
+    public ModelAndView editSnippet(@PathVariable Long snippetId,@Valid EditSnippetForm editSnippetForm) {
         LOGGER.debug("trying to edit " + snippetId);
         ModelAndView mav = new ModelAndView();
         try {

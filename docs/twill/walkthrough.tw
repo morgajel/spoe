@@ -1,0 +1,118 @@
+#!/usr/local/bin/twill-sh
+reset_browser
+agent "walkthrough"
+
+setglobal username twilluser
+setglobal password qweasdzxc
+setglobal host "127.0.0.62"
+setglobal port "8080"
+
+
+setlocal hostname "${host}:${port}"
+
+echo "Hitting the homepage."
+go http://${host}:${port}/
+code 200
+tidy_ok
+find 'Log In'
+notfind "Exception"
+
+
+
+follow "Register"
+
+fv registrationForm username ${username}
+fv registrationForm email testuser@example.com
+fv registrationForm confirmEmail testuser@example.com
+fv registrationForm firstname Bob
+fv registrationForm lastname Dole
+submit
+
+code 200
+tidy_ok
+find 'Registration is now complete. Please check your email to activate your account.'
+notfind "Exception"
+
+follow "TODO remove me later"
+
+code 200
+tidy_ok
+find "Wow, it worked. you are activated."
+notfind "Exception"
+
+
+fv passform password ${password}
+fv passform confirmPassword ${password}
+submit
+
+
+
+fv 1 j_username ${username}
+fv 1 j_password ${password}
+submit
+
+
+echo "viewing user account page."
+code 200
+tidy_ok
+find 'Welcome to your account page'
+notfind "Exception"
+
+echo "Follow Home"
+follow "Home"
+code 200
+tidy_ok
+find 'Welcome to SPoE!'
+notfind "Exception"
+
+echo "check zswift"
+go http://${host}:${port}/account/user/zswift
+code 200
+tidy_ok
+find 'Info about zswift.'
+notfind "Exception"
+
+echo "Follow My Account"
+follow "My Account"
+code 200
+tidy_ok
+find "Welcome to your account page, ${username}"
+notfind "Exception"
+
+
+echo "Edit Account"
+follow "edit account"
+code 200
+tidy_ok
+find 'Personal Information'
+find 'Password Change'
+notfind "Exception"
+
+
+fv personalInformationForm firstname Chuck
+fv personalInformationForm lastname Norris
+submit
+code 200
+tidy_ok
+find "Personal Information Updated."
+
+
+fv passwordChangeForm currentPassword ${password}
+fv passwordChangeForm newPassword ${password}2
+fv passwordChangeForm confirmPassword ${password}2
+submit
+code 200
+tidy_ok
+find "Password updated."
+
+
+
+echo "Follow Logout"
+follow "Logout"
+code 200
+tidy_ok
+find 'j_username'
+find 'j_password'
+notfind "Exception"
+
+

@@ -1,5 +1,10 @@
 package com.morgajel.spoe.web;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 
 /**
  * This is used to capture and set the PasswordChangeForm fields.
@@ -7,8 +12,15 @@ package com.morgajel.spoe.web;
  */
 public class PasswordChangeForm {
 
+
+
+    @NotEmpty
     private String currentPassword;
+    @NotEmpty
+    @Min(value = 8)
     private String newPassword;
+    @NotEmpty
+    @Min(value = 8)
     private String confirmPassword;
 
     public String getCurrentPassword() {

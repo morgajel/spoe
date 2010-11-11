@@ -1,12 +1,24 @@
 package com.morgajel.spoe.web;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+
 /**
  * Simple object to catch the initial setPassword form.
  */
 public class SetPasswordForm {
-
+    @Length(min = 40, max = 40)
     private String checksum;
+    @Length(min = 4, max = 15)
     private String username;
+    @NotEmpty
+    @Min(value = 8)
     private String password;
+    @NotEmpty
+    @Min(value = 8)
     private String confirmPassword;
 
     /**

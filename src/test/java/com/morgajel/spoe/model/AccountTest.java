@@ -138,37 +138,37 @@ public class AccountTest {
     }
     @Test
     public void testGetAndSetWritingExperience() {
-        assertNull(account.getWritingExperience());
+        assertEquals(Account.Experience.None, account.getWritingExperience());
         account.setWritingExperience(Account.Experience.Advanced);
         assertEquals(Account.Experience.Advanced, account.getWritingExperience());
     }
     @Test
     public void testGetAndSetReviewingExperience() {
-        assertNull(account.getReviewingExperience());
+        assertEquals(Account.Experience.None, account.getReviewingExperience());
         account.setReviewingExperience(Account.Experience.Advanced);
         assertEquals(Account.Experience.Advanced, account.getReviewingExperience());
     }
     @Test
     public void testGetAndSetPrimaryIMName() {
-        assertNull(account.getPrimaryIMName());
+        assertEquals("", account.getPrimaryIMName());
         account.setPrimaryIMName(USERNAME);
         assertEquals(USERNAME, account.getPrimaryIMName());
     }
     @Test
     public void testGetAndSetSecondaryIMName() {
-        assertNull(account.getSecondaryIMName());
+        assertEquals("", account.getSecondaryIMName());
         account.setSecondaryIMName(USERNAME);
         assertEquals(USERNAME, account.getSecondaryIMName());
     }
     @Test
     public void testGetAndSetPrimaryIM() {
-        assertNull(account.getPrimaryIM());
+        assertEquals(Account.IMProtocol.none, account.getPrimaryIM());
         account.setPrimaryIM(Account.IMProtocol.AIM);
         assertEquals(Account.IMProtocol.AIM, account.getPrimaryIM());
     }
     @Test
     public void testGetAndSetSecondaryIM() {
-        assertNull(account.getSecondaryIM());
+        assertEquals(Account.IMProtocol.none, account.getSecondaryIM());
         account.setSecondaryIM(Account.IMProtocol.AIM);
         assertEquals(Account.IMProtocol.AIM, account.getSecondaryIM());
     }

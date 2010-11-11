@@ -3,6 +3,8 @@ package com.morgajel.spoe.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.apache.log4j.Logger;
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,7 +104,7 @@ public ModelAndView resetPassword(@PathVariable String username, @PathVariable S
      * @return ModelAndView mav
      */
     @RequestMapping(value = "/forgotPassword.submit", method = RequestMethod.POST)
-    public ModelAndView forgotPasswordForm(ForgotPasswordForm forgotPasswordForm) {
+    public ModelAndView forgotPasswordForm(@Valid ForgotPasswordForm forgotPasswordForm) {
         ModelAndView mav = new ModelAndView();
         LOGGER.info("someone forgot their password...");
 
@@ -231,7 +233,7 @@ public ModelAndView resetPassword(@PathVariable String username, @PathVariable S
      * @param result I don't know that bind results is needed.
      */
     @RequestMapping(value = "/register.submit", method = RequestMethod.POST)
-    public ModelAndView createAccount(@ModelAttribute("registrationForm") RegistrationForm registrationForm, BindingResult result) {
+    public ModelAndView createAccount(@ModelAttribute("registrationForm") @Valid RegistrationForm registrationForm, BindingResult result) {
         // TODO unit test
         ModelAndView mav = new ModelAndView();
         try {
@@ -311,7 +313,7 @@ public ModelAndView resetPassword(@PathVariable String username, @PathVariable S
      * @return ModelAndView mav
      */
     @RequestMapping(value = "/personalInformation.submit", method = RequestMethod.POST)
-    public ModelAndView savePersonalInformationForm(PersonalInformationForm personalInformationForm) {
+    public ModelAndView savePersonalInformationForm(@Valid PersonalInformationForm personalInformationForm) {
         ModelAndView  mav = new ModelAndView();
         Account account = getContextAccount();
         LOGGER.info("loaded account " + null);

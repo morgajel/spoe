@@ -50,7 +50,7 @@ public class SearchControllerTest {
     public void testQuickSearch() {
         String searchQuery = "fun search";
         ModelAndView mav = searchController.quickSearch(searchQuery);
-        assertEquals("search/results",mav.getViewName());
+        assertEquals("search/results", mav.getViewName());
         assertEquals("Results for '" + searchQuery + "'", mav.getModel().get("message"));
     }
 
