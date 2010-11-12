@@ -78,10 +78,10 @@ public ModelAndView resetPassword(@PathVariable String username, @PathVariable S
                 mav.addObject("message", "Please enter a new password");
                 mav.addObject("passform", passform);
             } else {
-                LOGGER.info("account is disabled");
-                String message = "I'm sorry, this account has been disabled; please contact the administrator.";
-                mav.setViewName("account/activationFailure");
+                String message = "I'm sorry, this account " + account.getUsername() + " has been disabled; please contact the administrator.";
+                LOGGER.info(message);
                 mav.addObject("message", message);
+                mav.setViewName("account/activationFailure");
             }
         } else {
             String message = "I'm sorry, that account doesn't exist or the url was incomplete.";
@@ -93,7 +93,7 @@ public ModelAndView resetPassword(@PathVariable String username, @PathVariable S
         // TODO tell the user wtf happened
         LOGGER.error("damnit, something failed.", ex);
         mav.setViewName("account/activationFailure");
-        mav.addObject("message", "<!-- something horrible happened -->");
+        mav.addObject("message", "I'm sorry, there was an error. please contact an administrator.");
     }
     return mav;
 }
@@ -443,17 +443,16 @@ public ModelAndView resetPassword(@PathVariable String username, @PathVariable S
         model.put("firstname", account.getFirstname());
         model.put("url", url);
 
-        SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
         //FIXME BOO, use property file!
-        msg.setFrom("SPoE Password Reset <resetPassword@morgajel.com>");
-        msg.setSubject("Need to Reset your Password?");
-        msg.setTo(account.getEmail());
+        this.templateMessage.setFrom("SPoE Password Reset <resetPassword@morgajel.com>");
+        this.templateMessage.setSubject("Need to Reset your Password?");
+        this.templateMessage.setTo(account.getEmail());
         LOGGER.info("sending message to " + account.getEmail());
 
-        msg.setText(VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, RESET_PWRD_TMPL, model));
-        LOGGER.info(msg.getText());
+        this.templateMessage.setText(VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, RESET_PWRD_TMPL, model));
+        LOGGER.info(this.templateMessage.getText());
 
-        this.mailSender.send(msg);
+        this.mailSender.send(this.templateMessage);
     }
     /**
      * Sends Registration email to user which includes an activation link.

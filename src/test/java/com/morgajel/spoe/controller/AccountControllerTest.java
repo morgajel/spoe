@@ -3,7 +3,9 @@ package com.morgajel.spoe.controller;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -15,6 +17,8 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.velocity.VelocityEngineUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 import com.morgajel.spoe.model.Account;
 import com.morgajel.spoe.model.Role;
@@ -42,6 +46,7 @@ public class AccountControllerTest {
     private AccountService mockAccountService;
     private PasswordChangeForm mockPasswordChangeForm;
     private RegistrationForm mockRegistrationForm;
+    private ForgotPasswordForm mockForgotPasswordForm;
     private RoleService mockRoleService;
     private MailSender mockMailSender;
     private SetPasswordForm mockPassForm;
@@ -76,6 +81,7 @@ public class AccountControllerTest {
         mockTemplateMessage = mock(SimpleMailMessage.class);
         mockVelocityEngine = mock(VelocityEngine.class);
         mockPersonalInformationForm = mock(PersonalInformationForm.class);
+        mockForgotPasswordForm = mock(ForgotPasswordForm.class);
         List<Account> accountList = new ArrayList();
         accountList.add(mockAccount);
         List<Snippet> snippetList = new ArrayList();
@@ -435,6 +441,118 @@ public class AccountControllerTest {
         ModelAndView results = accountController.savePasswordChangeForm(mockPasswordChangeForm);
         assertEquals("account/editAccountForm", results.getViewName());
         assertEquals("That isn't you're current password.", results.getModel().get("message"));
+    }
+    @Test
+    public void testSavePasswordChangeFormNotAccount() {
+        SecurityContextHolder.setContext(mockContext);
+        when(mockContext.getAuthentication().getName()).thenReturn(USERNAME);
+        when(mockAccountService.loadByUsername(USERNAME)).thenReturn(null);
+        ModelAndView results = accountController.savePasswordChangeForm(mockPasswordChangeForm);
+        assertEquals("account/editAccountForm", results.getViewName());
+        assertEquals("Odd, your account wasn't found, so I couldn't update..", results.getModel().get("message"));
+    }
+
+    @Test
+    public void testSendResetPasswordEmail() {
+        when(mockAccount.getFirstname()).thenReturn(FIRSTNAME);
+        when(mockAccount.getLastname()).thenReturn(LASTNAME);
+        when(mockAccount.getEmail()).thenReturn(EMAIL);
+
+        accountController.sendResetPasswordEmail(mockAccount, BASEURL);
+
+        verify(mockTemplateMessage).setSubject("Need to Reset your Password?");
+        verify(mockTemplateMessage).setTo(EMAIL);
+        verify(mockMailSender).send((SimpleMailMessage) anyObject());
+    }
+
+    @Test
+    public void testForgotPasswordForm() {
+        when(mockAccount.getEmail()).thenReturn(EMAIL);
+        when(mockAccount.getUsername()).thenReturn(USERNAME);
+        when(mockAccount.activationChecksum()).thenReturn(CHECKSUM);
+        when(mockForgotPasswordForm.getEmail()).thenReturn(EMAIL);
+        when(mockForgotPasswordForm.getUsername()).thenReturn(USERNAME);
+        when(mockAccountService.loadByUsernameOrEmail(USERNAME, EMAIL)).thenReturn(mockAccount);
+        ModelAndView mav = accountController.forgotPasswordForm(mockForgotPasswordForm);
+
+        assertEquals("Password Request sent; check your email", mav.getModel().get("message"));
+        assertEquals("account/forgotPasswordForm", mav.getViewName());
+    }
+    @Test
+    public void testForgotPasswordFormAccountNotFound() {
+        when(mockAccount.getEmail()).thenReturn(EMAIL);
+        when(mockAccount.getUsername()).thenReturn(USERNAME);
+        when(mockAccount.activationChecksum()).thenReturn(CHECKSUM);
+        when(mockForgotPasswordForm.getEmail()).thenReturn(EMAIL);
+        when(mockForgotPasswordForm.getUsername()).thenReturn(USERNAME);
+        when(mockAccountService.loadByUsernameOrEmail(USERNAME, EMAIL)).thenReturn(null);
+        ModelAndView mav = accountController.forgotPasswordForm(mockForgotPasswordForm);
+
+        assertEquals("I'm sorry, I couldn't find your username or email address.", mav.getModel().get("message"));
+        assertEquals(mockForgotPasswordForm, mav.getModel().get("forgotPasswordForm"));
+        assertEquals("account/forgotPasswordForm", mav.getViewName());
+    }
+
+    @Test
+    public void testForgotPasswordFormException() {
+        when(mockAccount.getEmail()).thenReturn(EMAIL);
+        when(mockAccount.getUsername()).thenReturn(USERNAME);
+        when(mockAccount.activationChecksum()).thenReturn(CHECKSUM);
+        when(mockForgotPasswordForm.getEmail()).thenReturn(EMAIL);
+        when(mockForgotPasswordForm.getUsername()).thenReturn(USERNAME);
+        stub(mockAccountService.loadByUsernameOrEmail(USERNAME, EMAIL)).toThrow(new IndexOutOfBoundsException());
+        ModelAndView mav = accountController.forgotPasswordForm(mockForgotPasswordForm);
+
+        assertEquals("Oooh, something bad happened...", mav.getModel().get("message"));
+        assertEquals("account/forgotPasswordForm", mav.getViewName());
+    }
+    @Test
+    public void testResetPassword() {
+        when(mockAccountService.loadByUsernameAndChecksum(USERNAME, CHECKSUM)).thenReturn(mockAccount);
+        when(mockAccount.activationChecksum()).thenReturn(CHECKSUM);
+        when(mockAccount.getEnabled()).thenReturn(true);
+
+        ModelAndView mav = accountController.resetPassword(USERNAME, CHECKSUM, mockPassForm);
+
+        verify(mockPassForm).setChecksum(CHECKSUM);
+        verify(mockPassForm).setUsername(USERNAME);
+        assertEquals("Please enter a new password", mav.getModel().get("message"));
+        assertEquals("account/activationSuccess", mav.getViewName());
+        assertEquals(mockPassForm, mav.getModel().get("passform"));
+    }
+    @Test
+    public void testResetPasswordDisabled() {
+        when(mockAccountService.loadByUsernameAndChecksum(USERNAME, CHECKSUM)).thenReturn(mockAccount);
+        when(mockAccount.activationChecksum()).thenReturn(CHECKSUM);
+        when(mockAccount.getEnabled()).thenReturn(false);
+        when(mockAccount.getUsername()).thenReturn(USERNAME);
+
+        ModelAndView mav = accountController.resetPassword(USERNAME, CHECKSUM, mockPassForm);
+
+        assertEquals("I'm sorry, this account " + USERNAME + " has been disabled; please contact the administrator.", mav.getModel().get("message"));
+        assertEquals("account/activationFailure", mav.getViewName());
+    }
+    @Test
+    public void testResetPasswordNoAccount() {
+        when(mockAccountService.loadByUsernameAndChecksum(USERNAME, CHECKSUM)).thenReturn(null);
+        when(mockAccount.activationChecksum()).thenReturn(CHECKSUM);
+        when(mockAccount.getEnabled()).thenReturn(false);
+        when(mockAccount.getUsername()).thenReturn(USERNAME);
+
+        ModelAndView mav = accountController.resetPassword(USERNAME, CHECKSUM, mockPassForm);
+
+        assertEquals("I'm sorry, that account doesn't exist or the url was incomplete.", mav.getModel().get("message"));
+        assertEquals("account/activationFailure", mav.getViewName());
+    }
+
+    @Test
+    public void testResetPasswordException() {
+        stub(mockAccountService.loadByUsernameAndChecksum(USERNAME, CHECKSUM)).toThrow(new IndexOutOfBoundsException());
+
+        ModelAndView mav = accountController.resetPassword(USERNAME, CHECKSUM, mockPassForm);
+
+        assertEquals("I'm sorry, there was an error. please contact an administrator.", mav.getModel().get("message"));
+        assertEquals("account/activationFailure", mav.getViewName());
     }
     /**
      * Test DisplayUser finding a user.
