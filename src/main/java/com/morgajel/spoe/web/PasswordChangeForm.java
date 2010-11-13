@@ -5,6 +5,8 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.morgajel.spoe.annotation.ValidPassword;
+
 
 /**
  * This is used to capture and set the PasswordChangeForm fields.
@@ -15,30 +17,31 @@ public class PasswordChangeForm {
 
 
     @NotEmpty
+    @ValidPassword
     private String currentPassword;
     @NotEmpty
-    @Min(value = 8)
+    @ValidPassword
     private String newPassword;
     @NotEmpty
-    @Min(value = 8)
+    @ValidPassword
     private String confirmPassword;
 
     public String getCurrentPassword() {
         return currentPassword;
     }
-    public void setCurrentPassword(String pCurrentPassword) {
+    public void setCurrentPassword(@ValidPassword String pCurrentPassword) {
         this.currentPassword = pCurrentPassword;
     }
     public String getNewPassword() {
         return newPassword;
     }
-    public void setNewPassword(String pNewPassword) {
+    public void setNewPassword(@ValidPassword String pNewPassword) {
         this.newPassword = pNewPassword;
     }
     public String getConfirmPassword() {
         return confirmPassword;
     }
-    public void setConfirmPassword(String pConfirmPassword) {
+    public void setConfirmPassword(@ValidPassword String pConfirmPassword) {
         this.confirmPassword = pConfirmPassword;
     }
 

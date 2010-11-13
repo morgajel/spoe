@@ -29,6 +29,7 @@ import org.hibernate.annotations.NamedQuery;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.morgajel.spoe.annotation.ValidPassword;
 import com.morgajel.spoe.annotation.ValidUsername;
 import com.morgajel.spoe.web.RegistrationForm;
 /**
@@ -97,6 +98,7 @@ public class Account implements Serializable {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
     @NotNull
+    @ValidPassword
     @Column(name = "password")
     private String password;
     @NotNull
@@ -229,7 +231,7 @@ public class Account implements Serializable {
      * @return boolean verification
      * @param pPassword see if a given password matches the password field when hashed.
      **/
-    public boolean verifyPassword(String pPassword) {
+    public boolean verifyPassword(@ValidPassword String pPassword) {
         //FIXME is this still needed?
         if (Account.hashText(pPassword).equals(this.password)) {
             return true;
@@ -299,7 +301,7 @@ public class Account implements Serializable {
         return this.password;
     }
 
-    private void setPassword(String pPassword) {
+    private void setPassword(@ValidPassword String pPassword) {
         this.password = pPassword;
 
     }
@@ -307,9 +309,9 @@ public class Account implements Serializable {
      * Hashes the given string before setting it.
      * @param pword plaintext password
      **/
-    public void setHashedPassword(String pword) {
-        LOGGER.trace("H setting password: " + pword);
-        this.setPassword(Account.hashText(pword));
+    public void setHashedPassword(@ValidPassword String pPassword) {
+        LOGGER.trace("H setting password: " + pPassword);
+        this.setPassword(Account.hashText(pPassword));
         LOGGER.trace("H password field is now: " + this.password);
     }
 

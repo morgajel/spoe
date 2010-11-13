@@ -1,5 +1,6 @@
 package com.morgajel.spoe.dao;
 
+import com.morgajel.spoe.annotation.ValidPassword;
 import com.morgajel.spoe.annotation.ValidUsername;
 import com.morgajel.spoe.model.Account;
 import java.util.List;
@@ -41,7 +42,7 @@ public interface AccountDao {
      * @param checksum checkum of the account to load
      * @return Account
      */
-    Account loadByUsernameAndChecksum(@ValidUsername String username, String checksum);
+    Account loadByUsernameAndChecksum(@ValidUsername String username, @ValidPassword String checksum);
     /**
      * Return an account with a given username or email, or else null.
      * @param username username of the account to load

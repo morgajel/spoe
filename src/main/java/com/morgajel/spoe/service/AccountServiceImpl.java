@@ -3,6 +3,7 @@ package com.morgajel.spoe.service;
 import java.util.List;
 
 import com.morgajel.spoe.model.Account;
+import com.morgajel.spoe.annotation.ValidPassword;
 import com.morgajel.spoe.annotation.ValidUsername;
 import com.morgajel.spoe.dao.AccountDao;
 
@@ -108,7 +109,7 @@ public class AccountServiceImpl implements AccountService {
      * @return Account
      */
     @Override
-    public boolean login(@ValidUsername String username, String password) {
+    public boolean login(@ValidUsername String username, @ValidPassword String password) {
         boolean valid = false;
         Account results = accountDao.loadByUsernameAndPassword(username, password);
         if (results != null) {

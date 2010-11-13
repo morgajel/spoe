@@ -6,6 +6,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.morgajel.spoe.annotation.ValidPassword;
 import com.morgajel.spoe.annotation.ValidUsername;
 
 /**
@@ -17,10 +18,10 @@ public class SetPasswordForm {
     @ValidUsername
     private String username;
     @NotEmpty
-    @Min(value = 8)
+    @ValidPassword
     private String password;
     @NotEmpty
-    @Min(value = 8)
+    @ValidPassword
     private String confirmPassword;
 
     /**
@@ -62,7 +63,7 @@ public class SetPasswordForm {
      * Sets the password entered by the user- WARNING, PLAIN TEXT STILL!
      * @param pPassword password set in form
      */
-    public void setPassword(String pPassword) {
+    public void setPassword(@ValidPassword String pPassword) {
         this.password = pPassword;
     }
     /**
@@ -76,7 +77,7 @@ public class SetPasswordForm {
      * Sets the confirmation password entered by the user- WARNING, PLAIN TEXT STILL!
      * @param pConfirmPassword confirmation password
      */
-    public void setConfirmPassword(String pConfirmPassword) {
+    public void setConfirmPassword(@ValidPassword String pConfirmPassword) {
         this.confirmPassword = pConfirmPassword;
     }
     /**

@@ -4,6 +4,7 @@ import com.morgajel.spoe.model.Account;
 
 import java.util.List;
 
+import com.morgajel.spoe.annotation.ValidPassword;
 import com.morgajel.spoe.annotation.ValidUsername;
 import com.morgajel.spoe.dao.AccountDao;
 /**
@@ -57,7 +58,7 @@ public interface AccountService {
      * @param password password to match
      * @return Account
      */
-    boolean login(@ValidUsername String username, String password);
+    boolean login(@ValidUsername String username, @ValidPassword String password);
     /**
      * Sets the AccountDao for this object so we can access the datastore.
      * @param accountDao the account Dao that will be used.

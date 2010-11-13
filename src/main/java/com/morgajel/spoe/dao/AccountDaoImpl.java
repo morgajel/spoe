@@ -3,6 +3,7 @@ import org.apache.log4j.Logger;
 import java.util.Date;
 import java.util.List;
 
+import com.morgajel.spoe.annotation.ValidPassword;
 import com.morgajel.spoe.annotation.ValidUsername;
 import com.morgajel.spoe.model.Account;
 
@@ -85,7 +86,7 @@ public class AccountDaoImpl implements AccountDao {
      * @return Account
      */
     @Override
-    public Account loadByUsernameAndPassword(@ValidUsername String username, String password) {
+    public Account loadByUsernameAndPassword(@ValidUsername String username, @ValidPassword String password) {
         LOGGER.debug("attempting to load user by " + username + " and password");
         List acclist = loadQueryByUsername("findAccountByUsernameAndPassword", username).setString("password", password).list();
         if (acclist.size() > 0) {
