@@ -16,8 +16,8 @@ public class UsernameValidator implements ConstraintValidator<ValidUsername, Str
     }
 
     public boolean isValid(String username, ConstraintValidatorContext constraintContext) {
-        //if (username.length() < 3 || username.length() > 32 )
-        //    return false;
-        return false;
+        if (username.length() < 3 || username.length() > 32 )
+            return false;
+        return true;
     }
 }
