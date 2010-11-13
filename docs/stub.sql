@@ -106,7 +106,7 @@ insert into role(name) values('ROLE_ADMINISTRATOR');
 insert into account(username,password,firstname,lastname,enabled,email,creation_date,last_modified_date,
         primary_im_id,primary_im_name,
         secondary_im_id,secondary_im_name,
-        writing_exp_id,reviewing_exp_id) values('jmorgan', sha('hello'),'Jesse', 'Morgan',true,'jmorgan@example.com',now(),now(),4,'morgajel',6,'morgajel',2,4);
+        writing_exp_id,reviewing_exp_id) values('jmorgan', sha('hello'),'Jesse', 'Morgan',true,'jmorgan@example.com',now(),now(),3,'morgajel',5,'morgajel',2,4);
 insert into account(username,password,firstname,lastname,enabled,email,creation_date,last_modified_date) values('zswift',  sha('hello'),'Ziggy', 'Swift', true,  'ziggy@example.com',now(),now());
 insert into account(username,password,firstname,lastname,enabled,email,creation_date,last_modified_date) values('myjaxon', sha('hello'),'Jackie','Morgan',true,  'myjax@example.com',now(),now());
 insert into account(username,password,firstname,lastname,enabled,email,creation_date,last_modified_date) values('grunn',   sha('hello'),'Grunn', 'yager', true,  'grunn@example.com',now(),now());

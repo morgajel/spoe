@@ -1,4 +1,10 @@
 package com.morgajel.spoe.web;
+
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Email;
+
+import com.morgajel.spoe.annotation.ValidUsername;
 /**
  * Forgot Password Form is used when resetting a password.
  * @author jmorgan
@@ -6,7 +12,9 @@ package com.morgajel.spoe.web;
  */
 public class ForgotPasswordForm {
 //TODO need documentation and tests
+    @ValidUsername
     private String username;
+    @Email
     private String email;
     /**
      * Returns the username.

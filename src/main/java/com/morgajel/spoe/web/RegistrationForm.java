@@ -4,6 +4,8 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.morgajel.spoe.annotation.ValidUsername;
+
 /**
  * Registration Form is used during account creation.
  * @author jmorgan
@@ -11,7 +13,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 public class RegistrationForm {
 //TODO need documentation and tests
-    @Length(min = 4, max = 15)
+    @ValidUsername
     private String username;
     @Email
     private String email;

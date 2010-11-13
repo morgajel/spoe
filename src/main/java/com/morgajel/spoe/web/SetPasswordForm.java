@@ -6,13 +6,15 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.morgajel.spoe.annotation.ValidUsername;
+
 /**
  * Simple object to catch the initial setPassword form.
  */
 public class SetPasswordForm {
     @Length(min = 40, max = 40)
     private String checksum;
-    @Length(min = 4, max = 15)
+    @ValidUsername
     private String username;
     @NotEmpty
     @Min(value = 8)

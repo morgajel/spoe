@@ -3,6 +3,7 @@ import org.apache.log4j.Logger;
 import java.util.Date;
 import java.util.List;
 
+import com.morgajel.spoe.annotation.ValidUsername;
 import com.morgajel.spoe.model.Account;
 
 import org.hibernate.Query;
@@ -36,7 +37,7 @@ public class AccountDaoImpl implements AccountDao {
      * @param username username of user to search for
      * @return Query query
      */
-    private Query loadQueryByUsername(String queryString, String username) {
+    private Query loadQueryByUsername(String queryString, @ValidUsername String username) {
         Session session = sessionFactory.getCurrentSession();
         return session.getNamedQuery(queryString).setString("username", username);
     }
@@ -67,7 +68,7 @@ public class AccountDaoImpl implements AccountDao {
      * @return Account
      */
     @Override
-    public Account loadByUsername(String username) {
+    public Account loadByUsername(@ValidUsername String username) {
         LOGGER.debug("attempting to load user by " + username + " and password");
         List<Account> acclist = loadQueryByUsername("findAccountByUsername", username).list();
         if (acclist.size() > 0) {
@@ -84,7 +85,7 @@ public class AccountDaoImpl implements AccountDao {
      * @return Account
      */
     @Override
-    public Account loadByUsernameAndPassword(String username, String password) {
+    public Account loadByUsernameAndPassword(@ValidUsername String username, String password) {
         LOGGER.debug("attempting to load user by " + username + " and password");
         List acclist = loadQueryByUsername("findAccountByUsernameAndPassword", username).setString("password", password).list();
         if (acclist.size() > 0) {
@@ -101,7 +102,7 @@ public class AccountDaoImpl implements AccountDao {
      *  @return Account
      */
     @Override
-    public Account loadByUsernameAndChecksum(String username, String checksum) {
+    public Account loadByUsernameAndChecksum(@ValidUsername String username, String checksum) {
         //This is a lot of text to return a simple account
         LOGGER.debug("attempting to load user by " + username + " and " + checksum);
         List<Account> acclist = loadQueryByUsername("findAccountByUsernameAndChecksum", username).setString("checksum", checksum).list();
@@ -119,7 +120,7 @@ public class AccountDaoImpl implements AccountDao {
      *  @return Account
      */
     @Override
-    public Account loadByUsernameOrEmail(String username, String email) {
+    public Account loadByUsernameOrEmail(@ValidUsername String username, String email) {
         //This is a lot of text to return a simple account
         LOGGER.debug("attempting to load user by " + username + " or " + email);
         List<Account> acclist = loadQueryByUsername("findAccountByUsernameOrEmail", username).setString("email", email).list();

@@ -29,6 +29,7 @@ import org.hibernate.annotations.NamedQuery;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.morgajel.spoe.annotation.ValidUsername;
 import com.morgajel.spoe.web.RegistrationForm;
 /**
  * Named Queries for Account.
@@ -88,6 +89,7 @@ public class Account implements Serializable {
     @Column(name = "account_id")
     private Long accountId;
     @NotNull
+    @ValidUsername
     @Column(name = "username")
     private String username;
     @NotNull

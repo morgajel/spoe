@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
+import com.morgajel.spoe.annotation.ValidUsername;
 import com.morgajel.spoe.model.Account;
 import com.morgajel.spoe.model.Role;
 
@@ -60,7 +61,7 @@ public class AccountController extends MultiActionController {
  * @param passform the password form you'll send to change the password.
  */
 @RequestMapping(value = "/reset/{username}/{checksum}", method = RequestMethod.GET)
-public ModelAndView resetPassword(@PathVariable String username, @PathVariable String checksum, SetPasswordForm passform) {
+public ModelAndView resetPassword(@PathVariable @ValidUsername String username, @PathVariable String checksum, SetPasswordForm passform) {
     LOGGER.trace("trying to reset " + username + " with checksum " + checksum);
     ModelAndView mav = new ModelAndView();
     try {
@@ -154,7 +155,7 @@ public ModelAndView resetPassword(@PathVariable String username, @PathVariable S
      * @param passform the password form you'll send to change the password.
      */
     @RequestMapping(value = "/activate/{username}/{checksum}", method = RequestMethod.GET)
-    public ModelAndView activateAccount(@PathVariable String username, @PathVariable String checksum, SetPasswordForm passform) {
+    public ModelAndView activateAccount(@PathVariable @ValidUsername String username, @PathVariable String checksum, SetPasswordForm passform) {
         //NOTE I understand why I need to pass passform on the way out, but what/how/why am I passing it in? where is it coming from?
         LOGGER.trace("trying to activate " + username + " with checksum " + checksum);
         ModelAndView mav = new ModelAndView();
@@ -200,7 +201,7 @@ public ModelAndView resetPassword(@PathVariable String username, @PathVariable S
      * @return ModelAndView mav
      */
     @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
-    public ModelAndView displayUser(@PathVariable String username) {
+    public ModelAndView displayUser(@PathVariable @ValidUsername String username) {
         LOGGER.debug("trying to display " + username);
         ModelAndView mav = new ModelAndView();
         try {

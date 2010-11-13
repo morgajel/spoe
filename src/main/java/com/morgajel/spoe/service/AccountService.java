@@ -3,6 +3,8 @@ package com.morgajel.spoe.service;
 import com.morgajel.spoe.model.Account;
 
 import java.util.List;
+
+import com.morgajel.spoe.annotation.ValidUsername;
 import com.morgajel.spoe.dao.AccountDao;
 /**
  * Account Service for managing AccountDao.
@@ -23,21 +25,21 @@ public interface AccountService {
      * @param username username to search for
      * @return Account
      */
-    Account loadByUsername(String username);
+    Account loadByUsername(@ValidUsername String username);
     /**
      * Returns an account object if the Username and checksum match.
      * @param username username to search for
      * @param checksum checksum to match
      * @return Account
      */
-    Account loadByUsernameAndChecksum(String username, String checksum);
+    Account loadByUsernameAndChecksum(@ValidUsername String username, String checksum);
     /**
      * Returns an account object if the Username or email match. username is given precedence.
      * @param username username to search for
      * @param email email to search for
      * @return Account
      */
-    Account loadByUsernameOrEmail(String username, String email);
+    Account loadByUsernameOrEmail(@ValidUsername String username, String email);
     /**
      * Saves details of an account to the datastore.
      * @param account account to save
@@ -55,7 +57,7 @@ public interface AccountService {
      * @param password password to match
      * @return Account
      */
-    boolean login(String username, String password);
+    boolean login(@ValidUsername String username, String password);
     /**
      * Sets the AccountDao for this object so we can access the datastore.
      * @param accountDao the account Dao that will be used.

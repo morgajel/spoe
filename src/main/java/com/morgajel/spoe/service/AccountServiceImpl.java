@@ -3,6 +3,7 @@ package com.morgajel.spoe.service;
 import java.util.List;
 
 import com.morgajel.spoe.model.Account;
+import com.morgajel.spoe.annotation.ValidUsername;
 import com.morgajel.spoe.dao.AccountDao;
 
 import org.apache.log4j.Logger;
@@ -75,7 +76,7 @@ public class AccountServiceImpl implements AccountService {
      * @return Account
      */
     @Override
-    public Account loadByUsername(String username) {
+    public Account loadByUsername(@ValidUsername String username) {
         return accountDao.loadByUsername(username);
     }
     /**
@@ -85,7 +86,7 @@ public class AccountServiceImpl implements AccountService {
      * @return Account
      */
     @Override
-    public Account loadByUsernameAndChecksum(String username, String checksum) {
+    public Account loadByUsernameAndChecksum(@ValidUsername String username, String checksum) {
         LOGGER.debug("attempting to load user by " + username + " and " + checksum);
         return accountDao.loadByUsernameAndChecksum(username, checksum);
     }
@@ -96,7 +97,7 @@ public class AccountServiceImpl implements AccountService {
      * @return Account
      */
     @Override
-    public Account loadByUsernameOrEmail(String username, String email) {
+    public Account loadByUsernameOrEmail(@ValidUsername String username, String email) {
         LOGGER.debug("attempting to load user by " + username + " or " + email);
         return accountDao.loadByUsernameOrEmail(username, email);
     }
@@ -107,7 +108,7 @@ public class AccountServiceImpl implements AccountService {
      * @return Account
      */
     @Override
-    public boolean login(String username, String password) {
+    public boolean login(@ValidUsername String username, String password) {
         boolean valid = false;
         Account results = accountDao.loadByUsernameAndPassword(username, password);
         if (results != null) {
