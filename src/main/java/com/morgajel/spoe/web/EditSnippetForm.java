@@ -1,10 +1,7 @@
 package com.morgajel.spoe.web;
 
 import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Min;
-
 import org.hibernate.validator.constraints.NotEmpty;
-
 import com.morgajel.spoe.model.Snippet;
 /**
  * EditSnippetForm is used to validate Snippet Form info, as minor as the validation may be.

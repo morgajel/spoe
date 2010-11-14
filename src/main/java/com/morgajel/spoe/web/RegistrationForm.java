@@ -1,7 +1,6 @@
 package com.morgajel.spoe.web;
 
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.morgajel.spoe.annotation.ValidUsername;

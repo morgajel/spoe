@@ -1,10 +1,6 @@
 package com.morgajel.spoe.web;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
 import org.hibernate.validator.constraints.NotEmpty;
-
 import com.morgajel.spoe.annotation.ValidPassword;
 
 

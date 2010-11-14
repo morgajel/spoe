@@ -205,7 +205,7 @@ public class SnippetController extends MultiActionController {
             }
         } catch (Exception ex) {
             String message = "Something failed while trying to display user snippets.";
-            logger.error(message, ex);
+            LOGGER.error(message, ex);
             mav.addObject("message", message);
             mav.setViewName("snippet/snippetFailure");
         }

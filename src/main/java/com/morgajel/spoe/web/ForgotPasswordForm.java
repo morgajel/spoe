@@ -1,7 +1,5 @@
 package com.morgajel.spoe.web;
 
-import javax.validation.constraints.NotNull;
-
 import org.hibernate.validator.constraints.Email;
 
 import com.morgajel.spoe.annotation.ValidUsername;
