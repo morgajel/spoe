@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -13,6 +14,7 @@ import org.apache.velocity.app.VelocityEngine;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.MessageSource;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.context.SecurityContext;
@@ -52,6 +54,7 @@ public class AccountControllerTest {
     private SetPasswordForm mockPassForm;
     private SimpleMailMessage mockTemplateMessage;
     private VelocityEngine mockVelocityEngine;
+    private MessageSource mockMessageSource;
     private PersonalInformationForm mockPersonalInformationForm;
     private static final String USERNAME = "morgo2";
     private static final String FIRSTNAME = "Jesse";
@@ -62,6 +65,7 @@ public class AccountControllerTest {
     //private final String tempHash="df9dd14cbdb3b00f8a54b66f489241e8aeb903ff";
     private static final String CHECKSUM = "279d8d8a18b94782ef606fbbadd6c011b1692ad0"; //morgo2+temphash+0
     private static final String BASEURL = "http://example.com/";
+    private static final Locale LOCALE =Locale.getDefault();
     /**
      * Create the intial mockups and classes that are used with each run.
      * @throws Exception generic exception
@@ -82,6 +86,7 @@ public class AccountControllerTest {
         mockVelocityEngine = mock(VelocityEngine.class);
         mockPersonalInformationForm = mock(PersonalInformationForm.class);
         mockForgotPasswordForm = mock(ForgotPasswordForm.class);
+        mockMessageSource = mock(MessageSource.class);
         List<Account> accountList = new ArrayList();
         accountList.add(mockAccount);
         List<Snippet> snippetList = new ArrayList();
@@ -92,6 +97,7 @@ public class AccountControllerTest {
         accountController.setMailSender(mockMailSender);
         accountController.setTemplateMessage(mockTemplateMessage);
         accountController.setVelocityEngine(mockVelocityEngine);
+        accountController.setMessageSource(mockMessageSource);
     }
     /**
      * Tears down all mockups and classes between each test.
@@ -108,6 +114,7 @@ public class AccountControllerTest {
         mockTemplateMessage = null;
         mockVelocityEngine = null;
         mockContext = null;
+        mockMessageSource = null;
         accountController = null;
     }
     /**
@@ -171,7 +178,7 @@ public class AccountControllerTest {
         stub(mockAccountService.loadByUsernameAndChecksum(USERNAME, CHECKSUM)).toThrow(new IndexOutOfBoundsException());
         ModelAndView results = accountController.activateAccount(USERNAME, CHECKSUM, new SetPasswordForm());
         assertEquals("account/activationFailure", results.getViewName());
-        assertEquals("<!-- something bad -->", results.getModel().get("message"));
+        verify(mockMessageSource).getMessage(eq("account.genericError"), (Object[]) any(), eq(LOCALE));
     }
     /**
      * Test the Registration Mail Sender to ensure the gears spin.
@@ -184,7 +191,6 @@ public class AccountControllerTest {
 
         accountController.sendRegEmail(mockAccount, "http://example.com/sometesturl");
         verify(mockMailSender).send((SimpleMailMessage) anyObject());
-
     }
 
     /**
@@ -274,7 +280,7 @@ public class AccountControllerTest {
 
         ModelAndView result = accountController.createAccount(mockRegistrationForm, null);
         assertEquals("account/registrationForm", result.getViewName());
-        assertEquals("Sorry, your Email addresses didn't match.", result.getModel().get("message"));
+        verify(mockMessageSource).getMessage(eq("account.emailmismatch"), (Object[]) any(), eq(LOCALE));
     }
     /**
      * Test CreateAccount when an Exception is thrown.
@@ -284,8 +290,7 @@ public class AccountControllerTest {
         stub(mockAccount.getUsername()).toThrow(new IndexOutOfBoundsException());
         ModelAndView result = accountController.createAccount(mockRegistrationForm, null);
         assertEquals("account/registrationForm", result.getViewName());
-        assertEquals("There was an issue creating your account."
-                + "Please contact the administrator for assistance.", result.getModel().get("message"));
+        verify(mockMessageSource).getMessage(eq("account.cantcreate"), (Object[]) any(), eq(LOCALE));
     }
     /**
      * Test to make sure SetPassword works.
@@ -302,6 +307,7 @@ public class AccountControllerTest {
 
         verify(mockAccount).setEnabled(true);
         verify(mockAccount).setHashedPassword(PASSFIELD);
+        verify(mockMessageSource).getMessage(eq("account.created"), (Object[]) any(), eq(LOCALE));
         assertEquals("redirect:/", result.getViewName());
     }
 
@@ -357,8 +363,8 @@ public class AccountControllerTest {
         when(mockPersonalInformationForm.getLastname()).thenReturn(LASTNAME);
 
         ModelAndView mav = accountController.savePersonalInformationForm(mockPersonalInformationForm);
+        verify(mockMessageSource).getMessage(eq("account.personalinfoupdated"), (Object[]) any(), eq(LOCALE));
 
-        assertEquals("Personal Information Updated.", mav.getModel().get("message"));
         assertEquals(mockPersonalInformationForm, mav.getModel().get("personalInformationForm"));
         assertEquals(PasswordChangeForm.class, mav.getModel().get("passwordChangeForm").getClass());
         assertEquals("account/editAccountForm", mav.getViewName());
@@ -371,8 +377,7 @@ public class AccountControllerTest {
         when(mockAccountService.loadByUsername(USERNAME)).thenReturn(null);
 
         ModelAndView mav = accountController.savePersonalInformationForm(mockPersonalInformationForm);
-
-        assertEquals("Odd, your account wasn't found.. are you logged in?", mav.getModel().get("message"));
+        verify(mockMessageSource).getMessage(eq("account.usernotfound"), (Object[]) any(), eq(LOCALE));
         assertEquals(mockPersonalInformationForm, mav.getModel().get("personalInformationForm"));
         assertEquals(PasswordChangeForm.class, mav.getModel().get("passwordChangeForm").getClass());
         assertEquals("account/editAccountForm", mav.getViewName());
@@ -388,7 +393,7 @@ public class AccountControllerTest {
         ModelAndView result = accountController.setPassword(mockPassForm);
 
         assertEquals("account/activationSuccess", result.getViewName());
-        assertEquals("Your passwords did not match, try again.", result.getModel().get("message"));
+        verify(mockMessageSource).getMessage(eq("account.passnomatch"), (Object[]) any(), eq(LOCALE));
         assertEquals(mockPassForm, result.getModel().get("passform"));
     }
     /**
@@ -428,9 +433,9 @@ public class AccountControllerTest {
         when(mockPasswordChangeForm.getNewPassword()).thenReturn(PASSWORD);
         when(mockPasswordChangeForm.getConfirmPassword()).thenReturn("badPass");
         when(mockPasswordChangeForm.compareNewPasswords()).thenReturn(false);
-        ModelAndView results = accountController.savePasswordChangeForm(mockPasswordChangeForm);
-        assertEquals("account/editAccountForm", results.getViewName());
-        assertEquals("Sorry, your confirmation password didn't match.", results.getModel().get("message"));
+        ModelAndView mav = accountController.savePasswordChangeForm(mockPasswordChangeForm);
+        assertEquals("account/editAccountForm", mav.getViewName());
+        verify(mockMessageSource).getMessage(eq("account.passnomatch"), (Object[]) any(), eq(LOCALE));
     }
     @Test
     public void testSavePasswordChangeFormNotCurrentPass() {
@@ -440,7 +445,7 @@ public class AccountControllerTest {
         when(mockAccount.verifyPassword(PASSWORD)).thenReturn(false);
         ModelAndView results = accountController.savePasswordChangeForm(mockPasswordChangeForm);
         assertEquals("account/editAccountForm", results.getViewName());
-        assertEquals("That isn't you're current password.", results.getModel().get("message"));
+        verify(mockMessageSource).getMessage(eq("account.notpass"), (Object[]) any(), eq(LOCALE));
     }
     @Test
     public void testSavePasswordChangeFormNotAccount() {
@@ -449,7 +454,7 @@ public class AccountControllerTest {
         when(mockAccountService.loadByUsername(USERNAME)).thenReturn(null);
         ModelAndView results = accountController.savePasswordChangeForm(mockPasswordChangeForm);
         assertEquals("account/editAccountForm", results.getViewName());
-        assertEquals("Odd, your account wasn't found, so I couldn't update..", results.getModel().get("message"));
+        verify(mockMessageSource).getMessage(eq("account.usernotfound"), (Object[]) any(), eq(LOCALE));
     }
 
     @Test
@@ -460,7 +465,8 @@ public class AccountControllerTest {
 
         accountController.sendResetPasswordEmail(mockAccount, BASEURL);
 
-        verify(mockTemplateMessage).setSubject("Need to Reset your Password?");
+        verify(mockTemplateMessage).setSubject(null);
+        verify(mockMessageSource).getMessage(eq("account.resetFrom"), (Object[]) any(), eq(LOCALE));
         verify(mockTemplateMessage).setTo(EMAIL);
         verify(mockMailSender).send((SimpleMailMessage) anyObject());
     }
@@ -474,8 +480,8 @@ public class AccountControllerTest {
         when(mockForgotPasswordForm.getUsername()).thenReturn(USERNAME);
         when(mockAccountService.loadByUsernameOrEmail(USERNAME, EMAIL)).thenReturn(mockAccount);
         ModelAndView mav = accountController.forgotPasswordForm(mockForgotPasswordForm);
-
-        assertEquals("Password Request sent; check your email", mav.getModel().get("message"));
+        verify(mockMessageSource).getMessage(eq("account.resetFrom"), (Object[]) any(), eq(LOCALE));
+        verify(mockMessageSource).getMessage(eq("account.resetSubject"), (Object[]) any(), eq(LOCALE));
         assertEquals("account/forgotPasswordForm", mav.getViewName());
     }
     @Test
@@ -487,8 +493,7 @@ public class AccountControllerTest {
         when(mockForgotPasswordForm.getUsername()).thenReturn(USERNAME);
         when(mockAccountService.loadByUsernameOrEmail(USERNAME, EMAIL)).thenReturn(null);
         ModelAndView mav = accountController.forgotPasswordForm(mockForgotPasswordForm);
-
-        assertEquals("I'm sorry, I couldn't find your username or email address.", mav.getModel().get("message"));
+        verify(mockMessageSource).getMessage(eq("account.emailnotfound"), (Object[]) any(), eq(LOCALE));
         assertEquals(mockForgotPasswordForm, mav.getModel().get("forgotPasswordForm"));
         assertEquals("account/forgotPasswordForm", mav.getViewName());
     }
@@ -502,8 +507,7 @@ public class AccountControllerTest {
         when(mockForgotPasswordForm.getUsername()).thenReturn(USERNAME);
         stub(mockAccountService.loadByUsernameOrEmail(USERNAME, EMAIL)).toThrow(new IndexOutOfBoundsException());
         ModelAndView mav = accountController.forgotPasswordForm(mockForgotPasswordForm);
-
-        assertEquals("Oooh, something bad happened...", mav.getModel().get("message"));
+        verify(mockMessageSource).getMessage(eq("account.genericError"), (Object[]) any(), eq(LOCALE));
         assertEquals("account/forgotPasswordForm", mav.getViewName());
     }
     @Test
@@ -516,7 +520,7 @@ public class AccountControllerTest {
 
         verify(mockPassForm).setChecksum(CHECKSUM);
         verify(mockPassForm).setUsername(USERNAME);
-        assertEquals("Please enter a new password", mav.getModel().get("message"));
+        verify(mockMessageSource).getMessage(eq("account.newpass"), (Object[]) any(), eq(LOCALE));
         assertEquals("account/activationSuccess", mav.getViewName());
         assertEquals(mockPassForm, mav.getModel().get("passform"));
     }
@@ -526,10 +530,10 @@ public class AccountControllerTest {
         when(mockAccount.activationChecksum()).thenReturn(CHECKSUM);
         when(mockAccount.getEnabled()).thenReturn(false);
         when(mockAccount.getUsername()).thenReturn(USERNAME);
+        when(mockMessageSource.getMessage("account.disabled", new Object[] {USERNAME }, Locale.getDefault())).thenReturn("I'm sorry, the account " + USERNAME + " has been disabled; please contact the administrator.");
 
         ModelAndView mav = accountController.resetPassword(USERNAME, CHECKSUM, mockPassForm);
-
-        assertEquals("I'm sorry, this account " + USERNAME + " has been disabled; please contact the administrator.", mav.getModel().get("message"));
+        verify(mockMessageSource).getMessage(eq("account.disabled"), (Object[]) any(), eq(LOCALE));
         assertEquals("account/activationFailure", mav.getViewName());
     }
     @Test
@@ -540,8 +544,7 @@ public class AccountControllerTest {
         when(mockAccount.getUsername()).thenReturn(USERNAME);
 
         ModelAndView mav = accountController.resetPassword(USERNAME, CHECKSUM, mockPassForm);
-
-        assertEquals("I'm sorry, that account doesn't exist or the url was incomplete.", mav.getModel().get("message"));
+        verify(mockMessageSource).getMessage(eq("account.notfound"), (Object[]) any(), eq(LOCALE));
         assertEquals("account/activationFailure", mav.getViewName());
     }
 
@@ -551,7 +554,7 @@ public class AccountControllerTest {
 
         ModelAndView mav = accountController.resetPassword(USERNAME, CHECKSUM, mockPassForm);
 
-        assertEquals("I'm sorry, there was an error. please contact an administrator.", mav.getModel().get("message"));
+        verify(mockMessageSource).getMessage(eq("account.genericError"), (Object[]) any(), eq(LOCALE));
         assertEquals("account/activationFailure", mav.getViewName());
     }
     /**
@@ -567,7 +570,6 @@ public class AccountControllerTest {
         when(mockAccountService.loadByUsername(USERNAME)).thenReturn(mockAccount);
 
         ModelAndView mav = accountController.displayUser(USERNAME);
-
         assertEquals(USERNAME, mav.getModel().get("message"));
         assertEquals("account/viewUser", mav.getViewName());
         assertEquals(mockAccount, mav.getModel().get("account"));
@@ -585,8 +587,7 @@ public class AccountControllerTest {
         when(mockAccountService.loadByUsername(USERNAME)).thenReturn(null);
 
         ModelAndView mav = accountController.displayUser(USERNAME);
-
-        assertEquals("I'm sorry, " + USERNAME + " was not found.", mav.getModel().get("message"));
+        verify(mockMessageSource).getMessage(eq("account.usernamenotfound"), (Object[]) any(), eq(LOCALE));
         assertEquals("account/viewUser", mav.getViewName());
     }
     /**
@@ -602,8 +603,7 @@ public class AccountControllerTest {
         stub(mockAccountService.loadByUsername(USERNAME)).toThrow(new IndexOutOfBoundsException());
 
         ModelAndView mav = accountController.displayUser(USERNAME);
-
-        assertEquals("Something failed while trying to display " + USERNAME, mav.getModel().get("message"));
+        verify(mockMessageSource).getMessage(eq("account.genericError"), (Object[]) any(), eq(LOCALE));
         assertEquals("account/activationFailure", mav.getViewName());
     }
 }

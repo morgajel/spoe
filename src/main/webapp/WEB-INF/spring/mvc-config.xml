@@ -26,6 +26,7 @@
         <property name="mailSender" ref="mailSender"/>
         <property name="templateMessage" ref="templateEmailMessage"/>
         <property name="velocityEngine" ref="velocityEngine"/>
+        <property name="messageSource" ref="messageSource"/>
         <property name="baseUrl" value="${site.url}/account"/>
     </bean>
     <bean id="snippetController" class="com.morgajel.spoe.controller.SnippetController">

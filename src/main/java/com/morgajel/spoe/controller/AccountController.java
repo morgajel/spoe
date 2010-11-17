@@ -1,6 +1,7 @@
 package com.morgajel.spoe.controller;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -8,6 +9,7 @@ import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,7 +49,10 @@ public class AccountController extends MultiActionController {
     private AccountService accountService;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private MessageSource messageSource;
 
+    public static final Locale LOCALE = Locale.getDefault();
 
     private static final String REG_EMAIL_TMPL = "registrationEmail.vm";
     private static final String RESET_PWRD_TMPL = "resetPasswordEmail.vm";
@@ -76,25 +81,28 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
                 passform.setChecksum(checksum);
                 passform.setUsername(username);
                 mav.setViewName("account/activationSuccess");
-                mav.addObject("message", "Please enter a new password");
+                String message = messageSource.getMessage("account.newpass", new Object[] {}, LOCALE);
+                mav.addObject("message", message);
                 mav.addObject("passform", passform);
             } else {
-                String message = "I'm sorry, this account " + account.getUsername() + " has been disabled; please contact the administrator.";
+
+                String message = messageSource.getMessage("account.disabled", new Object[] {account.getUsername() }, LOCALE);
                 LOGGER.info(message);
                 mav.addObject("message", message);
                 mav.setViewName("account/activationFailure");
             }
         } else {
-            String message = "I'm sorry, that account doesn't exist or the url was incomplete.";
-            mav.setViewName("account/activationFailure");
+            String message = messageSource.getMessage("account.notfound", new Object[] {}, LOCALE);
             mav.addObject("message", message);
+            mav.setViewName("account/activationFailure");
         }
     } catch (Exception ex) {
         // TODO catch actual errors and handle them
         // TODO tell the user wtf happened
         LOGGER.error("damnit, something failed.", ex);
+        String message = messageSource.getMessage("account.genericError", new Object[] {}, LOCALE);
+        mav.addObject("message", message);
         mav.setViewName("account/activationFailure");
-        mav.addObject("message", "I'm sorry, there was an error. please contact an administrator.");
     }
     return mav;
 }
@@ -120,14 +128,16 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
                 LOGGER.info("email sent.");
                 mav.addObject("message", "Password Request sent; check your email");
             } else {
-                LOGGER.info("That user wasn't found, neither username " + forgotPasswordForm.getUsername() + " or email " + forgotPasswordForm.getEmail());
-                mav.addObject("message", "I'm sorry, I couldn't find your username or email address.");
+                String message = messageSource.getMessage("account.emailnotfound", new Object[] {forgotPasswordForm.getUsername(), forgotPasswordForm.getEmail() }, LOCALE);
+                LOGGER.info(message);
+                mav.addObject("message", message);
                 mav.addObject("forgotPasswordForm", forgotPasswordForm);
             }
         } catch (Exception ex) {
             //Do something Witty.
             LOGGER.info("d'oh, exception!", ex);
-            mav.addObject("message", "Oooh, something bad happened...");
+            String message = messageSource.getMessage("account.genericError", new Object[] {}, LOCALE);
+            mav.addObject("message", message);
         }
         LOGGER.info("sent password.");
 
@@ -141,8 +151,8 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
     @RequestMapping(value = "/forgotPassword", method = RequestMethod.GET)
     public ModelAndView forgotPasswordForm() {
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("account/forgotPasswordForm");
         mav.addObject("forgotPasswordForm", new ForgotPasswordForm());
+        mav.setViewName("account/forgotPasswordForm");
         LOGGER.info("showing forgot password form.");
         return mav;
     }
@@ -172,25 +182,24 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
                     passform.setChecksum(checksum);
                     passform.setUsername(username);
                     mav.setViewName("account/activationSuccess");
-                    mav.addObject("message", "a simple message");
                     mav.addObject("passform", passform);
                 } else {
                     LOGGER.info("account already enabled");
-                    String message = "I'm sorry, this account has already been enabled.";
-                    mav.setViewName("account/activationFailure");
+                    String message = messageSource.getMessage("account.alreadyEnabled", new Object[] {}, LOCALE);
                     mav.addObject("message", message);
-
+                    mav.setViewName("account/activationFailure");
                 }
             } else {
-                String message = "I'm sorry, that account doesn't exist, is already enabled, or the url was incomplete.";
-                mav.setViewName("account/activationFailure");
+                String message = messageSource.getMessage("account.cantenable", new Object[] {}, LOCALE);
                 mav.addObject("message", message);
+                mav.setViewName("account/activationFailure");
             }
         } catch (Exception ex) {
             // TODO catch actual errors and handle them
             // TODO tell the user wtf happened
             LOGGER.error("damnit, something failed.", ex);
-            mav.addObject("message", "<!-- something bad -->");
+            String message = messageSource.getMessage("account.genericError", new Object[] {}, LOCALE);
+            mav.addObject("message", message);
             mav.setViewName("account/activationFailure");
         }
         return mav;
@@ -213,15 +222,16 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
                 mav.addObject("account", account);
             } else {
                 LOGGER.info("account doesn't exist");
-                String message = "I'm sorry, " + username + " was not found.";
+                String message = messageSource.getMessage("account.usernamenotfound", new Object[] {username}, LOCALE);                
                 mav.setViewName("account/viewUser");
                 mav.addObject("message", message);
             }
         } catch (Exception ex) {
             // TODO catch actual errors and handle them
             // TODO tell the user wtf happened
-            LOGGER.error("Something failed while trying to display " + username, ex);
-            mav.addObject("message", "Something failed while trying to display " + username);
+            String message = messageSource.getMessage("account.genericError", new Object[] {}, LOCALE);
+            mav.addObject("message", message);
+            LOGGER.error(message, ex);
             mav.setViewName("account/activationFailure");
         }
         return mav;
@@ -262,8 +272,8 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
             } else {
                 LOGGER.error("Email addresses did not match.");
                 mav.setViewName("account/registrationForm");
-                mav.addObject("message", "Sorry, your Email addresses didn't match.");
-
+                String message = messageSource.getMessage("account.emailmismatch", new Object[] {}, LOCALE);
+                mav.addObject("message", message);
 
             }
 
@@ -271,8 +281,8 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
             // TODO catch actual errors and handle them
             // TODO tell the user wtf happened
             LOGGER.error("Message failed to send:", ex);
-            mav.addObject("message", "There was an issue creating your account."
-                    + "Please contact the administrator for assistance.");
+            String message = messageSource.getMessage("account.cantcreate", new Object[] {}, LOCALE);
+            mav.addObject("message", message);
             mav.setViewName("account/registrationForm");
         }
         return mav;
@@ -325,11 +335,13 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
             LOGGER.info("set first name to  " + account.getFirstname());
             accountService.saveAccount(account);
             LOGGER.info("saved account " + account);
-            mav.addObject("message", "Personal Information Updated.");
+            String message = messageSource.getMessage("account.personalinfoupdated", new Object[] {}, LOCALE);
+            mav.addObject("message", message);
         } else {
-            LOGGER.error(SecurityContextHolder.getContext().getAuthentication().getName()
-                    + ": is the name found in the context, but no account was found.");
-            mav.addObject("message", "Odd, your account wasn't found.. are you logged in?");
+            String message = messageSource.getMessage("account.usernotfound", new Object[] {}, LOCALE);
+            LOGGER.error(SecurityContextHolder.getContext().getAuthentication().getName() + ": " + message);
+
+            mav.addObject("message", message);
         }
         mav.addObject("personalInformationForm", personalInformationForm);
         mav.addObject("passwordChangeForm", passwordChangeForm);
@@ -346,6 +358,7 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
     public ModelAndView savePasswordChangeForm(PasswordChangeForm passwordChangeForm) {
         ModelAndView  mav = new ModelAndView();
         Account account = getContextAccount();
+        String message;
         PersonalInformationForm personalInformationForm = new PersonalInformationForm();
         if (account != null) {
             personalInformationForm.loadAccount(account);
@@ -353,16 +366,18 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
                 if (passwordChangeForm.compareNewPasswords()) {
                     account.setHashedPassword(passwordChangeForm.getNewPassword());
                     accountService.saveAccount(account);
-                    mav.addObject("message", "Password updated.");
+                    message = messageSource.getMessage("account.passupdated", new Object[] {}, LOCALE);
+                    
                 } else {
-                    mav.addObject("message", "Sorry, your confirmation password didn't match.");
+                    message = messageSource.getMessage("account.passnomatch", new Object[] {}, LOCALE);
                 }
             } else {
-                mav.addObject("message", "That isn't you're current password.");
+                message = messageSource.getMessage("account.notpass", new Object[] {}, LOCALE);
             }
         } else {
-            mav.addObject("message", "Odd, your account wasn't found, so I couldn't update..");
+            message = messageSource.getMessage("account.usernotfound", new Object[] {}, LOCALE);
         }
+        mav.addObject("message", message);
         mav.addObject("passwordChangeForm", new PasswordChangeForm());
         mav.addObject("personalInformationForm", personalInformationForm);
         mav.setViewName("account/editAccountForm");
@@ -379,25 +394,26 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
     @RequestMapping(value = "/activate.setpassword", method = RequestMethod.POST)
     public ModelAndView setPassword(SetPasswordForm passform) {
         ModelAndView  mav = new ModelAndView();
+        String message;
         if (passform.getPassword().equals(passform.getConfirmPassword())) {
             Account account = accountService.loadByUsernameAndChecksum(passform.getUsername(), passform.getChecksum());
             account.setEnabled(true);
             account.setHashedPassword(passform.getPassword());
             accountService.addAccount(account);
             LOGGER.info("set password, then display view: " + passform);
-
-            mav.addObject("message", "Your account has been created!");
+            message = messageSource.getMessage("account.created", new Object[] {}, LOCALE);
             mav.setViewName("redirect:/");
         } else {
             //FIXME unrelated to this code; cache static js files
-            LOGGER.info("Your passwords did not match, try again.");
             passform.setPassword("");
             passform.setConfirmPassword("");
             mav.setViewName("account/activationSuccess");
             //FIXME this should be an error
-            mav.addObject("message", "Your passwords did not match, try again.");
+            message = messageSource.getMessage("account.passnomatch", new Object[] {}, LOCALE);
+            LOGGER.info(message);
             mav.addObject("passform", passform);
         }
+        mav.addObject("message", message);
         return mav;
     }
     /**
@@ -444,9 +460,8 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
         model.put("firstname", account.getFirstname());
         model.put("url", url);
 
-        //FIXME BOO, use property file!
-        this.templateMessage.setFrom("SPoE Password Reset <resetPassword@morgajel.com>");
-        this.templateMessage.setSubject("Need to Reset your Password?");
+        this.templateMessage.setFrom(messageSource.getMessage("account.resetFrom", new Object[] {}, LOCALE));
+        this.templateMessage.setSubject(messageSource.getMessage("account.resetSubject", new Object[] {}, LOCALE));
         this.templateMessage.setTo(account.getEmail());
         LOGGER.info("sending message to " + account.getEmail());
 
@@ -469,10 +484,10 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
 
         SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
         //FIXME BOO, use property file!
-        msg.setFrom("SPoE Registration <registration@morgajel.com>");
-        msg.setSubject("Activate your account");
+        msg.setFrom(messageSource.getMessage("account.regFrom", new Object[] {}, LOCALE));
+        msg.setSubject(messageSource.getMessage("account.regSubject", new Object[] {}, LOCALE));
         msg.setTo(account.getEmail());
-        LOGGER.info("sending message to " + account.getEmail());
+        LOGGER.info("Sending message to " + account.getEmail());
 
         msg.setText(VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, REG_EMAIL_TMPL, model));
         LOGGER.info(msg.getText());
@@ -495,6 +510,14 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
     public RoleService getRoleService() {
         return this.roleService;
     }
+    public MessageSource getMessageSource() {
+        return messageSource;
+    }
+
+    public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
+
     public void setTemplateMessage(SimpleMailMessage pTemplateMessage) {
         this.templateMessage = pTemplateMessage;
     }

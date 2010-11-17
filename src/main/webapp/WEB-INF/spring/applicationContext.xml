@@ -20,6 +20,12 @@
     
     <!-- this is a template message that we can pre-load with default state -->
     <bean id="templateEmailMessage" class="org.springframework.mail.SimpleMailMessage" />
-    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
-</bean>
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
+
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basename">
+            <value>WEB-INF/messages</value>
+        </property>
+    </bean>
+
 </beans>
