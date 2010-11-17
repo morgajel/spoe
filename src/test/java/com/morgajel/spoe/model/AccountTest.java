@@ -215,7 +215,6 @@ public class AccountTest {
         assertEquals("511fc691aae67b6af1f5a2e033db5cf474813ea2", account.activationChecksum());
         account.setEnabled(false);
         assertEquals("28a50a5f40f0817a391b8928c75c164a2f60adc6", account.activationChecksum());
-
     }
 
     @Test
@@ -232,21 +231,25 @@ public class AccountTest {
         account.setLastname(LASTNAME);
         account.setHashedPassword(PASSWORD);
         account.setUsername(USERNAME);
-        String toString = "Account "
-        + "[ accountId=" + ACCOUNTID
-        + ", username=" + USERNAME
-        + ", email=" + EMAIL
-        + ", password="    + Account.hashText(PASSWORD)
-        + ", enabled=" + enabled
-        + ", firstname=" + FIRSTNAME
-        + ", lastname=" + LASTNAME
-        + ", lastModifiedDate=" +    lastModifiedDate
-        + ", creationDate=" + creationDate
-        + ", PASSWDCHARSET=" + Account.PASSWDCHARSET
-        + ", ALGORITHM=" + Account.ALGORITHM
-        +  "]";
+        String toString = "Account ["
+        + "accountId="            + ACCOUNTID + ", "
+        + "username="             + USERNAME + ", "
+        + "email="                + EMAIL + ", "
+        + "password="             + PASSWORDHASH + ", "
+        + "enabled="              + enabled + ", "
+        + "firstname="            + FIRSTNAME + ", "
+        + "lastname="             + LASTNAME + ", "
+        + "lastModifiedDate="     + lastModifiedDate + ", "
+        + "creationDate="         + creationDate + ", "
+        + "roles="                + "[]" + ", "
+        + "primaryIMName="        + "" + ", "
+        + "primaryIM="            + Account.IMProtocol.none + ", "
+        + "secondaryIMName="      + "" + ", "
+        + "secondaryIM="          + Account.IMProtocol.none + ", "
+        + "writingExperience="    + Account.Experience.None + ", "
+        + "reviewingExperience="  + Account.Experience.None + ", "
+        + "snippets="             + "[]" + "]";
 
-        //FIXME fix this.
         assertEquals(toString, account.toString());
     }
 }

@@ -245,7 +245,6 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
      */
     @RequestMapping(value = "/register.submit", method = RequestMethod.POST)
     public ModelAndView createAccount(@ModelAttribute("registrationForm") @Valid RegistrationForm registrationForm, BindingResult result) {
-        // TODO unit test
         ModelAndView mav = new ModelAndView();
         try {
             if (registrationForm.getEmail().equals(registrationForm.getConfirmEmail())) {
@@ -279,7 +278,6 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
 
         } catch (Exception ex) {
             // TODO catch actual errors and handle them
-            // TODO tell the user wtf happened
             LOGGER.error("Message failed to send:", ex);
             String message = messageSource.getMessage("account.cantcreate", new Object[] {}, LOCALE);
             mav.addObject("message", message);
@@ -435,17 +433,14 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
     }
 
     public MailSender getMailSender() {
-        //TODO is this needed?
         return this.mailSender;
     }
 
     public SimpleMailMessage getTemplateMessage() {
-        //TODO might be able to remove it and replace with reflection.
         return this.templateMessage;
     }
 
     public VelocityEngine getVelocityEngine() {
-        //TODO might be able to remove it and replace with reflection.
         return this.velocityEngine;
     }
     /**
@@ -483,7 +478,6 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
         model.put("url", url);
 
         SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
-        //FIXME BOO, use property file!
         msg.setFrom(messageSource.getMessage("account.regFrom", new Object[] {}, LOCALE));
         msg.setSubject(messageSource.getMessage("account.regSubject", new Object[] {}, LOCALE));
         msg.setTo(account.getEmail());

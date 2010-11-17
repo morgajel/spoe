@@ -429,23 +429,29 @@ public class Account implements Serializable {
         username = registerForm.getUsername();
     }
 
+
     @Override
     public String toString() {
-        //FIXME: I need to update this. perhaps include roles
-        return "Account "
-                + "[ accountId=" + accountId
-                + ", username=" + username
-                + ", email=" + email
-                + ", password="    + password
-                + ", enabled=" + enabled
-                + ", firstname=" + firstname
-                + ", lastname=" + lastname
-                + ", lastModifiedDate=" +    lastModifiedDate
-                + ", creationDate=" + creationDate
-                + ", PASSWDCHARSET=" + PASSWDCHARSET
-                + ", ALGORITHM=" + ALGORITHM
-                +  "]";
+        return "Account ["
+        + "accountId="            + accountId + ", "
+        + "username="             + username + ", "
+        + "email="                + email + ", "
+        + "password="             + password + ", "
+        + "enabled="              + enabled + ", "
+        + "firstname="            + firstname + ", "
+        + "lastname="             + lastname + ", "
+        + "lastModifiedDate="     + lastModifiedDate + ", "
+        + "creationDate="         + creationDate + ", "
+        + "roles="                + roles + ", "
+        + "primaryIMName="        + primaryIMName + ", "
+        + "primaryIM="            + primaryIM + ", "
+        + "secondaryIMName="      + secondaryIMName + ", "
+        + "secondaryIM="          + secondaryIM + ", "
+        + "writingExperience="    + writingExperience + ", "
+        + "reviewingExperience="  + reviewingExperience + ", "
+        + "snippets="             + snippets + "]";
     }
+
     public static final int MAXLENGTH = 25;
     public static final int MINLENGTH = 6;
     /**
