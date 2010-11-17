@@ -4,13 +4,20 @@
 package com.morgajel.spoe.controller;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.stub;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.util.Locale;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.MessageSource;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,8 +36,10 @@ public class SearchControllerTest {
     private SnippetService mockSnippetService;
     private SecurityContext mockContext;
     private Account mockAccount;
+    private MessageSource mockMessageSource;
     private static final String USERNAME = "bobdole";
-
+    private static final Locale LOCALE =Locale.getDefault();
+    
     private SearchController searchController;
     @Before
     public void setUp() throws Exception {
@@ -38,9 +47,11 @@ public class SearchControllerTest {
         mockSnippetService = mock(SnippetService.class);
         mockAccount = mock(Account.class);
         mockContext = mock(SecurityContext.class, RETURNS_DEEP_STUBS);
+        mockMessageSource = mock(MessageSource.class);
         searchController = new SearchController();
         searchController.setAccountService(mockAccountService);
         SecurityContextHolder.setContext(mockContext);
+        searchController.setMessageSource(mockMessageSource);
     }
 
     @After
@@ -53,7 +64,17 @@ public class SearchControllerTest {
         String searchQuery = "fun search";
         ModelAndView mav = searchController.quickSearch(searchQuery);
         assertEquals("search/results", mav.getViewName());
-        assertEquals("Results for '" + searchQuery + "'", mav.getModel().get("message"));
+        verify(mockMessageSource).getMessage(eq("search.results"), (Object[]) any(), eq(LOCALE));
+    }
+
+    @Test
+    public void testQuickSearchFail() {
+        String searchQuery = "fun search";
+        stub(mockMessageSource.getMessage(eq("search.results"), (Object[]) any(), eq(LOCALE))).toThrow(new IndexOutOfBoundsException());
+        ModelAndView mav = searchController.quickSearch(searchQuery);
+        assertEquals("search/results", mav.getViewName());
+        verify(mockMessageSource).getMessage(eq("search.results"), (Object[]) any(), eq(LOCALE));
+        verify(mockMessageSource).getMessage(eq("search.searchfailed"), (Object[]) any(), eq(LOCALE));
     }
 
     @Test

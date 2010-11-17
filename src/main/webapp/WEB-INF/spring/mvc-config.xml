@@ -33,6 +33,7 @@
         <property name="mailSender" ref="mailSender"/>
     </bean>
     <bean id="searchController" class="com.morgajel.spoe.controller.SearchController">
+        <property name="messageSource" ref="messageSource"/>
     </bean>
 </beans>
 
