@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 import com.morgajel.spoe.annotation.ValidUsername;
 import com.morgajel.spoe.model.Account;
+import com.morgajel.spoe.model.Account.Experience;
 import com.morgajel.spoe.model.Role;
 
 import com.morgajel.spoe.service.AccountService;
@@ -312,6 +313,8 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
         personalInformationForm.loadAccount(account);
         mav.addObject("personalInformationForm", personalInformationForm);
         mav.addObject("passwordChangeForm", passwordChangeForm);
+        mav.addObject("writingExperienceList", Experience.values());
+        mav.addObject("reviewingExperienceList", Experience.values());
         mav.setViewName("account/editAccountForm");
         return mav;
     }
@@ -327,10 +330,18 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
         LOGGER.info("loaded account " + account);
         PasswordChangeForm passwordChangeForm = new PasswordChangeForm();
         if (account != null) {
+            //FIXME this shouldn't be set here; offload to pif or account.
             account.setLastname(personalInformationForm.getLastname());
             LOGGER.info("set last name to  " + account.getLastname());
             account.setFirstname(personalInformationForm.getFirstname());
             LOGGER.info("set first name to  " + account.getFirstname());
+
+            account.setReviewingExperience(personalInformationForm.getReviewingExperience());
+            LOGGER.info("set Reviewing Experience to  " + account.getReviewingExperience());
+
+            account.setWritingExperience(personalInformationForm.getWritingExperience());
+            LOGGER.info("set Writing Experience to  " + account.getWritingExperience());
+
             accountService.saveAccount(account);
             LOGGER.info("saved account " + account);
             String message = messageSource.getMessage("account.personalinfoupdated", new Object[] {}, LOCALE);
@@ -365,7 +376,6 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
                     account.setHashedPassword(passwordChangeForm.getNewPassword());
                     accountService.saveAccount(account);
                     message = messageSource.getMessage("account.passupdated", new Object[] {}, LOCALE);
-                    
                 } else {
                     message = messageSource.getMessage("account.passnomatch", new Object[] {}, LOCALE);
                 }

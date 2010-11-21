@@ -26,6 +26,22 @@ ${message}
                 <td><form:errors path="lastname" /></td>
             </tr>
             <tr>
+                <td><form:label for="writingExperience" path="writingExperience" cssErrorClass="error">Writing Experience:</form:label></td>
+                <td><form:select path="writingExperience">
+                        <form:option value="-" label="--Please Select"/>
+                        <form:options items="${writingExperienceList}"/>
+                    </form:select></td>
+                <td><form:errors path="writingExperience" /></td>
+            </tr>
+            <tr>
+                <td><form:label for="reviewingExperience" path="reviewingExperience" cssErrorClass="error">Reviewing Experience:</form:label></td>
+                <td><form:select path="reviewingExperience">
+                        <form:option value="-" label="--Please Select"/>
+                        <form:options items="${reviewingExperienceList}"/>
+                    </form:select></td>
+                <td><form:errors path="reviewingExperience" /></td>
+            </tr>
+            <tr>
                 <td colspan="2" align="center"><input type="submit" value="Update" /></td>
             </tr>
         </table>
