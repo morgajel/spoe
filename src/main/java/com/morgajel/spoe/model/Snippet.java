@@ -222,11 +222,15 @@ public class Snippet implements Serializable {
     public String toString() {
         //TODO may want to include userlist here.
         LOGGER.debug("printing toString");
+        String authorname = "unknown";
+        if (author != null) {
+            authorname = author.getUsername();
+        }
 
         return "Snippet "
                 + "[ snippetId=" + snippetId
                 + ", title=" + title
-                + ", author=" + author
+                + ", author=" + authorname
                 +  "]";
     }
 }
