@@ -116,7 +116,7 @@ public class SnippetTest {
         String toString = "Snippet "
                     + "[ snippetId=" + snippetId
                     + ", title=" + title
-                    + ", author=" + mockAccount
+                    + ", author=" + "null"
                     +  "]";
         assertEquals(toString, snippet.toString());
     }

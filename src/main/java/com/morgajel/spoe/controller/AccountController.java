@@ -225,7 +225,7 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
                 mav.addObject("account", account);
             } else {
                 LOGGER.info("account doesn't exist");
-                String message = messageSource.getMessage("account.usernamenotfound", new Object[] {username}, LOCALE);                
+                String message = messageSource.getMessage("account.usernamenotfound", new Object[] {username}, LOCALE);
                 mav.setViewName("account/viewUser");
                 mav.addObject("message", message);
             }
@@ -338,8 +338,8 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
         //FIXME new forms should accept account as parameter in constructor
         PasswordChangeForm passwordChangeForm = new PasswordChangeForm();
         PersonalInformationForm personalInformationForm = new PersonalInformationForm();
-        personalInformationForm.loadAccount(account);
         if (account != null) {
+            personalInformationForm.loadAccount(account);
             if (contactInformationForm.confirmEmail()) {
             //FIXME this shouldn't be set here; offload to pif or account.
             account.setEmail(contactInformationForm.getEmail());
@@ -382,8 +382,8 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
         LOGGER.info("loaded account " + account);
         PasswordChangeForm passwordChangeForm = new PasswordChangeForm();
         ContactInformationForm contactInformationForm = new ContactInformationForm();
-        contactInformationForm.loadFromAccount(account);
         if (account != null) {
+            contactInformationForm.loadFromAccount(account);
             //FIXME this shouldn't be set here; offload to pif or account.
             account.setLastname(personalInformationForm.getLastname());
             LOGGER.info("set last name to  " + account.getLastname());

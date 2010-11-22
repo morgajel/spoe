@@ -27,6 +27,7 @@ import com.morgajel.spoe.model.Role;
 import com.morgajel.spoe.model.Snippet;
 import com.morgajel.spoe.service.AccountService;
 import com.morgajel.spoe.service.RoleService;
+import com.morgajel.spoe.web.ContactInformationForm;
 import com.morgajel.spoe.web.ForgotPasswordForm;
 import com.morgajel.spoe.web.PasswordChangeForm;
 import com.morgajel.spoe.web.PersonalInformationForm;
@@ -56,6 +57,7 @@ public class AccountControllerTest {
     private VelocityEngine mockVelocityEngine;
     private MessageSource mockMessageSource;
     private PersonalInformationForm mockPersonalInformationForm;
+    private ContactInformationForm mockContactInformationForm;
     private static final String USERNAME = "morgo2";
     private static final String FIRSTNAME = "Jesse";
     private static final String LASTNAME = "Morgan";
@@ -65,7 +67,7 @@ public class AccountControllerTest {
     //private final String tempHash="df9dd14cbdb3b00f8a54b66f489241e8aeb903ff";
     private static final String CHECKSUM = "279d8d8a18b94782ef606fbbadd6c011b1692ad0"; //morgo2+temphash+0
     private static final String BASEURL = "http://example.com/";
-    private static final Locale LOCALE =Locale.getDefault();
+    private static final Locale LOCALE = Locale.getDefault();
     /**
      * Create the intial mockups and classes that are used with each run.
      * @throws Exception generic exception
@@ -85,6 +87,7 @@ public class AccountControllerTest {
         mockTemplateMessage = mock(SimpleMailMessage.class);
         mockVelocityEngine = mock(VelocityEngine.class);
         mockPersonalInformationForm = mock(PersonalInformationForm.class);
+        mockContactInformationForm = mock(ContactInformationForm.class);
         mockForgotPasswordForm = mock(ForgotPasswordForm.class);
         mockMessageSource = mock(MessageSource.class);
         List<Account> accountList = new ArrayList();
