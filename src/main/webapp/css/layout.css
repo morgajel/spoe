@@ -107,17 +107,23 @@ margin-right:10px;
     width:40px;
     text-align:right;
 }
-
-
+.message {
+    margin-left:5px;
+}
 .editAccountSection {
+    display:inline-block;
     width:375px;
     border:1px solid black;
-    margin-top:10px;
-    margin-left:10px;
+    margin:5px;
     padding-left:10px;
 }
-.editAccountSection td{
+.editAccountSection label {
+    font-size: 12px;
+}
+.editAccountSection td {
     text-align:right;
+    border:0px solid black;
+    height:27px;
 }
 .editAccountSection h2{
     margin-top:5px;

@@ -9,8 +9,7 @@
 <html>
         <%@ include file="/WEB-INF/jsp/header.jsp"%>
 
-${message}
-
+<div class="message">${message}</div>
 <div class="editAccountSection">
     <form:form modelAttribute="personalInformationForm" action="/account/personalInformation.submit" method="post">
         <h2>Personal Information</h2>
@@ -28,7 +27,7 @@ ${message}
             <tr>
                 <td><form:label for="writingExperience" path="writingExperience" cssErrorClass="error">Writing Experience:</form:label></td>
                 <td><form:select path="writingExperience">
-                        <form:option value="-" label="--Please Select"/>
+                        <form:option value="-" label="-Select-"/>
                         <form:options items="${writingExperienceList}"/>
                     </form:select></td>
                 <td><form:errors path="writingExperience" /></td>
@@ -36,7 +35,7 @@ ${message}
             <tr>
                 <td><form:label for="reviewingExperience" path="reviewingExperience" cssErrorClass="error">Reviewing Experience:</form:label></td>
                 <td><form:select path="reviewingExperience">
-                        <form:option value="-" label="--Please Select"/>
+                        <form:option value="-" label="-Select-"/>
                         <form:options items="${reviewingExperienceList}"/>
                     </form:select></td>
                 <td><form:errors path="reviewingExperience" /></td>
@@ -47,7 +46,46 @@ ${message}
         </table>
     </form:form>
 </div>
-
+<div class="editAccountSection">
+    <form:form modelAttribute="contactInformationForm" action="/account/contactInformation.submit" method="post">
+        <h2>Contact Information</h2>
+        <table>
+            <tr>
+                <td><form:label for="email" path="email" cssErrorClass="error">Change Email Address:</form:label></td>
+                <td><form:input path="email" /></td>
+                <td><form:errors path="email" /></td>
+            </tr>
+            <tr>
+                <td><form:label for="confirmEmail" path="confirmEmail" cssErrorClass="error">Confirm Email Address:</form:label></td>
+                <td><form:input path="confirmEmail" /></td>
+                <td><form:errors path="confirmEmail" /></td>
+            </tr>
+            <tr>
+                <td><form:label for="primaryIM" path="primaryIM" cssErrorClass="error">Primary IM:</form:label></td>
+                <td>
+                    <form:select path="primaryIM">
+                        <form:option value="-" label="-Select-"/>
+                        <form:options items="${imProtocolList}"/>
+                    </form:select>
+                    <form:input path="primaryIMName" size="10" /></td>
+                <td><form:errors path="primaryIM" /></td>
+            </tr>
+            <tr>
+                <td><form:label for="secondaryIM" path="secondaryIM" cssErrorClass="error">Secondary IM:</form:label></td>
+                <td>
+                    <form:select path="secondaryIM">
+                        <form:option value="-" label="-Select-"/>
+                        <form:options items="${imProtocolList}"/>
+                    </form:select>
+                    <form:input path="secondaryIMName" size="10" /></td>
+                <td><form:errors path="secondaryIM" /></td>
+            </tr>
+            <tr>
+                <td colspan="3" align="center"><input type="submit" value="Update" /></td>
+            </tr>
+        </table>
+    </form:form>
+</div>
 <div class="editAccountSection">
     <form:form modelAttribute="passwordChangeForm" action="/account/passwordChange.submit" method="post">
         <h2>Password Change</h2>
@@ -73,7 +111,6 @@ ${message}
     	</table>
     </form:form>
 </div>
-
-<%@ include file="/WEB-INF/jsp/footer.jsp"%>
+    <%@ include file="/WEB-INF/jsp/footer.jsp"%>
     </body>
 </html>

@@ -26,10 +26,12 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import com.morgajel.spoe.annotation.ValidUsername;
 import com.morgajel.spoe.model.Account;
 import com.morgajel.spoe.model.Account.Experience;
+import com.morgajel.spoe.model.Account.IMProtocol;
 import com.morgajel.spoe.model.Role;
 
 import com.morgajel.spoe.service.AccountService;
 import com.morgajel.spoe.service.RoleService;
+import com.morgajel.spoe.web.ContactInformationForm;
 import com.morgajel.spoe.web.ForgotPasswordForm;
 import com.morgajel.spoe.web.PasswordChangeForm;
 import com.morgajel.spoe.web.PersonalInformationForm;
@@ -309,15 +311,65 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
         ModelAndView  mav = new ModelAndView();
         PersonalInformationForm personalInformationForm = new PersonalInformationForm();
         PasswordChangeForm passwordChangeForm = new PasswordChangeForm();
+        ContactInformationForm contactInformationForm = new ContactInformationForm();
         Account account = getContextAccount();
+        //FIXME rename loadaccount to loadFromAccount
         personalInformationForm.loadAccount(account);
+        contactInformationForm.loadFromAccount(account);
         mav.addObject("personalInformationForm", personalInformationForm);
         mav.addObject("passwordChangeForm", passwordChangeForm);
+        mav.addObject("contactInformationForm", contactInformationForm);
+        mav.addObject("imProtocolList", IMProtocol.values());
         mav.addObject("writingExperienceList", Experience.values());
         mav.addObject("reviewingExperienceList", Experience.values());
         mav.setViewName("account/editAccountForm");
         return mav;
     }
+    /**
+     * Saves changes when editing your account.
+     * @param contactInformationForm contact Information Form
+     * @return ModelAndView mav
+     */
+    @RequestMapping(value = "/contactInformation.submit", method = RequestMethod.POST)
+    public ModelAndView saveContactInformationForm(@Valid ContactInformationForm contactInformationForm) {
+        ModelAndView  mav = new ModelAndView();
+        Account account = getContextAccount();
+        LOGGER.info("loaded account " + account);
+        //FIXME new forms should accept account as parameter in constructor
+        PasswordChangeForm passwordChangeForm = new PasswordChangeForm();
+        PersonalInformationForm personalInformationForm = new PersonalInformationForm();
+        personalInformationForm.loadAccount(account);
+        if (account != null) {
+            if (contactInformationForm.confirmEmail()) {
+            //FIXME this shouldn't be set here; offload to pif or account.
+            account.setEmail(contactInformationForm.getEmail());
+            account.setPrimaryIM(contactInformationForm.getPrimaryIM());
+            account.setPrimaryIMName(contactInformationForm.getPrimaryIMName());
+            account.setSecondaryIM(contactInformationForm.getSecondaryIM());
+            account.setSecondaryIMName(contactInformationForm.getSecondaryIMName());
+
+            accountService.saveAccount(account);
+            LOGGER.info("saved account " + account);
+            String message = messageSource.getMessage("account.contactinfoupdated", new Object[] {}, LOCALE);
+            mav.addObject("message", message);
+            } else {
+                contactInformationForm.loadFromAccount(account);
+                String message = messageSource.getMessage("account.contactinfonoconfirm", new Object[] {}, LOCALE);
+                LOGGER.error(SecurityContextHolder.getContext().getAuthentication().getName() + ": " + message);
+                mav.addObject("message", message);
+            }
+        } else {
+            String message = messageSource.getMessage("account.usernotfound", new Object[] {}, LOCALE);
+            LOGGER.error(SecurityContextHolder.getContext().getAuthentication().getName() + ": " + message);
+            mav.addObject("message", message);
+        }
+        mav.addObject("personalInformationForm", personalInformationForm);
+        mav.addObject("passwordChangeForm", passwordChangeForm);
+        mav.addObject("contactInformationForm", contactInformationForm);
+        mav.setViewName("account/editAccountForm");
+        return mav;
+    }
+
     /**
      * Saves changes when editing your account.
      * @param personalInformationForm Personal Information Form
@@ -329,6 +381,8 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
         Account account = getContextAccount();
         LOGGER.info("loaded account " + account);
         PasswordChangeForm passwordChangeForm = new PasswordChangeForm();
+        ContactInformationForm contactInformationForm = new ContactInformationForm();
+        contactInformationForm.loadFromAccount(account);
         if (account != null) {
             //FIXME this shouldn't be set here; offload to pif or account.
             account.setLastname(personalInformationForm.getLastname());
@@ -349,11 +403,11 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
         } else {
             String message = messageSource.getMessage("account.usernotfound", new Object[] {}, LOCALE);
             LOGGER.error(SecurityContextHolder.getContext().getAuthentication().getName() + ": " + message);
-
             mav.addObject("message", message);
         }
         mav.addObject("personalInformationForm", personalInformationForm);
         mav.addObject("passwordChangeForm", passwordChangeForm);
+        mav.addObject("contactInformationForm", contactInformationForm);
         mav.setViewName("account/editAccountForm");
         return mav;
     }
