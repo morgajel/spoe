@@ -8,17 +8,18 @@
 		http://www.springframework.org/schema/security
 		http://www.springframework.org/schema/security/spring-security-3.0.3.xsd">
 
-	<global-method-security pre-post-annotations="enabled" />
+    <global-method-security pre-post-annotations="enabled" />
 
-	<http auto-config='true' use-expressions="true">
-		<intercept-url pattern="/account" access="isAuthenticated()" />
-        <intercept-url pattern="/account/edit**" access="isAuthenticated()" />
-        <intercept-url pattern="/snippet/create**" access="isAuthenticated()" />
-        <intercept-url pattern="/snippet/save**" access="isAuthenticated()" />
-        <intercept-url pattern="/review/create**" access="isAuthenticated()" />
-		<intercept-url pattern="/**" access="permitAll" />
-		<form-login default-target-url='/account' always-use-default-target='true' /> 
-		<logout logout-success-url='/index.jsp?logout=success'/>
+    <http auto-config='true' use-expressions="true">
+        <intercept-url pattern="/account/register*" access="permitAll" />
+        <intercept-url pattern="/account/user/*" access="permitAll" />
+        <intercept-url pattern="/account/activate*" access="permitAll" />
+        <intercept-url pattern="/account/forgotPassword*" access="permitAll" />
+        <intercept-url pattern="/account" access="isAuthenticated()" />
+        <intercept-url pattern="/account/*" access="isAuthenticated()" />
+        <intercept-url pattern="/**" access="permitAll" />
+        <form-login default-target-url='/account' always-use-default-target='true' /> 
+        <logout logout-success-url='/index.jsp?logout=success'/>
 
 <!--		<session-management invalid-session-url="/errors/timeout.jsp"/>-->
 	</http>
