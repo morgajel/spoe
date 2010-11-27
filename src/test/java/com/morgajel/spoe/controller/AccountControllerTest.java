@@ -27,6 +27,7 @@ import com.morgajel.spoe.model.Role;
 import com.morgajel.spoe.model.Snippet;
 import com.morgajel.spoe.service.AccountService;
 import com.morgajel.spoe.service.RoleService;
+import com.morgajel.spoe.service.SnippetService;
 import com.morgajel.spoe.web.ContactInformationForm;
 import com.morgajel.spoe.web.ForgotPasswordForm;
 import com.morgajel.spoe.web.PasswordChangeForm;
@@ -47,6 +48,7 @@ public class AccountControllerTest {
     private SecurityContext mockContext;
     private Role mockRole;
     private AccountService mockAccountService;
+    private SnippetService mockSnippetService;
     private PasswordChangeForm mockPasswordChangeForm;
     private RegistrationForm mockRegistrationForm;
     private ForgotPasswordForm mockForgotPasswordForm;
@@ -75,6 +77,7 @@ public class AccountControllerTest {
     @Before
     public void setUp() throws Exception {
         mockAccountService = mock(AccountService.class);
+        mockSnippetService = mock(SnippetService.class);
         mockRoleService = mock(RoleService.class);
         mockAccount = mock(Account.class);
         mockContext = mock(SecurityContext.class, RETURNS_DEEP_STUBS);
@@ -96,6 +99,7 @@ public class AccountControllerTest {
         snippetList.add(mockSnippet);
         accountController = new AccountController();
         accountController.setAccountService(mockAccountService);
+        accountController.setSnippetService(mockSnippetService);
         accountController.setRoleService(mockRoleService);
         accountController.setMailSender(mockMailSender);
         accountController.setTemplateMessage(mockTemplateMessage);
@@ -109,6 +113,7 @@ public class AccountControllerTest {
     @After
     public void tearDown() throws Exception {
         mockAccountService = null;
+        mockSnippetService = null;
         mockAccount = null;
         mockRole = null;
         mockMailSender = null;
@@ -234,6 +239,7 @@ public class AccountControllerTest {
         SecurityContextHolder.setContext(mockContext);
         when(mockContext.getAuthentication().getName()).thenReturn(USERNAME);
         when(mockAccountService.loadByUsername(USERNAME)).thenReturn(mockAccount);
+        when(mockSnippetService.loadPublishedByAuthor(mockAccount)).thenReturn(new ArrayList<Snippet>());
         ModelAndView mav = accountController.defaultView();
         assertEquals("account/view", mav.getViewName());
         assertEquals("", mav.getModel().get("message"));

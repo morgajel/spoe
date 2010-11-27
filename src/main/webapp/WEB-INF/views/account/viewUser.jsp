@@ -6,7 +6,7 @@
 
 <html>
         <%@ include file="/WEB-INF/jsp/header.jsp"%>
-
+${message} 
 
 Info about ${account.username}.
 <table>
@@ -17,9 +17,10 @@ Info about ${account.username}.
 <tr><th>Reviewing Experience:</th><td> ${account.reviewingExperience} </td></tr>
 </table>
 
-
-
-${message} 
+    <jsp:include page="/WEB-INF/jsp/snippetList.jsp">
+        <jsp:param name="snippetTitle" value="Snippets from ${account.username}"/>
+        <jsp:param name="pageSize" value="10"/>
+    </jsp:include>
 
 <%@ include file="/WEB-INF/jsp/footer.jsp"%>
     </body>

@@ -51,7 +51,7 @@ public class EditSnippetFormTest {
         when(mockSnippet.getTitle()).thenReturn(title);
         when(mockSnippet.getContent()).thenReturn(content);
         when(mockSnippet.getSnippetId()).thenReturn(snippetId);
-        editSnippetForm.loadSnippet(mockSnippet);
+        editSnippetForm.importSnippet(mockSnippet);
         assertEquals(title, editSnippetForm.getTitle());
         assertEquals(content, editSnippetForm.getContent());
         assertEquals(snippetId, editSnippetForm.getSnippetId());

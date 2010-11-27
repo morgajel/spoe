@@ -10,7 +10,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
@@ -19,10 +18,10 @@ import com.morgajel.spoe.service.AccountService;
 import com.morgajel.spoe.service.SnippetService;
 
 /**
- * Controls all Search interactions.
+ * Welcome page.
  */
 @Controller
-public class SearchController extends MultiActionController {
+public class WelcomeController {
 
     @Autowired
     private AccountService accountService;
@@ -33,30 +32,19 @@ public class SearchController extends MultiActionController {
 
     public static final Locale LOCALE = Locale.getDefault();
 
-    private static final transient Logger LOGGER = Logger.getLogger(SearchController.class);
+    private static final transient Logger LOGGER = Logger.getLogger(WelcomeController.class);
 
     /**
-     * Displays the results for a given search.
-     * @param searchQuery the text you're searching for
-     * @return ModelAndView mav
+     * Displays the welcome page.
+     * @return ModelAndView
      */
-    @RequestMapping(value = "/")
-    public ModelAndView quickSearch(@RequestParam("q") final String searchQuery) {
-        LOGGER.info("Searching for " + searchQuery);
+    @RequestMapping("/")
+    public ModelAndView defaultview() {
+        LOGGER.info("something witty");
         ModelAndView mav = new ModelAndView();
-        String message;
-        try {
-            //FIXME need to sanitize user input
-            //TODO search for stuff
-            //mav.addObject("results", results);
-            message = messageSource.getMessage("search.results", new Object[] {searchQuery}, LOCALE);
-        } catch (Exception ex) {
-            message = messageSource.getMessage("search.searchfailed", new Object[] {searchQuery}, LOCALE);
-            LOGGER.error(message, ex);
-
-        }
+        String message = "";
         mav.addObject("message", message);
-        mav.setViewName("search/results");
+        mav.setViewName("welcome");
         return mav;
     }
 
@@ -87,7 +75,8 @@ public class SearchController extends MultiActionController {
      * @return Account
      */
     public Account getContextAccount() {
-        return accountService.loadByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return accountService.loadByUsername(username);
     }
 
 }

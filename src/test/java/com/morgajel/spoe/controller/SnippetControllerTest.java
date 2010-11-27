@@ -216,9 +216,8 @@ public class SnippetControllerTest {
         when(mockSnippet.getAuthor()).thenReturn(mockAccount);
         when(mockAccount.getUsername()).thenReturn(username);
 
-        ModelAndView mav = snippetController.editSnippet(snippetId, mockEditSnippetForm);
+        ModelAndView mav = snippetController.editSnippet(snippetId);
 
-        verify(mockEditSnippetForm, times(1)).loadSnippet((Snippet) anyObject());
         assertEquals("snippet/editSnippet", mav.getViewName());
         assertNull(mav.getModel().get("message"));
     }
@@ -235,9 +234,9 @@ public class SnippetControllerTest {
         when(mockSnippet.getAuthor()).thenReturn(notAccount);
         when(notAccount.getUsername()).thenReturn("bobbo");
 
-        ModelAndView mav = snippetController.editSnippet(snippetId, mockEditSnippetForm);
+        ModelAndView mav = snippetController.editSnippet(snippetId);
 
-        verify(mockEditSnippetForm, times(0)).loadSnippet((Snippet) anyObject());
+        verify(mockEditSnippetForm, times(0)).importSnippet((Snippet) anyObject());
         assertEquals("snippet/viewSnippet", mav.getViewName());
         assertEquals("I'm sorry, Only the author can edit a snippet.", mav.getModel().get("message"));
     }
@@ -254,9 +253,9 @@ public class SnippetControllerTest {
         when(mockSnippet.getAuthor()).thenReturn(notAccount);
         when(notAccount.getUsername()).thenReturn("bobbo");
 
-        ModelAndView mav = snippetController.editSnippet(snippetId, mockEditSnippetForm);
+        ModelAndView mav = snippetController.editSnippet(snippetId);
 
-        verify(mockEditSnippetForm, times(0)).loadSnippet((Snippet) anyObject());
+        verify(mockEditSnippetForm, times(0)).importSnippet((Snippet) anyObject());
         assertEquals("snippet/snippetFailure", mav.getViewName());
         assertEquals("I'm sorry, 123123 was not found.", mav.getModel().get("message"));
     }
@@ -268,9 +267,9 @@ public class SnippetControllerTest {
         when(mockEditSnippetForm.getSnippetId()).thenReturn(snippetId);
         stub(mockContext.getAuthentication()).toThrow(new IndexOutOfBoundsException());
 
-        ModelAndView mav = snippetController.editSnippet(snippetId, mockEditSnippetForm);
+        ModelAndView mav = snippetController.editSnippet(snippetId);
 
-        verify(mockEditSnippetForm, times(0)).loadSnippet((Snippet) anyObject());
+        verify(mockEditSnippetForm, times(0)).importSnippet((Snippet) anyObject());
         assertEquals("snippet/snippetFailure", mav.getViewName());
         assertEquals("Something failed while trying to display 123123.", mav.getModel().get("message"));
     }

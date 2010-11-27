@@ -53,6 +53,13 @@ import com.morgajel.spoe.web.EditSnippetForm;
     @NamedQuery(
         name = "findSnippetByAuthor",
         query = "from Snippet snip where snip.accountId = :account_id"
+    ),
+    /**
+     * Returns snippets matching a given account_id that are published.
+     */
+    @NamedQuery(
+        name = "findPublishedSnippetByAuthor",
+        query = "from Snippet snip where published=true and snip.accountId = :account_id"
     )
 })
 
@@ -114,6 +121,9 @@ public class Snippet implements Serializable {
     @Field(index = Index.TOKENIZED, store = Store.YES)
     private String content;
 
+    @Column(name = "published")
+    private boolean published;
+
     private static final long serialVersionUID = -5461020313014420728L;
 
     private static final transient Logger LOGGER = Logger.getLogger(Snippet.class);
@@ -129,15 +139,23 @@ public class Snippet implements Serializable {
     /**
      * A constructor for snippet.
      * @param pAuthor Account that created the snippet.
-     * @param editSnippetForm form object containing data.
      **/
-    public Snippet(Account pAuthor, EditSnippetForm editSnippetForm) {
+    public Snippet(Account pAuthor) {
         lastModifiedDate = new Date();
         creationDate = new Date();
-        this.content = editSnippetForm.getContent();
         this.author = pAuthor;
-        this.title = editSnippetForm.getTitle();
+        this.accountId = pAuthor.getAccountId();
     }
+    /**
+     * Configure base info from a given editSnippetForm.
+     * @param editSnippetForm for to use
+     */
+    public void configure(EditSnippetForm editSnippetForm) {
+        this.content = editSnippetForm.getContent();
+        this.title = editSnippetForm.getTitle();
+        this.published = editSnippetForm.getPublished();
+    }
+
     /**
      * Primary constructor for snippet.
      * @param pAuthor Account that created the snippet.
@@ -216,7 +234,13 @@ public class Snippet implements Serializable {
     public void setTitle(String pTitle) {
         this.title = pTitle;
     }
-
+    //FIXME use this.var for all gets and sets
+    public boolean getPublished() {
+        return published;
+    }
+    public void setPublished(boolean pPublished) {
+        this.published = pPublished;
+    }
     //TODO use LOGGER.error(msg,ex);
     @Override
     public String toString() {

@@ -51,16 +51,17 @@ public class SnippetController extends MultiActionController {
      * @return ModelAndView mav
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ModelAndView saveSnippet(@Valid EditSnippetForm editSnippetForm) {
+    //TODO figure out why I can't mark editSnippetForm @Valid
+    public ModelAndView saveSnippet(EditSnippetForm editSnippetForm) {
         ModelAndView mav = new ModelAndView();
         try {
+            //FIXME refactor this whole try block
             LOGGER.debug("trying to save " + editSnippetForm);
             Account account = getContextAccount();
             if (editSnippetForm.getSnippetId() == null) {
                 LOGGER.info("no snippetId found, saving as a new snippet " + editSnippetForm);
-                Snippet snippet = new Snippet(account, editSnippetForm);
-                snippet.setAuthor(account);
-                snippet.setAccountId(account.getAccountId());
+                Snippet snippet = new Snippet(account);
+                snippet.configure(editSnippetForm);
                 snippetService.saveSnippet(snippet);
                 LOGGER.info("saved new snippet " + snippet);
                 mav.setViewName("snippet/editSnippet");
@@ -71,15 +72,11 @@ public class SnippetController extends MultiActionController {
                 if (snippet != null) {
                     if (snippet.getAuthor().getUsername().equals(account.getUsername())) {
                         LOGGER.info("look, '" + snippet.getSnippetId() + "' is a real snippet and owned by " + account.getUsername());
-                        snippet.setTitle(editSnippetForm.getTitle());
-                        snippet.setContent(editSnippetForm.getContent());
-
-                        LOGGER.info("snippet " + snippet.getSnippetId() + "is about to be saved...");
+                        snippet.configure(editSnippetForm);
                         snippetService.saveSnippet(snippet);
                         LOGGER.info("saved existing snippet " + snippet.getSnippetId());
 
-                        Snippet newSnippet = snippetService.loadById(snippet.getSnippetId());
-                        editSnippetForm.loadSnippet(newSnippet);
+                        editSnippetForm.importSnippet(snippet);
                         LOGGER.info("refreshing editSnippetForm with " + editSnippetForm);
                         mav.setViewName("snippet/editSnippet");
                         mav.addObject("message", "Snippet saved.");
@@ -106,23 +103,23 @@ public class SnippetController extends MultiActionController {
     /**
      * Displays the form for editing a given snippet.
      * @param snippetId The ID of the snippet you wish to edit.
-     * @param editSnippetForm the snippetForm the user is presented with containing the snippet info
      * @return ModelAndView mav
      */
     @RequestMapping(value = "/edit/{snippetId}", method = RequestMethod.GET)
-    public ModelAndView editSnippet(@PathVariable Long snippetId, @Valid EditSnippetForm editSnippetForm) {
+    public ModelAndView editSnippet(@PathVariable Long snippetId) {
         LOGGER.debug("trying to edit " + snippetId);
         ModelAndView mav = new ModelAndView();
         try {
             Snippet snippet = snippetService.loadById(snippetId);
             Account account = getContextAccount();
+            EditSnippetForm editSnippetForm = new EditSnippetForm();
             LOGGER.info(snippet);
             if (snippet != null) {
                 LOGGER.info("Snippet found");
                 if (account != null && snippet.getAuthor().getUsername().equals(account.getUsername())) {
                     LOGGER.info("Username matches " + snippet.getAuthor().getUsername());
                     mav.setViewName("snippet/editSnippet");
-                    editSnippetForm.loadSnippet(snippet); //TODO change to importSnippet
+                    editSnippetForm.importSnippet(snippet);
                     mav.addObject("editSnippetForm", editSnippetForm);
                 } else {
                     LOGGER.info(SecurityContextHolder.getContext().getAuthentication().getName() + " isn't the author " + snippet.getAuthor().getUsername());

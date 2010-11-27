@@ -44,16 +44,6 @@ public class SnippetTest {
     }
 
     @Test
-    public void testSnippetConstructorForm() {
-        when(mockEditSnippetForm.getContent()).thenReturn(content);
-        when(mockEditSnippetForm.getTitle()).thenReturn(title);
-        when(mockEditSnippetForm.getSnippetId()).thenReturn(snippetId);
-        Snippet newSnippet = new Snippet(mockAccount, mockEditSnippetForm);
-        assertEquals(content, newSnippet.getContent());
-        assertEquals(mockAccount, newSnippet.getAuthor());
-    }
-
-    @Test
     public void testSnippetConstructorTitle() {
         Snippet newSnippet = new Snippet(mockAccount, title);
         assertEquals("", newSnippet.getContent());

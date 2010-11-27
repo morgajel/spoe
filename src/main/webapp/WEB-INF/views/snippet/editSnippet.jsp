@@ -61,7 +61,8 @@ jQuery(function() {
 
     <form:textarea path="content" cssClass="wymeditor"/>
         <form:errors path="content" />
-
+    <form:label for="published" path="published"cssErrorClass="error">Publish?</form:label>
+    <form:checkbox path="published"/><br/>
     <input type="submit" class="wymupdate" value="save" />
 </form:form>
 

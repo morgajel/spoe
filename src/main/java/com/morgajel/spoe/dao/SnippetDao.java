@@ -42,5 +42,12 @@ public interface SnippetDao {
      * @return List<Snippet>
      */
     List<Snippet> loadByAuthor(Account account);
+    
+    /**
+     * List all snippets in the datasource owned by a given account that are published.
+     * @param account account to look for
+     * @return List<Snippet>
+     */
+    List<Snippet> loadPublishedByAuthor(Account account);
 
 }

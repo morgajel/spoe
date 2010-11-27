@@ -65,6 +65,7 @@ create table snippet (
         snippet_id          integer      not null unique auto_increment primary key,
         title               varchar(255) not null, 
         account_id          integer      not null,
+        published           boolean      default false,
         CONSTRAINT FOREIGN KEY (account_id) REFERENCES account(account_id),
         last_modified_date  timestamp    not null default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         creation_date       datetime,

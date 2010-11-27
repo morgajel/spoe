@@ -61,4 +61,11 @@ public class SnippetServiceImpl implements SnippetService {
         List<Snippet> snippet = snippetDao.loadByAuthor(account);
         return snippet;
     }
+    
+    @Override
+    public List<Snippet> loadPublishedByAuthor(Account account) {
+        LOGGER.info("Loading published snippets owned by  " + account.getUsername());
+        List<Snippet> snippet = snippetDao.loadPublishedByAuthor(account);
+        return snippet;
+    }
 }

@@ -10,11 +10,12 @@ import com.morgajel.spoe.model.Snippet;
  */
 public class EditSnippetForm {
     @NotEmpty
-    @DecimalMin(value = "1")
     private Long snippetId;
     private String content;
     @NotEmpty
     private String title;
+
+    private boolean published;
 
     public Long getSnippetId() {
         return snippetId;
@@ -35,13 +36,26 @@ public class EditSnippetForm {
         this.title = pTitle;
     }
     /**
-     * Load a snippet's properties into the editSnippetForm.
+     * @param pPublished the published to set
+     */
+    public void setPublished(boolean pPublished) {
+        this.published = pPublished;
+    }
+    /**
+     * @return the published
+     */
+    public boolean getPublished() {
+        return published;
+    }
+    /**
+     * import a snippet's properties into the editSnippetForm.
      * @param pSnippet source snippet
      */
-    public void loadSnippet(Snippet pSnippet) {
+    public void importSnippet(Snippet pSnippet) {
         this.title = pSnippet.getTitle();
         this.snippetId = pSnippet.getSnippetId();
         this.content = pSnippet.getContent();
+        this.published = pSnippet.getPublished();
 
     }
 

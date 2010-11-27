@@ -1,6 +1,7 @@
 package com.morgajel.spoe.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -25,12 +26,14 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 import com.morgajel.spoe.annotation.ValidUsername;
 import com.morgajel.spoe.model.Account;
+import com.morgajel.spoe.model.Snippet;
 import com.morgajel.spoe.model.Account.Experience;
 import com.morgajel.spoe.model.Account.IMProtocol;
 import com.morgajel.spoe.model.Role;
 
 import com.morgajel.spoe.service.AccountService;
 import com.morgajel.spoe.service.RoleService;
+import com.morgajel.spoe.service.SnippetService;
 import com.morgajel.spoe.web.ContactInformationForm;
 import com.morgajel.spoe.web.ForgotPasswordForm;
 import com.morgajel.spoe.web.PasswordChangeForm;
@@ -50,6 +53,8 @@ public class AccountController extends MultiActionController {
     private SimpleMailMessage templateMessage;
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private SnippetService snippetService;
     @Autowired
     private RoleService roleService;
     @Autowired
@@ -220,9 +225,10 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
             Account account = accountService.loadByUsername(username);
             LOGGER.info(account);
             if (account != null && !username.equals("anonymousUser")) {
-                mav.addObject("message", username);
+                List<Snippet> snippets = snippetService.loadPublishedByAuthor(account);
                 mav.setViewName("account/viewUser");
                 mav.addObject("account", account);
+                mav.addObject("snippets", snippets);
             } else {
                 LOGGER.info("account doesn't exist");
                 String message = messageSource.getMessage("account.usernamenotfound", new Object[] {username}, LOCALE);
@@ -490,9 +496,12 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Account account = accountService.loadByUsername(username);
+        //FIXME this could be trouble without testing
+        List<Snippet> snippets = snippetService.loadPublishedByAuthor(account);
         mav.setViewName("account/view");
         mav.addObject("message", "");
         mav.addObject("account", account);
+        mav.addObject("snippets", snippets);
         return mav;
     }
 
@@ -559,6 +568,14 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
     public AccountService getAccountService() {
         return this.accountService;
     }
+    public SnippetService getSnippetService() {
+        return snippetService;
+    }
+
+    public void setSnippetService(SnippetService snippetService) {
+        this.snippetService = snippetService;
+    }
+
     public void setMailSender(MailSender pMailSender) {
         this.mailSender = pMailSender;
     }

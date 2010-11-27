@@ -5,7 +5,7 @@
 
 <div class="snippetList">
 <h2><%=request.getParameter("snippetTitle")%></h2>
-    <display:table name="${account.snippets}" id="snippet" pagesize="<%=new Integer(request.getParameter("pageSize"))%>" keepStatus="true" requestURI="/account" defaultsort="1" sort="list" defaultorder="descending"> 
+    <display:table name="${snippets}" id="snippet" pagesize="<%=new Integer(request.getParameter("pageSize"))%>" keepStatus="true" requestURI="/account" defaultsort="1" sort="list" defaultorder="descending"> 
         <display:column property="snippetId" title="ID" class='id'  format="{0,number,0}" sortable="true" />
         <display:column title="Title"  sortable="true">
             <a href="/snippet/id/${snippet.snippetId}">${snippet.title}</a>
@@ -15,6 +15,9 @@
             <display:column title="Editable" >
                 <a href="/snippet/edit/${snippet.snippetId}">[edit]</a>
             </display:column>
+            <!-- FIXME have a more elegant output than true and false -->
+            <display:column property="published" title="Published"  sortable="true" />
         </sec:authorize>
     </display:table>
+    
 </div>
