@@ -579,7 +579,6 @@ public class AccountControllerTest {
         when(mockAccountService.loadByUsername(USERNAME)).thenReturn(mockAccount);
 
         ModelAndView mav = accountController.displayUser(USERNAME);
-        assertEquals(USERNAME, mav.getModel().get("message"));
         assertEquals("account/viewUser", mav.getViewName());
         assertEquals(mockAccount, mav.getModel().get("account"));
     }
