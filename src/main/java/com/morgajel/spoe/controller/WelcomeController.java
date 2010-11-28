@@ -39,11 +39,12 @@ public class WelcomeController {
      * @return ModelAndView
      */
     @RequestMapping("/")
-    public ModelAndView defaultview() {
+    public ModelAndView welcomePage() {
         LOGGER.info("something witty");
         ModelAndView mav = new ModelAndView();
-        String message = "";
+        String message = "Welcome to SPoE!";
         mav.addObject("message", message);
+        mav.addObject("recentSnippets", snippetService.loadRecentlyModifiedPublished(5));
         mav.setViewName("welcome");
         return mav;
     }

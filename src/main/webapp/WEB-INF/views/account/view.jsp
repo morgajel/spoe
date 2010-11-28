@@ -19,6 +19,7 @@ ${message}
     <jsp:include page="/WEB-INF/jsp/snippetList.jsp" >
         <jsp:param name="snippetTitle" value="Recent Snippets"/>
         <jsp:param name="pageSize" value="5"/>
+        <jsp:param name="snippets" value="${snippets}"/>
     </jsp:include>
 
      

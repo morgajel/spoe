@@ -8,6 +8,9 @@
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
 	<mvc:annotation-driven />
+    <mvc:resources mapping="/images/**" location="/images/"/>
+    <mvc:resources mapping="/css/**" location="/css/"/>
+    <mvc:resources mapping="/js/**" location="/js/"/>
 	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
 	<bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping" />
 
@@ -20,7 +23,7 @@
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations" value="file:${catalina.base}/conf/env.properties"/>
     </bean>
-
+    <bean id="welcomeController" class="com.morgajel.spoe.controller.WelcomeController"/>
 
     <bean id="accountController" class="com.morgajel.spoe.controller.AccountController">
         <property name="mailSender" ref="mailSender"/>

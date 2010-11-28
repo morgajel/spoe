@@ -24,7 +24,7 @@ import com.morgajel.spoe.web.EditSnippetForm;
  * Controls all snippet interactions, etc.
  */
 @Controller
-public class SnippetController extends MultiActionController {
+public class SnippetController {
 
     @Autowired
     private AccountService accountService;
@@ -50,7 +50,7 @@ public class SnippetController extends MultiActionController {
      * @param editSnippetForm the form you are submitting with snippet data.
      * @return ModelAndView mav
      */
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    @RequestMapping(value = "save", method = RequestMethod.POST)
     //TODO figure out why I can't mark editSnippetForm @Valid
     public ModelAndView saveSnippet(EditSnippetForm editSnippetForm) {
         ModelAndView mav = new ModelAndView();
@@ -105,7 +105,7 @@ public class SnippetController extends MultiActionController {
      * @param snippetId The ID of the snippet you wish to edit.
      * @return ModelAndView mav
      */
-    @RequestMapping(value = "/edit/{snippetId}", method = RequestMethod.GET)
+    @RequestMapping(value = "edit/{snippetId}", method = RequestMethod.GET)
     public ModelAndView editSnippet(@PathVariable Long snippetId) {
         LOGGER.debug("trying to edit " + snippetId);
         ModelAndView mav = new ModelAndView();
@@ -149,7 +149,7 @@ public class SnippetController extends MultiActionController {
      * @param snippetId The snippet you wish to display.
      * @return ModelAndView mav
      */
-    @RequestMapping(value = "/id/{snippetId}", method = RequestMethod.GET)
+    @RequestMapping(value = "id/{snippetId}", method = RequestMethod.GET)
     public ModelAndView displaySnippet(@PathVariable Long snippetId) {
         LOGGER.debug("trying to display " + snippetId);
         ModelAndView mav = new ModelAndView();
@@ -185,7 +185,7 @@ public class SnippetController extends MultiActionController {
      * This will display the user's snippets.
      * @return ModelAndView mav
      */
-    @RequestMapping("/my")
+    @RequestMapping("my")
     public ModelAndView showMySnippets() {
         LOGGER.info("showing user snippets");
         ModelAndView mav = new ModelAndView();
@@ -213,7 +213,7 @@ public class SnippetController extends MultiActionController {
      * This will display the snippet creation form.
      * @return ModelAndView mav
      */
-    @RequestMapping("/create")
+    @RequestMapping("create")
     public ModelAndView createSnippetForm() {
         LOGGER.info("showing the createSnippetForm");
         ModelAndView  mav = new ModelAndView();

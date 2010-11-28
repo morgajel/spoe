@@ -71,4 +71,9 @@ public class SnippetDaoImpl implements SnippetDao {
     public List<Snippet> loadPublishedByAuthor(Account account) {
         return (List<Snippet>) sessionFactory.getCurrentSession().getNamedQuery("findPublishedSnippetByAuthor").setLong("account_id", account.getAccountId()).list();
     }
+    @Override
+    public List<Snippet> loadRecentlyModifiedPublished(int count) {
+        return (List<Snippet>) sessionFactory.getCurrentSession().getNamedQuery("findRecentlyModifiedPublished").setMaxResults(5).list();
+    }
+    
 }

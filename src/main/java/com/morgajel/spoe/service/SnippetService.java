@@ -45,5 +45,10 @@ public interface SnippetService {
      * @return List<Snippet>
      */
     List<Snippet> loadPublishedByAuthor(Account account);
-
+    /**
+     * List x published snippets that were recently modified.
+     * @param count number of snippets to return
+     * @return List<Snippet>
+     */
+    List<Snippet> loadRecentlyModifiedPublished(int count);
 }

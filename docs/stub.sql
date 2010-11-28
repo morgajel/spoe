@@ -81,22 +81,22 @@ insert into snippet(title,account_id,content ) values('Text test1',1,'first bloc
 insert into snippet(title,account_id,content ) values('Text test2',2,'second block of text');
 insert into snippet(title,account_id,content ) values('Text test3',1,'third block of text');
 insert into snippet(title,account_id,content ) values('Text test4',1,'block of text');
-insert into snippet(title,account_id,content ) values('Text test5',1,'5 block of text');
-insert into snippet(title,account_id,content ) values('Text test6',1,'6 block of text');
+insert into snippet(title,account_id,content ) values('Text test5',3,'5 block of text');
+insert into snippet(title,account_id,content ) values('Text test6',3,'6 block of text');
 insert into snippet(title,account_id,content ) values('Text test7',2,'7 block of text');
 insert into snippet(title,account_id,content ) values('Text test8',2,'8 block of text');
 insert into snippet(title,account_id,content ) values('Text test9',1,'9 block of text');
 insert into snippet(title,account_id,content ) values('Text test10',1,'10 block of text');
-insert into snippet(title,account_id,content ) values('Text test11',1,'11 block of text');
-insert into snippet(title,account_id,content ) values('Text test12',1,'12 block of text');
-insert into snippet(title,account_id,content ) values('Text test13',1,'13 block of text');
-insert into snippet(title,account_id,content ) values('Text test14',1,'14 block of text');
-insert into snippet(title,account_id,content ) values('Text test15',1,'15 block of text');
-insert into snippet(title,account_id,content ) values('Text test16',1,'16 block of text');
-insert into snippet(title,account_id,content ) values('Text test17',1,'17 block of text');
-insert into snippet(title,account_id,content ) values('Text test18',1,'18 block of text');
-insert into snippet(title,account_id,content ) values('Text test19',1,'19 block of text');
-insert into snippet(title,account_id,content ) values('Text test20',1,'20 block of text');
+insert into snippet(title,account_id,content,published ) values('Text Sample 1',1,'A simple block of text for Sample 1',true);
+insert into snippet(title,account_id,content,published ) values('Text Sample 2',2,'A simple block of text for Sample 2',true);
+insert into snippet(title,account_id,content,published ) values('Text Sample 3',3,'A simple block of text for Sample 3',true);
+insert into snippet(title,account_id,content,published ) values('Text Sample 4',4,'A simple block of text for Sample 4',true);
+insert into snippet(title,account_id,content,published ) values('Text Sample 5',1,'A simple block of text for Sample 5',true);
+insert into snippet(title,account_id,content,published ) values('Text Sample 6',2,'A simple block of text for Sample 6',true);
+insert into snippet(title,account_id,content,published ) values('Text Sample 7',3,'A simple block of text for Sample 7',true);
+insert into snippet(title,account_id,content,published ) values('Text Sample 8',4,'A simple block of text for Sample 8',true);
+insert into snippet(title,account_id,content,published ) values('Text Sample 9',2,'A simple block of text for Sample 9',true);
+insert into snippet(title,account_id,content,published ) values('Text Sample10',2,'A simple block of text for Sample10',true);
 
 
 

@@ -22,7 +22,7 @@ import com.morgajel.spoe.service.SnippetService;
  * Controls all Search interactions.
  */
 @Controller
-public class SearchController extends MultiActionController {
+public class SearchController {
 
     @Autowired
     private AccountService accountService;
@@ -40,7 +40,7 @@ public class SearchController extends MultiActionController {
      * @param searchQuery the text you're searching for
      * @return ModelAndView mav
      */
-    @RequestMapping(value = "/")
+    @RequestMapping(value = "")
     public ModelAndView quickSearch(@RequestParam("q") final String searchQuery) {
         LOGGER.info("Searching for " + searchQuery);
         ModelAndView mav = new ModelAndView();

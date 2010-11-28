@@ -70,8 +70,9 @@ margin-right:10px;
 /*--------snippet list------------------*/
 
 .snippetList {
+    display:inline-block;
     border: 1px solid #000;
-    width:450px;
+    width:425px;
     background:#37882e; 
     padding: 5px;
     margin-left:5px;
@@ -85,11 +86,12 @@ margin-right:10px;
     font-size:20px;
 }
 
-.snippetList table{ 
+.snippetList table{
+     
     border-collapse:collapse;
     font-size: 12px;
     border: 1px solid #000;
-    width:450px;
+    width:425px;
 }
 .snippetList table th { 
     background:#0d5f19 url(/images/header_bkg.png) repeat-x scroll center left; 
@@ -110,6 +112,7 @@ margin-right:10px;
 .message {
     margin-left:5px;
 }
+
 .editAccountSection {
     display:inline-block;
     width:375px;

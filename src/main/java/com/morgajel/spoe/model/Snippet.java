@@ -60,6 +60,10 @@ import com.morgajel.spoe.web.EditSnippetForm;
     @NamedQuery(
         name = "findPublishedSnippetByAuthor",
         query = "from Snippet snip where published=true and snip.accountId = :account_id"
+    ),
+    @NamedQuery(
+        name = "findRecentlyModifiedPublished",
+        query = "from Snippet snip where published=true order by last_modified_date"
     )
 })
 

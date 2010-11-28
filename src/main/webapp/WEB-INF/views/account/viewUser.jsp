@@ -20,6 +20,7 @@ Info about ${account.username}.
     <jsp:include page="/WEB-INF/jsp/snippetList.jsp">
         <jsp:param name="snippetTitle" value="Snippets from ${account.username}"/>
         <jsp:param name="pageSize" value="10"/>
+        <jsp:param name="snippets" value="${snippets}"/>
     </jsp:include>
 
 <%@ include file="/WEB-INF/jsp/footer.jsp"%>
