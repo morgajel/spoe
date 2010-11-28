@@ -283,11 +283,11 @@ public class SnippetControllerTest {
     public void testDisplaySnippet() {
         when(mockContext.getAuthentication().getName()).thenReturn(username);
         when(mockSnippetService.loadById(snippetId)).thenReturn(mockSnippet);
+        when(mockSnippet.getPublished()).thenReturn(true);
         ModelAndView mav = snippetController.displaySnippet(snippetId);
 
         assertEquals("snippet/viewSnippet", mav.getViewName());
         assertEquals(mockSnippet, mav.getModel().get("snippet"));
-        assertEquals("<!-- nothing important-->", mav.getModel().get("message"));
         assertNull(mav.getModel().get("editlink"));
     }
 
@@ -303,7 +303,6 @@ public class SnippetControllerTest {
 
         assertEquals("snippet/viewSnippet", mav.getViewName());
         assertEquals(mockSnippet, mav.getModel().get("snippet"));
-        assertEquals("<!-- nothing important-->", mav.getModel().get("message"));
         assertEquals("<div style='float:right;'><a href='/snippet/edit/" + snippetId + "'>[edit]</a></div>", mav.getModel().get("editlink"));
     }
     @Test
@@ -313,7 +312,7 @@ public class SnippetControllerTest {
 
         ModelAndView mav = snippetController.displaySnippet(snippetId);
 
-        assertEquals("snippet/viewSnippet", mav.getViewName());
+        assertEquals("snippet/snippetFailure", mav.getViewName());
         assertEquals("I'm sorry, " + snippetId + " was not found.", mav.getModel().get("message"));
     }
     @Test

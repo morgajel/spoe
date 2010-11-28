@@ -185,6 +185,7 @@ public class SnippetController {
             // TODO tell the user wtf happened
             LOGGER.error("Something failed while trying to display " + snippetId + ".", ex);
             mav.addObject("message", "Something failed while trying to display " + snippetId + ".");
+            mav.setViewName("snippet/snippetFailure");
         }
         return mav;
     }
