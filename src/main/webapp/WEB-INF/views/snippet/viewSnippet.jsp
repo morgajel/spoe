@@ -8,12 +8,17 @@
 <html>
         <%@ include file="/WEB-INF/jsp/header.jsp"%>
 ${editlink}
-<h1>${snippet.title}(${snippet.snippetId})</h1>
 
-<hr/>
-${snippet.content}
-<hr/>
 ${message}
+<div class="snippet">
+    <h1>${snippet.title}</h1>
+    <div class="user">Author: ${snippet.author.firstname} ${snippet.author.lastname} (${snippet.author.username})</div>
+    <div class="lastModified">Last Modfied: <fmt:formatDate pattern="yyyy/MM/dd hh:mm" value="${snippet.author.lastModifiedDate}" /></div>
+    <div class="snippetContent">
+        ${snippet.content}
+    </div>
+</div>
+
 	<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 	</body>
 </html>

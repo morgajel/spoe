@@ -8,11 +8,10 @@
 <html>
         <%@ include file="/WEB-INF/jsp/header.jsp"%>
 
-Snippet Failure
+${message}
 <hr/>
 <br/>
 
-${message}
 	<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 	</body>
 </html>

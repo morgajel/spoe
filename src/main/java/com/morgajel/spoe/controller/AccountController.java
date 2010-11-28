@@ -497,7 +497,7 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Account account = accountService.loadByUsername(username);
         //FIXME this could be trouble without testing
-        List<Snippet> snippets = snippetService.loadPublishedByAuthor(account);
+        List<Snippet> snippets = snippetService.loadByAuthor(account);
         mav.setViewName("account/view");
         mav.addObject("message", "");
         mav.addObject("account", account);

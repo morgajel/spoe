@@ -10,17 +10,10 @@
         <display:column title="Title"  sortable="true">
             <a href="/snippet/id/${snippet.snippetId}">${snippet.title}</a>
         </display:column>
-        <display:column property="lastModifiedDate" title="Last Modified" format="{0,date,yyyy/MM/dd hh:mm:ss a}"   sortable="true"  />
+        <display:column property="lastModifiedDate" title="Last Modified" format="{0,date,yyyy/MM/dd hh:mm a}"   sortable="true"  />
         <sec:authorize access='isAuthenticated()'>
-            <display:column title="Editable" >
+            <display:column title="Edit" >
                 <a href="/snippet/edit/${snippet.snippetId}">[edit]</a>
-            </display:column>
-            <!-- FIXME have a more elegant output than true and false -->
-            <display:column title="Published" >
-                <c:choose>
-                    <c:when test="${snippet.published}">yes</c:when>
-                    <c:otherwise>no</c:otherwise>
-                </c:choose>
             </display:column>
         </sec:authorize>
     </display:table>

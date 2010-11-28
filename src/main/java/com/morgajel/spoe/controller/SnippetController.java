@@ -158,24 +158,32 @@ public class SnippetController {
             Snippet snippet = snippetService.loadById(snippetId);
             LOGGER.info(snippet);
             if (snippet != null) {
-                if (account != null && snippet.getAuthor().getUsername().equals(account.getUsername())) {
-                    //FIXME html should not be here, sloppy sloppy.
-                    mav.addObject("editlink", "<div style='float:right;'><a href='/snippet/edit/" + snippet.getSnippetId() + "'>[edit]</a></div>");
+                 if (account != null && snippet.getAuthor().getUsername().equals(account.getUsername())) {
+                     // user logged in and owns it.
+                     mav.addObject("editlink", "<div style='float:right;'><a href='/snippet/edit/" + snippet.getSnippetId() + "'>[edit]</a></div>");
+                     mav.addObject("snippet", snippet);
+                     mav.setViewName("snippet/viewSnippet");
+                 } else if (snippet.getPublished()) {
+                     // user not logged in or doesn't own it
+                     mav.addObject("snippet", snippet);
+                     mav.setViewName("snippet/viewSnippet");
+                 } else {
+                     //  note is not published
+                     String message = "I'm sorry, " + snippetId + " is not available.";
+                     LOGGER.error(message);
+                     mav.setViewName("snippet/snippetFailure");
+                     mav.addObject("message", message);
                 }
-                mav.addObject("message", "<!-- nothing important-->");
-                mav.setViewName("snippet/viewSnippet");
-                mav.addObject("snippet", snippet);
             } else {
                 String message = "I'm sorry, " + snippetId + " was not found.";
                 LOGGER.error(message);
-                mav.setViewName("snippet/viewSnippet");
+                mav.setViewName("snippet/snippetFailure");
                 mav.addObject("message", message);
             }
         } catch (Exception ex) {
             // TODO catch actual errors and handle them
             // TODO tell the user wtf happened
             LOGGER.error("Something failed while trying to display " + snippetId + ".", ex);
-            mav.setViewName("snippet/snippetFailure");
             mav.addObject("message", "Something failed while trying to display " + snippetId + ".");
         }
         return mav;
