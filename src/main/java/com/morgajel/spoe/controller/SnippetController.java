@@ -50,7 +50,7 @@ public class SnippetController {
      * @param editSnippetForm the form you are submitting with snippet data.
      * @return ModelAndView mav
      */
-    @RequestMapping(value = "save", method = RequestMethod.POST)
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
     //TODO figure out why I can't mark editSnippetForm @Valid
     public ModelAndView saveSnippet(EditSnippetForm editSnippetForm) {
         ModelAndView mav = new ModelAndView();
@@ -63,6 +63,8 @@ public class SnippetController {
                 Snippet snippet = new Snippet(account);
                 snippet.configure(editSnippetForm);
                 snippetService.saveSnippet(snippet);
+                editSnippetForm.importSnippet(snippet);
+                // FIXME how do I get snippetID in there??
                 LOGGER.info("saved new snippet " + snippet);
                 mav.setViewName("snippet/editSnippet");
                 mav.addObject("message", "Snippet saved.");
@@ -93,6 +95,7 @@ public class SnippetController {
         } catch (Exception ex) {
             // TODO catch actual errors and handle them
             // TODO tell the user wtf happened
+            LOGGER.error("It couldn't save " + editSnippetForm);
             LOGGER.error("damnit, something failed.", ex);
             mav.setViewName("snippet/snippetFailure");
             mav.addObject("message", "something failed.");
@@ -105,7 +108,7 @@ public class SnippetController {
      * @param snippetId The ID of the snippet you wish to edit.
      * @return ModelAndView mav
      */
-    @RequestMapping(value = "edit/{snippetId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/edit/{snippetId}", method = RequestMethod.GET)
     public ModelAndView editSnippet(@PathVariable Long snippetId) {
         LOGGER.debug("trying to edit " + snippetId);
         ModelAndView mav = new ModelAndView();
@@ -149,7 +152,7 @@ public class SnippetController {
      * @param snippetId The snippet you wish to display.
      * @return ModelAndView mav
      */
-    @RequestMapping(value = "id/{snippetId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/id/{snippetId}", method = RequestMethod.GET)
     public ModelAndView displaySnippet(@PathVariable Long snippetId) {
         LOGGER.debug("trying to display " + snippetId);
         ModelAndView mav = new ModelAndView();
@@ -222,7 +225,7 @@ public class SnippetController {
      * This will display the snippet creation form.
      * @return ModelAndView mav
      */
-    @RequestMapping("create")
+    @RequestMapping("/create")
     public ModelAndView createSnippetForm() {
         LOGGER.info("showing the createSnippetForm");
         ModelAndView  mav = new ModelAndView();
@@ -236,7 +239,7 @@ public class SnippetController {
      * Will show the generic snippet page.
      * @return ModelAndView mav
      */
-    @RequestMapping
+    @RequestMapping("/")
     public ModelAndView defaultView() {
         LOGGER.info("showing the default view");
         ModelAndView  mav = new ModelAndView();

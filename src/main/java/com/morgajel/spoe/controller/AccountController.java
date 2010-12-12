@@ -465,12 +465,24 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
         String message;
         if (passform.getPassword().equals(passform.getConfirmPassword())) {
             Account account = accountService.loadByUsernameAndChecksum(passform.getUsername(), passform.getChecksum());
-            account.setEnabled(true);
-            account.setHashedPassword(passform.getPassword());
-            accountService.addAccount(account);
-            LOGGER.info("set password, then display view: " + passform);
-            message = messageSource.getMessage("account.created", new Object[] {}, LOCALE);
-            mav.setViewName("redirect:/");
+            if (account != null) {
+                account.setEnabled(true);
+                account.setHashedPassword(passform.getPassword());
+                accountService.addAccount(account);
+                LOGGER.info("set password, then display view: " + passform);
+                message = messageSource.getMessage("account.created", new Object[] {}, LOCALE);
+                mav.setViewName("redirect:/");
+            } else {
+                //FIXME unrelated to this code; cache static js files
+                passform.setPassword("");
+                passform.setConfirmPassword("");
+                mav.setViewName("account/activationSuccess");
+                //FIXME this should be an error
+                message = messageSource.getMessage("account.usernamenotfound", new Object[] {passform.getUsername()}, LOCALE);
+                LOGGER.info(message);
+                mav.addObject("message", message);
+                mav.addObject("passform", passform);
+            }
         } else {
             //FIXME unrelated to this code; cache static js files
             passform.setPassword("");
@@ -479,9 +491,9 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
             //FIXME this should be an error
             message = messageSource.getMessage("account.passnomatch", new Object[] {}, LOCALE);
             LOGGER.info(message);
+            mav.addObject("message", message);
             mav.addObject("passform", passform);
         }
-        mav.addObject("message", message);
         return mav;
     }
     /**
