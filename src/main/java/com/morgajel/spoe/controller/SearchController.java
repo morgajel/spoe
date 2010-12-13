@@ -1,9 +1,17 @@
 package com.morgajel.spoe.controller;
 
 
+import java.util.List;
 import java.util.Locale;
 
 import org.apache.log4j.Logger;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.queryParser.MultiFieldQueryParser;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.search.FullTextSession;
+import org.hibernate.search.Search;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -12,9 +20,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 import com.morgajel.spoe.model.Account;
+import com.morgajel.spoe.model.Snippet;
 import com.morgajel.spoe.service.AccountService;
 import com.morgajel.spoe.service.SnippetService;
 
@@ -30,6 +38,8 @@ public class SearchController {
     private SnippetService snippetService;
     @Autowired
     private MessageSource messageSource;
+    @Autowired
+    private SessionFactory sessionFactory;
 
     public static final Locale LOCALE = Locale.getDefault();
 
@@ -47,8 +57,24 @@ public class SearchController {
         String message;
         try {
             //FIXME need to sanitize user input
-            //TODO search for stuff
-            //mav.addObject("results", results);
+            //FIXME need to remove unpublished data
+            //FIXME need to display author
+            //FIXME need to search text
+            Session session = sessionFactory.openSession();
+            FullTextSession fullTextSession = Search.getFullTextSession(session);
+            Transaction tx = fullTextSession.beginTransaction();
+
+            String[] fields = new String[]{"title", "authors.name", "lastModifiedDate"};
+            MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, new StandardAnalyzer());
+            org.apache.lucene.search.Query query = parser.parse(searchQuery);
+            org.hibernate.Query hibQuery = fullTextSession.createFullTextQuery(query, Snippet.class);
+
+            List results = hibQuery.list();
+
+            tx.commit();
+            session.close();
+
+            mav.addObject("results", results);
             message = messageSource.getMessage("search.results", new Object[] {searchQuery}, LOCALE);
         } catch (Exception ex) {
             message = messageSource.getMessage("search.searchfailed", new Object[] {searchQuery}, LOCALE);
@@ -75,6 +101,14 @@ public class SearchController {
     public SnippetService getSnippetService() {
         return this.snippetService;
     }
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
     public MessageSource getMessageSource() {
         return messageSource;
     }
