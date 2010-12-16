@@ -1,7 +1,7 @@
 -- A simple schema and stub accounts
 
 
-drop table if exists role, account_role, account, snippet,improtocol,experience;
+drop table if exists role, account_role, account, snippet,improtocol,experience,review;
 
 
 create table role (
@@ -75,6 +75,23 @@ create table snippet (
 
 );
 
+create table review (
+        review_id           integer      not null unique auto_increment primary key,
+        account_id          integer      not null,
+        snippet_id          integer      not null,
+        last_modified_date  timestamp    not null default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        creation_date       datetime,
+        published           boolean      default false,
+        CONSTRAINT FOREIGN KEY (account_id) REFERENCES account(account_id),
+        CONSTRAINT FOREIGN KEY (snippet_id) REFERENCES snippet(snippet_id),
+        content             mediumtext   not null
+
+);
+
+insert into review(account_id,snippet_id,content,published) values(1,1,'this snippet sucks',true);
+insert into review(account_id,snippet_id,content,published) values(2,1,'I thought it was ok',true);
+insert into review(account_id,snippet_id,content,published) values(3,1,'utter crap, but is sekret',false);
+
 
 
 insert into snippet(title,account_id,content ) values('Text test1',1,'first block of text');
@@ -87,6 +104,8 @@ insert into snippet(title,account_id,content ) values('Text test7',2,'7 block of
 insert into snippet(title,account_id,content ) values('Text test8',2,'8 block of text');
 insert into snippet(title,account_id,content ) values('Text test9',1,'9 block of text');
 insert into snippet(title,account_id,content ) values('Text test10',1,'10 block of text');
+insert into snippet(title,account_id,content,published ) values('unpublished',1,'This is an unpublished article',false);
+insert into snippet(title,account_id,content,published ) values('published'  ,1,'This is a published article'   ,true);
 insert into snippet(title,account_id,content,published ) values('Text Sample 1',1,'A simple block of text for Sample 1',true);
 insert into snippet(title,account_id,content,published ) values('Text Sample 2',2,'A simple block of text for Sample 2',true);
 insert into snippet(title,account_id,content,published ) values('Text Sample 3',3,'A simple block of text for Sample 3',true);

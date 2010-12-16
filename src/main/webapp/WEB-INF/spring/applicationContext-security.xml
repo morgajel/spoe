@@ -19,7 +19,7 @@
         <intercept-url pattern="/account/*" access="isAuthenticated()" />
         <intercept-url pattern="/**" access="permitAll" />
         <form-login default-target-url='/account' always-use-default-target='true' /> 
-        <logout logout-success-url='/index.jsp?logout=success'/>
+        <logout logout-success-url='/?logout=success'/>
 
 <!--		<session-management invalid-session-url="/errors/timeout.jsp"/>-->
 	</http>

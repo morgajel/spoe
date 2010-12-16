@@ -2,14 +2,18 @@ package com.morgajel.spoe.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
@@ -97,6 +101,30 @@ public class Snippet implements Serializable {
         this.author = pAuthor;
     }
 
+@OneToMany (fetch = FetchType.EAGER)
+@JoinColumn (name = "snippet_id")
+private Set<Review> reviews = new HashSet();
+
+public Set<Review> getReviews() {
+    return reviews;
+}
+
+public void setReviews(Set<Review> pReviews) {
+    this.reviews = pReviews;
+}
+/**
+ * Adds a review to the current set of Review. if reviews is null, instantiates a new set.
+ * HashSet and adds the review to it.
+ * @param review a review to add to the snippet.
+ **/
+public void addReview(Review review) {
+    reviews.add(review);
+    LOGGER.info("added review to " + title + ", check it out:" + reviews);
+}
+
+    
+    
+    
     @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

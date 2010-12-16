@@ -35,10 +35,12 @@
     <bean id="snippetController" class="com.morgajel.spoe.controller.SnippetController">
         <property name="mailSender" ref="mailSender"/>
     </bean>
+    <bean id="reviewController" class="com.morgajel.spoe.controller.ReviewController">
+        <property name="mailSender" ref="mailSender"/>
+    </bean>
     <bean id="searchController" class="com.morgajel.spoe.controller.SearchController">
         <property name="messageSource" ref="messageSource"/>
         <property name="sessionFactory" ref="mySessionFactory" />
-        
     </bean>
 </beans>
 

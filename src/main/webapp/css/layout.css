@@ -161,3 +161,47 @@ margin-right:10px;
     padding:15px;
     background:#0d5f19;
 }
+
+.snippet div.reviewers {
+    display:inline-block;
+    float:right;
+    border: 1px solid #000;
+    width:155px;
+    background:#37882e; 
+    padding: 5px;
+    margin-left:5px;    
+}
+
+.snippet div.reviewers .pagebanner { font-size: 10px; padding-left:25px;}
+.snippet div.reviewers .pagelinks { font-size: 10px;}
+
+.snippet div.reviewers h2 {
+    margin-top:3px;
+    width:150px;
+    margin-bottom:5px;
+    font-size:20px;
+}
+
+.snippet div.reviewers table {
+    width:100%;
+    border-collapse:collapse;
+    font-size: 12px;
+    border: 1px solid #000;
+    
+}
+.snippet div.reviewers table th { 
+    background:#0d5f19 url(/images/header_bkg.png) repeat-x scroll center left; 
+    color:#fff; 
+    text-align: left;
+    padding: 5px;
+}
+.snippet div.reviewers table td { 
+    background:#b5e8b0 url(/images/row_bkg.png) repeat-x scroll center left; 
+    padding: 5px;
+    border: 1px solid #000;
+}
+
+.snippet div.reviewers table td.id {
+    width:40px;
+    text-align:right;
+}

@@ -64,7 +64,7 @@ public class SearchController {
             FullTextSession fullTextSession = Search.getFullTextSession(session);
             Transaction tx = fullTextSession.beginTransaction();
 
-            String[] fields = new String[]{"title", "authors.name", "lastModifiedDate"};
+            String[] fields = new String[]{"title", "authors.name", "content", "lastModifiedDate"};
             MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, new StandardAnalyzer());
             org.apache.lucene.search.Query query = parser.parse(searchQuery);
             org.hibernate.Query hibQuery = fullTextSession.createFullTextQuery(query, Snippet.class);
@@ -86,6 +86,41 @@ public class SearchController {
         return mav;
     }
 
+/**
+ * Runs a Full Index on all indexes.
+ * @return ModelAndView mav
+ */
+@RequestMapping(value = "/reindex")
+public ModelAndView quickSearch() {
+    LOGGER.info("Attempting to reindex stuff.");
+    ModelAndView mav = new ModelAndView();
+    String message;
+    try {
+        //FIXME secure this or it could cause grief...
+        Session session = sessionFactory.openSession();
+        FullTextSession fullTextSession = Search.getFullTextSession(session);
+        Transaction tx = fullTextSession.beginTransaction();
+
+        List snippets = session.createQuery("from Snippet as snippet where published=true").list();
+        for (Object snippet : snippets) {
+          fullTextSession.index((Snippet) snippet);
+        }
+//FIXME noticed that lastmodified date isn't changing when snippets are updated.
+        //FIXME unrelated, logout no longer works
+        tx.commit();
+        session.close();
+
+        message = messageSource.getMessage("search.reindex", new Object[] {}, LOCALE);
+    } catch (Exception ex) {
+        message = messageSource.getMessage("search.reindexfailed", new Object[] {}, LOCALE);
+        LOGGER.error(message, ex);
+
+    }
+    mav.addObject("message", message);
+    mav.setViewName("search/results");
+    return mav;
+}
+
     public void setAccountService(AccountService pAccountService) {
         this.accountService = pAccountService;
     }
@@ -104,9 +139,8 @@ public class SearchController {
     public SessionFactory getSessionFactory() {
         return sessionFactory;
     }
-
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    public void setSessionFactory(SessionFactory pSessionFactory) {
+        this.sessionFactory = pSessionFactory;
     }
 
     public MessageSource getMessageSource() {

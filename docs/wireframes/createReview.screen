@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Master" x="6" y="6" measuredWidth="793" measuredHeight="529">
+    <screen href="master.screen#/"/>
+  </widgets>
+  <widgets xsi:type="model:Master" x="349" y="12" measuredWidth="444" measuredHeight="119">
+    <screen href="Logged_in.screen#/"/>
+  </widgets>
+  <widgets xsi:type="model:Panel" x="56" y="160" width="625" height="289" measuredWidth="625" measuredHeight="289"/>
+  <widgets xsi:type="model:Label" x="66" y="170" text="My Sample Snippet" measuredWidth="263" measuredHeight="37">
+    <font size="18" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="66" y="230" text="Author: Jesse Morgan" measuredWidth="158" measuredHeight="23">
+    <font bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="452" y="230" text="Last Modfied: 2010/12/13 08:20" measuredWidth="219" measuredHeight="23">
+    <font bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:Text" x="72" y="252" width="441" height="187" text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. " measuredWidth="441" measuredHeight="187" dummyText="true">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Panel" x="554" y="262" width="117" height="177" measuredWidth="117" measuredHeight="177"/>
+  <widgets xsi:type="model:Label" x="564" y="262" text="Reviewed By:" measuredWidth="99" measuredHeight="23">
+    <font bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:List" x="554" y="284" width="117" height="117" text="morgajel&#xA;jaxon&#xA;zswift&#xA;dmoore&#xA;" measuredWidth="117" measuredHeight="117" verticalScrollbar="true" alpha="0" rowHeight="30" horizontalLines="true">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Button" x="336" y="176" width="70" text="Review It!" measuredWidth="70" measuredHeight="25" style="pointleft">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Link" x="636" y="170" text="edit" measuredWidth="27" measuredHeight="23">
+    <font/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font/>
+</model:Screen>

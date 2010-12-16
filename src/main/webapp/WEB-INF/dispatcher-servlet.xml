@@ -23,6 +23,7 @@
                 <value>com.morgajel.spoe.model.Account</value>
                 <value>com.morgajel.spoe.model.Role</value>
                 <value>com.morgajel.spoe.model.Snippet</value>
+                <value>com.morgajel.spoe.model.Review</value>
             </list>
         </property>
         <property name="hibernateProperties">
@@ -35,8 +36,6 @@
 
                 <prop key="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</prop> 
                 <prop key="hibernate.search.default.indexBase">${catalina.base}/tmp/indexes</prop>
-                
-                
             </props>
         </property>
     </bean>

@@ -429,7 +429,9 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
         Account account = getContextAccount();
         String message;
         PersonalInformationForm personalInformationForm = new PersonalInformationForm();
+        ContactInformationForm contactInformationForm = new ContactInformationForm();
         if (account != null) {
+            contactInformationForm.loadFromAccount(account);
             personalInformationForm.loadAccount(account);
             if (account.verifyPassword(passwordChangeForm.getCurrentPassword())) {
                 if (passwordChangeForm.compareNewPasswords()) {
@@ -448,6 +450,7 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
         mav.addObject("message", message);
         mav.addObject("passwordChangeForm", new PasswordChangeForm());
         mav.addObject("personalInformationForm", personalInformationForm);
+        mav.addObject("contactInformationForm", contactInformationForm);
         mav.setViewName("account/editAccountForm");
         return mav;
     }

@@ -22,8 +22,8 @@ notfind "Exception"
 follow "Register"
 
 fv registrationForm username ${username}
-fv registrationForm email testuser@example.com
-fv registrationForm confirmEmail testuser@example.com
+fv registrationForm email testuser@localhost
+fv registrationForm confirmEmail testuser@localhost
 fv registrationForm firstname Bob
 fv registrationForm lastname Dole
 submit
@@ -88,19 +88,23 @@ find 'Personal Information'
 find 'Password Change'
 notfind "Exception"
 
-
+echo "changing name to Chuck Norris"
 fv personalInformationForm firstname Chuck
 fv personalInformationForm lastname Norris
 submit
+echo "submitted chuck."
 code 200
 tidy_ok
 find "Personal Information Updated."
 
 
+echo "Changing password"
 fv passwordChangeForm currentPassword ${password}
 fv passwordChangeForm newPassword ${password}2
 fv passwordChangeForm confirmPassword ${password}2
-submit
+showforms
+submit 4
+echo "submitted new password"
 code 200
 tidy_ok
 find "Password updated."
