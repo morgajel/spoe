@@ -15,18 +15,22 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 import com.morgajel.spoe.model.Account;
 import com.morgajel.spoe.service.AccountService;
+import com.morgajel.spoe.service.ReviewService;
 import com.morgajel.spoe.service.SnippetService;
 
 /**
  * Welcome page.
  */
 @Controller
+@RequestMapping("/welcome")
 public class WelcomeController {
 
     @Autowired
     private AccountService accountService;
     @Autowired
     private SnippetService snippetService;
+    @Autowired
+    private ReviewService reviewService;
     @Autowired
     private MessageSource messageSource;
 
@@ -45,6 +49,7 @@ public class WelcomeController {
         String message = "Welcome to SPoE!";
         mav.addObject("message", message);
         mav.addObject("recentSnippets", snippetService.loadRecentlyModifiedPublished(5));
+        mav.addObject("recentReviews", reviewService.loadRecentlyModifiedPublished(5));
         mav.setViewName("welcome");
         return mav;
     }

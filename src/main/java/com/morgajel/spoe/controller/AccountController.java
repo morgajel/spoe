@@ -45,6 +45,7 @@ import com.morgajel.spoe.web.SetPasswordForm;
  * Controls all account interactions from changing passwords, registering and activating accounts, etc.
  */
 @Controller
+@RequestMapping(value = "/account")
 public class AccountController {
 
     private VelocityEngine velocityEngine;
@@ -73,7 +74,7 @@ public class AccountController {
  * @param checksum hash of username, random password hash and enabled status
  * @param passform the password form you'll send to change the password.
  */
-@RequestMapping(value = "reset/{username}/{checksum}", method = RequestMethod.GET)
+@RequestMapping(value = "/reset/{username}/{checksum}", method = RequestMethod.GET)
 public ModelAndView resetPassword(@PathVariable @ValidUsername String username, @PathVariable String checksum, SetPasswordForm passform) {
     LOGGER.trace("trying to reset " + username + " with checksum " + checksum);
     ModelAndView mav = new ModelAndView();
@@ -120,7 +121,7 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
      * @param forgotPasswordForm form containing user info
      * @return ModelAndView mav
      */
-    @RequestMapping(value = "forgotPassword.submit", method = RequestMethod.POST)
+    @RequestMapping(value = "/forgotPassword.submit", method = RequestMethod.POST)
     public ModelAndView forgotPasswordForm(@Valid ForgotPasswordForm forgotPasswordForm) {
         ModelAndView mav = new ModelAndView();
         LOGGER.info("someone forgot their password...");
@@ -156,7 +157,7 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
      * Provide a user with a form for submitting a username or email address to request a password reset.
      * @return ModelAndView mav
      */
-    @RequestMapping(value = "forgotPassword", method = RequestMethod.GET)
+    @RequestMapping(value = "/forgotPassword", method = RequestMethod.GET)
     public ModelAndView forgotPasswordForm() {
         ModelAndView mav = new ModelAndView();
         mav.addObject("forgotPasswordForm", new ForgotPasswordForm());
@@ -172,7 +173,7 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
      * @param checksum hash of username, random password hash and enabled status
      * @param passform the password form you'll send to change the password.
      */
-    @RequestMapping(value = "activate/{username}/{checksum}", method = RequestMethod.GET)
+    @RequestMapping(value = "/activate/{username}/{checksum}", method = RequestMethod.GET)
     public ModelAndView activateAccount(@PathVariable @ValidUsername String username, @PathVariable String checksum, SetPasswordForm passform) {
         //NOTE I understand why I need to pass passform on the way out, but what/how/why am I passing it in? where is it coming from?
         LOGGER.trace("trying to activate " + username + " with checksum " + checksum);
@@ -217,7 +218,7 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
      * @param username username you wish to display.
      * @return ModelAndView mav
      */
-    @RequestMapping(value = "user/{username}", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
     public ModelAndView displayUser(@PathVariable @ValidUsername String username) {
         LOGGER.debug("trying to display " + username);
         ModelAndView mav = new ModelAndView();
@@ -252,7 +253,7 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
      * @param registrationForm contains initial user information
      * @param result I don't know that bind results is needed.
      */
-    @RequestMapping(value = "register.submit", method = RequestMethod.POST)
+    @RequestMapping(value = "/register.submit", method = RequestMethod.POST)
     public ModelAndView createAccount(@ModelAttribute("registrationForm") @Valid RegistrationForm registrationForm, BindingResult result) {
         ModelAndView mav = new ModelAndView();
         try {
@@ -300,7 +301,7 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
      * @param registrationForm the form needed to register
      * @return ModelAndView
      */
-    @RequestMapping("register")
+    @RequestMapping("/register")
     public ModelAndView getRegistrationForm(RegistrationForm registrationForm) {
         LOGGER.info("getregistrationForm loaded");
         ModelAndView  mav = new ModelAndView();
@@ -312,7 +313,7 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
      * Displays the form for Editing your account.
      * @return ModelAndView mav
      */
-    @RequestMapping(value = "edit")
+    @RequestMapping(value = "/edit")
     public ModelAndView editAccountForm() {
         ModelAndView  mav = new ModelAndView();
         PersonalInformationForm personalInformationForm = new PersonalInformationForm();
@@ -336,7 +337,7 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
      * @param contactInformationForm contact Information Form
      * @return ModelAndView mav
      */
-    @RequestMapping(value = "contactInformation.submit", method = RequestMethod.POST)
+    @RequestMapping(value = "/contactInformation.submit", method = RequestMethod.POST)
     public ModelAndView saveContactInformationForm(@Valid ContactInformationForm contactInformationForm) {
         ModelAndView  mav = new ModelAndView();
         Account account = getContextAccount();
@@ -381,7 +382,7 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
      * @param personalInformationForm Personal Information Form
      * @return ModelAndView mav
      */
-    @RequestMapping(value = "personalInformation.submit", method = RequestMethod.POST)
+    @RequestMapping(value = "/personalInformation.submit", method = RequestMethod.POST)
     public ModelAndView savePersonalInformationForm(@Valid PersonalInformationForm personalInformationForm) {
         ModelAndView  mav = new ModelAndView();
         Account account = getContextAccount();
@@ -423,7 +424,7 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
      * @param passwordChangeForm Password Change Form
      * @return ModelAndView mav
      */
-    @RequestMapping(value = "passwordChange.submit", method = RequestMethod.POST)
+    @RequestMapping(value = "/passwordChange.submit", method = RequestMethod.POST)
     public ModelAndView savePasswordChangeForm(PasswordChangeForm passwordChangeForm) {
         ModelAndView  mav = new ModelAndView();
         Account account = getContextAccount();
@@ -462,7 +463,7 @@ public ModelAndView resetPassword(@PathVariable @ValidUsername String username, 
      * @param passform password form
      * @return ModelAndView mav
      */
-    @RequestMapping(value = "activate.setpassword", method = RequestMethod.POST)
+    @RequestMapping(value = "/activate.setpassword", method = RequestMethod.POST)
     public ModelAndView setPassword(SetPasswordForm passform) {
         ModelAndView  mav = new ModelAndView();
         String message;

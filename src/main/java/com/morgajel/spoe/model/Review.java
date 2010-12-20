@@ -27,6 +27,8 @@ import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.Store;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.morgajel.spoe.web.EditReviewForm;
+import com.morgajel.spoe.web.EditSnippetForm;
 
 /**
  * @author jmorgan
@@ -168,6 +170,15 @@ public class Review implements Serializable {
         this.accountId = pAuthor.getAccountId();
         this.snippetId = pSnippet.getSnippetId();
     }
+    /**
+     * Configure base info from a given editReviewForm.
+     * @param editReviewForm for to use
+     */
+    public void configure(EditReviewForm editReviewForm) {
+        this.content = editReviewForm.getContent();
+        this.published = editReviewForm.getPublished();
+    }
+
     public Long getReviewId() {
         return reviewId;
     }

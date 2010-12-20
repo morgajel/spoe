@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 import com.morgajel.spoe.model.Account;
 import com.morgajel.spoe.model.Snippet;
@@ -24,6 +23,7 @@ import com.morgajel.spoe.web.EditSnippetForm;
  * Controls all snippet interactions, etc.
  */
 @Controller
+@RequestMapping(value = "/snippet")
 public class SnippetController {
 
     @Autowired
@@ -197,7 +197,7 @@ public class SnippetController {
      * This will display the user's snippets.
      * @return ModelAndView mav
      */
-    @RequestMapping("my")
+    @RequestMapping("/my")
     public ModelAndView showMySnippets() {
         LOGGER.info("showing user snippets");
         ModelAndView mav = new ModelAndView();

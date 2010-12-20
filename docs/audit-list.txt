@@ -1,0 +1,5 @@
+The following is a list of items that need to be periodically audited:
+
+Clean up FIXMEs
+Make sure spacing is properly set
+Ensure all text messages are in en_messages

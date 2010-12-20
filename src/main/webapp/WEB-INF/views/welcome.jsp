@@ -25,7 +25,9 @@
 <div class="snippetList">
     <h2>Recent Snippets</h2>
     <display:table name="recentSnippets" id="snippet" pagesize="5" keepStatus="true" requestURI="/" defaultsort="1" sort="list" defaultorder="descending"> 
-        <display:column property="author.username" title="User"/>
+        <display:column title="User">
+            <a href="/account/user/${snippet.author.username}">${snippet.author.username}</a>
+        </display:column>
         <display:column title="Title">
             <a href="/snippet/id/${snippet.snippetId}">${snippet.title}</a>
         </display:column>
@@ -35,13 +37,18 @@
 <div class="snippetList">
     <h2>Recent Reviews</h2>
     <display:table name="recentReviews" id="review" pagesize="5" keepStatus="true" requestURI="/" defaultsort="1" sort="list" defaultorder="descending"> 
-        <display:column property="author.username" title="User"/>
-        <display:column title="Review">
-            <a href="/review/id/${review.id}">${review.title}</a>
+        <display:column title="Review" style="width:50px;">
+            <a href="/review/id/${review.reviewId}">R</a>
+        </display:column>
+        <display:column title="Reviewer">
+            <a href="/account/user/${review.author.username}">${review.author.username}</a>
         </display:column>
         <display:column title="Snippet">
             <a href="/snippet/id/${review.snippet.snippetId}">${review.snippet.title}</a>
         </display:column>
+        <display:column title="Author" >
+            <a href="/account/user/${review.snippet.author.username}">${review.snippet.author.username}</a>
+        </display:column>        
     </display:table>
 </div>
 

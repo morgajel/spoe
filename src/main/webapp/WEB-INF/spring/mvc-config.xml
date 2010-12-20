@@ -12,7 +12,6 @@
     <mvc:resources mapping="/css/**" location="/css/"/>
     <mvc:resources mapping="/js/**" location="/js/"/>
 	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
-	<bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping" />
 
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />

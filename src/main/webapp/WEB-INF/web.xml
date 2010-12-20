@@ -25,26 +25,11 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet>
     <!--  FIXME: can I simplify this down to a single pattern? -->
-	<servlet-mapping>
-        <servlet-name>dispatcher</servlet-name>
-        <url-pattern>/account/*</url-pattern>
-	</servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>dispatcher</servlet-name>
-        <url-pattern>/snippet/*</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>dispatcher</servlet-name>
-        <url-pattern>/review/*</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>dispatcher</servlet-name>
-        <url-pattern>/search/*</url-pattern>
-    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+    
     
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
