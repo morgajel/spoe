@@ -24,7 +24,7 @@ ${message}
                 <a href="/account/user/${review.author.username}">${review.author.username}</a>
             </display:column>
             <display:column title="" sortable="false">
-                <a href="/review/id/${review.reviewId}">R</a>
+                <a href="/review/id/${review.reviewId}"><img src="/images/review.png" style="border:0px;"/></a>
             </display:column>
         </display:table>
     </div>

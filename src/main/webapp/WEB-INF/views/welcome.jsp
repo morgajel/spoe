@@ -38,7 +38,7 @@
     <h2>Recent Reviews</h2>
     <display:table name="recentReviews" id="review" pagesize="5" keepStatus="true" requestURI="/" defaultsort="1" sort="list" defaultorder="descending"> 
         <display:column title="Review" style="width:50px;">
-            <a href="/review/id/${review.reviewId}">R</a>
+            <a href="/review/id/${review.reviewId}"><img src="/images/review.png" style="border:0px;"/></a>
         </display:column>
         <display:column title="Reviewer">
             <a href="/account/user/${review.author.username}">${review.author.username}</a>

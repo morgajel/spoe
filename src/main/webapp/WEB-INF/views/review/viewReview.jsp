@@ -12,7 +12,7 @@ ${editlink}
 
 ${message}
 <div class="review">
-    <h1>Review for ${snippet.title} by ${snippet.author.username} }</h1>
+    <h1>Review for ${review.snippet.title} by ${review.snippet.author.username}</h1>
     <div class="user">Author: ${review.author.firstname} ${review.author.lastname} (${review.author.username})</div>
     <div class="lastModified">Last Modfied: <fmt:formatDate pattern="yyyy/MM/dd hh:mm" value="${review.author.lastModifiedDate}"/></div>
     <div class="snippetContent">

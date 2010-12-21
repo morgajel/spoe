@@ -146,12 +146,12 @@ margin-right:10px;
     margin-left:5px;
     margin-right:5px;
 }
-.snippet div.user {
+.snippet div.user, .review div.user {
     margin:5px;
     display:inline-block;
     font-size:12px;
 }
-.snippet div.lastModified {
+.snippet div.lastModified, .review div.lastModified {
     float:right;
     display:inline-block;
     margin:5px;
